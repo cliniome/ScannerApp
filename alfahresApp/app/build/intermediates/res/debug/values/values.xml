@@ -271,7 +271,6 @@
 
     </style>
     <style name="ApplicationTheme" parent="ThemeOverlay.AppCompat.Dark">
-
     </style>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/res/values/values.xml -->
     <eat-comment/>
