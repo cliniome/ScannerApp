@@ -3,6 +3,8 @@ package wadidejla.com.alfahresapp;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.wadidejla.preferences.AlfahresPreferenceManager;
 
 
 public class AlfahresMain extends ActionBarActivity {
@@ -42,9 +46,6 @@ public class AlfahresMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alfahres_main);
 
-
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -52,6 +53,17 @@ public class AlfahresMain extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        this.initMainScreen();
+
+    }
+
+    private void initMainScreen() {
+
+        //set the Settings Manager listener - On Shared Preference Change Listener
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        AlfahresPreferenceManager manager = new AlfahresPreferenceManager(this);
+        prefs.registerOnSharedPreferenceChangeListener(manager);
 
     }
 
