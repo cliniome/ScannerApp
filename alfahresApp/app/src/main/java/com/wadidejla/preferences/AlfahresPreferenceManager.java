@@ -19,7 +19,7 @@ public class AlfahresPreferenceManager implements OnSharedPreferenceChangeListen
     public AlfahresPreferenceManager(Context con)
     {
         this.setContext(con);
-        settingsManager = SystemSettingsManager.createInstance();
+        settingsManager = SystemSettingsManager.createInstance(con);
     }
 
     @Override

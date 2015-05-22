@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:scrollbarStyle="outsideInset"
     android:layout_height="match_parent">
 
 
@@ -42,7 +49,7 @@
         android:layout_below="@+id/userNameTxt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-         />
+        />
 
     <EditText
         android:layout_width="match_parent"
@@ -58,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_login_clear"
+        android:drawableLeft="@drawable/clear"
         android:id="@+id/btn_login_clear"
         android:layout_below="@+id/passwordTxt"
         android:layout_alignParentLeft="true"
@@ -69,10 +77,21 @@
         android:text="@string/btn_login_login"
         android:id="@+id/btn_login_login"
         android:focusable="true"
+        android:drawableLeft="@drawable/loginicon"
         android:layout_below="@+id/passwordTxt"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@id/btn_login_clear" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginProgressBar"
+        android:layout_below="@+id/btn_login_login"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
+
+</ScrollView>

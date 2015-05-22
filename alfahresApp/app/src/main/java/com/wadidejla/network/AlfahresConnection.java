@@ -29,7 +29,7 @@ public class AlfahresConnection {
     public static final String DEFAULT_PORT = "8080";
     public static final String DEFAULT_BASEPATH="alfahres";
     public static final String DEFAULT_RESTFUL_PATH="rest";
-    private String hostName;
+    private String hostName="192.168.1.7";
     private String port="8080";
     private String basePath="alfahres";
     private String restfulPath = "rest";
@@ -130,12 +130,13 @@ public class AlfahresConnection {
 
        try
        {
-           userName = Base64.encodeToString(userName.getBytes("UTF-8"),Base64.CRLF);
-           password = Base64.encodeToString(password.getBytes("UTF-8"),Base64.CRLF);
+           String combined = String.format("%s:%s",userName,password);
+
+           String encoded = Base64.encodeToString(combined.getBytes("UTF-8"),Base64.DEFAULT);
+
 
            StringBuffer buff = new StringBuffer();
-           buff.append("Basic").append(" ").append(userName).append(":")
-                   .append(password);
+           buff.append("Basic").append(" ").append(encoded);
 
            return buff.toString();
 

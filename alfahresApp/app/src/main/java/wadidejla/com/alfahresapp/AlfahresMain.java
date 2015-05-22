@@ -162,7 +162,8 @@ public class AlfahresMain extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_alfahres_main, container, false);
             TextView view = (TextView)rootView.findViewById(R.id.section_label);
-            view.setText("Section One");
+            String sectionNumber = this.getArguments().get(ARG_SECTION_NUMBER).toString();
+            view.setText(String.format("%s %s","Section",sectionNumber));
             return rootView;
         }
     }

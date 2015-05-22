@@ -8,6 +8,8 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,8 +22,7 @@
         <activity
             android:name="wadidejla.com.alfahresapp.LoginScreen"
             android:label="LoginScreen"
-            android:noHistory="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" >
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

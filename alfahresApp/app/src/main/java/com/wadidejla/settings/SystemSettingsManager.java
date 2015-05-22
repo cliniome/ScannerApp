@@ -1,5 +1,9 @@
 package com.wadidejla.settings;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * Created by snouto on 22/05/15.
  */
@@ -15,15 +19,31 @@ public class SystemSettingsManager {
     private boolean receiveNotification;
     private String ringtoneName;
     private int sync_Frequency;
+    private Context context;
     private static SystemSettingsManager _instance;
-    private SystemSettingsManager(){}
+    private SystemSettingsManager(Context con){
+
+        this.context = con;
+        this.initSettings();
+
+    }
+
+    private void initSettings() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+
+        if(prefs != null)
+        {
+            String hostName = prefs.getString(TXT_SYSTEM_IP_KEY,"");
+            this.setServerAddress(hostName);
+        }
+    }
 
 
-
-    public static SystemSettingsManager createInstance()
+    public static SystemSettingsManager createInstance(Context con)
     {
         if(_instance == null)
-            _instance = new SystemSettingsManager();
+            _instance = new SystemSettingsManager(con);
 
         return _instance;
     }

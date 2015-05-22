@@ -1512,8 +1512,12 @@ containing a value of this type.
         public static final int abc_textfield_search_activated_mtrl_alpha=0x7f020038;
         public static final int abc_textfield_search_default_mtrl_alpha=0x7f020039;
         public static final int abc_textfield_search_material=0x7f02003a;
-        public static final int logo=0x7f02003b;
-        public static final int settings=0x7f02003c;
+        public static final int clear=0x7f02003b;
+        public static final int denied=0x7f02003c;
+        public static final int error=0x7f02003d;
+        public static final int loginicon=0x7f02003e;
+        public static final int logo=0x7f02003f;
+        public static final int settings=0x7f020040;
     }
     public static final class id {
         public static final int action_bar=0x7f0e0040;
@@ -1529,7 +1533,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0e003d;
         public static final int action_mode_bar_stub=0x7f0e003c;
         public static final int action_mode_close_button=0x7f0e0025;
-        public static final int action_settings=0x7f0e0059;
+        public static final int action_settings=0x7f0e005a;
         public static final int activity_chooser_view_content=0x7f0e0026;
         public static final int alertTitle=0x7f0e0030;
         public static final int always=0x7f0e0016;
@@ -1561,6 +1565,7 @@ containing a value of this type.
         public static final int lbl_password=0x7f0e0056;
         public static final int listMode=0x7f0e0009;
         public static final int list_item=0x7f0e002a;
+        public static final int loginProgressBar=0x7f0e0059;
         public static final int middle=0x7f0e0015;
         public static final int multiply=0x7f0e001e;
         public static final int never=0x7f0e0019;
@@ -1649,6 +1654,7 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int menu_alfahres_main=0x7f0f0000;
+        public static final int menu_login_screen=0x7f0f0001;
     }
     public static final class mipmap {
         public static final int ic_launcher=0x7f030000;
@@ -1656,18 +1662,20 @@ containing a value of this type.
     public static final class string {
         public static final int LOGIN_LBL_PASSWORD=0x7f07000d;
         public static final int LOGIN_LBL_USERNAME=0x7f07000e;
-        public static final int SETTINGS_BTN_BACK=0x7f07000f;
-        public static final int SYSTEM_IP=0x7f070010;
-        public static final int TITLE_LOGIN=0x7f070011;
+        public static final int LOGIN_UNATHORIZED=0x7f07000f;
+        public static final int LOGIN_UNAUTH_MESSAGE=0x7f070010;
+        public static final int SETTINGS_BTN_BACK=0x7f070011;
+        public static final int SYSTEM_IP=0x7f070012;
+        public static final int TITLE_LOGIN=0x7f070013;
         public static final int abc_action_bar_home_description=0x7f070000;
-        public static final int abc_action_bar_home_description_format=0x7f070012;
-        public static final int abc_action_bar_home_subtitle_description_format=0x7f070013;
+        public static final int abc_action_bar_home_description_format=0x7f070014;
+        public static final int abc_action_bar_home_subtitle_description_format=0x7f070015;
         public static final int abc_action_bar_up_description=0x7f070001;
         public static final int abc_action_menu_overflow_description=0x7f070002;
         public static final int abc_action_mode_done=0x7f070003;
         public static final int abc_activity_chooser_view_see_all=0x7f070004;
         public static final int abc_activitychooserview_choose_application=0x7f070005;
-        public static final int abc_search_hint=0x7f070014;
+        public static final int abc_search_hint=0x7f070016;
         public static final int abc_searchview_description_clear=0x7f070006;
         public static final int abc_searchview_description_query=0x7f070007;
         public static final int abc_searchview_description_search=0x7f070008;
@@ -1675,35 +1683,34 @@ containing a value of this type.
         public static final int abc_searchview_description_voice=0x7f07000a;
         public static final int abc_shareactionprovider_share_with=0x7f07000b;
         public static final int abc_shareactionprovider_share_with_application=0x7f07000c;
-        public static final int abc_toolbar_collapse_description=0x7f070015;
-        public static final int action_settings=0x7f070016;
-        public static final int app_name=0x7f070017;
-        public static final int btn_login_clear=0x7f070018;
-        public static final int btn_login_login=0x7f070019;
-        public static final int hello_world=0x7f07001a;
-        public static final int pref_description_social_recommendations=0x7f07001b;
-        public static final int pref_header_data_sync=0x7f07001c;
-        public static final int pref_header_general=0x7f07001d;
-        public static final int pref_header_notifications=0x7f07001e;
-        public static final int pref_ringtone_silent=0x7f07001f;
-        public static final int pref_title_display_name=0x7f070020;
-        public static final int pref_title_new_message_notifications=0x7f070021;
-        public static final int pref_title_ringtone=0x7f070022;
-        public static final int pref_title_social_recommendations=0x7f070023;
-        public static final int pref_title_sync_frequency=0x7f070024;
-        public static final int pref_title_system_sync_settings=0x7f070025;
-        public static final int title_activity_settings=0x7f070026;
-        public static final int title_section1=0x7f070027;
-        public static final int title_section2=0x7f070028;
-        public static final int title_section3=0x7f070029;
+        public static final int abc_toolbar_collapse_description=0x7f070017;
+        public static final int action_settings=0x7f070018;
+        public static final int app_name=0x7f070019;
+        public static final int btn_cancel=0x7f07001a;
+        public static final int btn_login_clear=0x7f07001b;
+        public static final int btn_login_login=0x7f07001c;
+        public static final int hello_world=0x7f07001d;
+        public static final int pref_description_social_recommendations=0x7f07001e;
+        public static final int pref_header_data_sync=0x7f07001f;
+        public static final int pref_header_general=0x7f070020;
+        public static final int pref_header_notifications=0x7f070021;
+        public static final int pref_ringtone_silent=0x7f070022;
+        public static final int pref_title_display_name=0x7f070023;
+        public static final int pref_title_new_message_notifications=0x7f070024;
+        public static final int pref_title_ringtone=0x7f070025;
+        public static final int pref_title_social_recommendations=0x7f070026;
+        public static final int pref_title_sync_frequency=0x7f070027;
+        public static final int pref_title_system_sync_settings=0x7f070028;
+        public static final int title_activity_settings=0x7f070029;
+        public static final int title_section1=0x7f07002a;
+        public static final int title_section2=0x7f07002b;
+        public static final int title_section3=0x7f07002c;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f09006b;
         public static final int AlertDialog_AppCompat_Light=0x7f09006c;
         public static final int Animation_AppCompat_Dialog=0x7f09006d;
         public static final int Animation_AppCompat_DropDownUp=0x7f09006e;
-        /**  Customize your theme here. 
-         */
         public static final int AppTheme=0x7f09006f;
         public static final int ApplicationTheme=0x7f090070;
         public static final int Base_AlertDialog_AppCompat=0x7f090071;
