@@ -17,5 +17,6 @@
     <string name="LOGIN_UNATHORIZED">UnAuthorized</string>
     <string name="LOGIN_UNAUTH_MESSAGE">You are not Authorized to use The system</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_logout_main">Logout</string>
 
 </resources>

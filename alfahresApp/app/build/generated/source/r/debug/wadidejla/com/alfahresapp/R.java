@@ -1515,9 +1515,10 @@ containing a value of this type.
         public static final int clear=0x7f02003b;
         public static final int denied=0x7f02003c;
         public static final int error=0x7f02003d;
-        public static final int loginicon=0x7f02003e;
-        public static final int logo=0x7f02003f;
-        public static final int settings=0x7f020040;
+        public static final int exit=0x7f02003e;
+        public static final int loginicon=0x7f02003f;
+        public static final int logo=0x7f020040;
+        public static final int settings=0x7f020041;
     }
     public static final class id {
         public static final int action_bar=0x7f0e0040;
@@ -1540,6 +1541,7 @@ containing a value of this type.
         public static final int beginning=0x7f0e0013;
         public static final int btn_login_clear=0x7f0e0058;
         public static final int btn_login_login=0x7f0e0054;
+        public static final int btn_logout_main=0x7f0e005b;
         public static final int buttonPanel=0x7f0e0036;
         public static final int checkbox=0x7f0e0038;
         public static final int collapseActionView=0x7f0e0017;
@@ -1689,22 +1691,23 @@ containing a value of this type.
         public static final int btn_cancel=0x7f07001a;
         public static final int btn_login_clear=0x7f07001b;
         public static final int btn_login_login=0x7f07001c;
-        public static final int hello_world=0x7f07001d;
-        public static final int pref_description_social_recommendations=0x7f07001e;
-        public static final int pref_header_data_sync=0x7f07001f;
-        public static final int pref_header_general=0x7f070020;
-        public static final int pref_header_notifications=0x7f070021;
-        public static final int pref_ringtone_silent=0x7f070022;
-        public static final int pref_title_display_name=0x7f070023;
-        public static final int pref_title_new_message_notifications=0x7f070024;
-        public static final int pref_title_ringtone=0x7f070025;
-        public static final int pref_title_social_recommendations=0x7f070026;
-        public static final int pref_title_sync_frequency=0x7f070027;
-        public static final int pref_title_system_sync_settings=0x7f070028;
-        public static final int title_activity_settings=0x7f070029;
-        public static final int title_section1=0x7f07002a;
-        public static final int title_section2=0x7f07002b;
-        public static final int title_section3=0x7f07002c;
+        public static final int btn_logout_main=0x7f07001d;
+        public static final int hello_world=0x7f07001e;
+        public static final int pref_description_social_recommendations=0x7f07001f;
+        public static final int pref_header_data_sync=0x7f070020;
+        public static final int pref_header_general=0x7f070021;
+        public static final int pref_header_notifications=0x7f070022;
+        public static final int pref_ringtone_silent=0x7f070023;
+        public static final int pref_title_display_name=0x7f070024;
+        public static final int pref_title_new_message_notifications=0x7f070025;
+        public static final int pref_title_ringtone=0x7f070026;
+        public static final int pref_title_social_recommendations=0x7f070027;
+        public static final int pref_title_sync_frequency=0x7f070028;
+        public static final int pref_title_system_sync_settings=0x7f070029;
+        public static final int title_activity_settings=0x7f07002a;
+        public static final int title_section1=0x7f07002b;
+        public static final int title_section2=0x7f07002c;
+        public static final int title_section3=0x7f07002d;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f09006b;
