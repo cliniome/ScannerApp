@@ -1,8 +1,20 @@
 package com.wadidejla.network;
 
+import android.util.Base64;
+import android.util.Log;
+
 import com.degla.restful.models.http.HttpResponse;
 import com.degla.restful.models.http.Parameter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.wadidejla.utils.AlfahresJsonBuilder;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +24,19 @@ import java.util.List;
 public class AlfahresConnection {
 
 
+    public static final String GET_HTTP_METHOD="GET";
+    public static final String POST_HTTP_METHOD="POST";
+    public static final String DEFAULT_PORT = "8080";
+    public static final String DEFAULT_BASEPATH="alfahres";
+    public static final String DEFAULT_RESTFUL_PATH="rest";
     private String hostName;
     private String port="8080";
     private String basePath="alfahres";
     private String restfulPath = "rest";
     private StringBuffer appendablePath;
     private List<Parameter> headers;
-    private String methodType;
+    private String methodType = "GET";
+    private HttpURLConnection connection;
 
     public AlfahresConnection(String hostName,String port , String basePath,String restfulPath){
 
@@ -28,6 +46,8 @@ public class AlfahresConnection {
         this.setRestfulPath(restfulPath);
 
     }
+
+    public AlfahresConnection(){}
 
     private String getCompleteUrl()
     {
@@ -79,6 +99,17 @@ public class AlfahresConnection {
 
     }
 
+    private void addHeaders()
+    {
+        if(this.headers != null && this.headers.size() > 0)
+        {
+            for(Parameter param : this.headers)
+            {
+                connection.setRequestProperty(param.getName(),param.getValue().toString());
+            }
+        }
+    }
+
     public AlfahresConnection method(String type)
     {
         this.setMethodType(type);
@@ -86,13 +117,74 @@ public class AlfahresConnection {
 
     }
 
-
-    public HttpResponse call()
+    public AlfahresConnection setAuthorization(String userName , String password)
     {
+        Parameter param = new Parameter("Authorization",setAuth(userName,password));
+
+        this.addHeader(param);
+
+        return this;
+    }
+
+    private Object setAuth(String userName, String password) {
+
+       try
+       {
+           userName = Base64.encodeToString(userName.getBytes("UTF-8"),Base64.CRLF);
+           password = Base64.encodeToString(password.getBytes("UTF-8"),Base64.CRLF);
+
+           StringBuffer buff = new StringBuffer();
+           buff.append("Basic").append(" ").append(userName).append(":")
+                   .append(password);
+
+           return buff.toString();
+
+       }catch (Exception s)
+       {
+           Log.e("AlfahresConnection",s.getMessage());
+
+           return "";
+
+       }
+
+
+    }
+
+
+    public HttpResponse call(Class<?> entity)
+    {
+        HttpResponse response = new HttpResponse();
+
         try
         {
+            URL connectionUrl = new URL(appendablePath.toString());
 
-            return null;
+            connection = (HttpURLConnection)connectionUrl.openConnection();
+
+            connection.setRequestMethod(getMethodType());
+            this.addHeaders();
+
+            int responseCode = connection.getResponseCode();
+
+            response.setResponseCode(String.valueOf(responseCode));
+
+            if(responseCode == HttpURLConnection.HTTP_OK) {
+                    //parse the response Stream
+                    Object result = this.parseResponseStream(connection.getInputStream(),entity);
+
+                    response.setPayload(result);
+
+            }else
+            {
+                response.setPayload(connection.getResponseMessage());
+            }
+
+            connection.disconnect();
+
+            this.clearInstance();
+
+            return response;
+
 
         }catch (Exception s)
         {
@@ -101,50 +193,92 @@ public class AlfahresConnection {
         }
     }
 
+    private void clearInstance()
+    {
+        this.setMethodType(GET_HTTP_METHOD);
+        this.headers = null;
+        this.connection = null;
+        this.appendablePath = new StringBuffer();
+        this.setRestfulPath(DEFAULT_RESTFUL_PATH);
+        this.setBasePath(DEFAULT_BASEPATH);
+        this.setPort(DEFAULT_PORT);
+    }
+
+    private Object parseResponseStream(InputStream inputStream,Class<?> entity) {
+
+        try
+        {
+            Gson gson = AlfahresJsonBuilder.createGson();
+
+            InputStreamReader reader = new InputStreamReader(inputStream);
+
+            BufferedReader bReader = new BufferedReader(reader);
+
+            StringBuffer buff = new StringBuffer();
+
+            String line = null;
+
+            while((line=bReader.readLine()) != null)
+            {
+                buff.append(line);
+            }
+
+            String json = buff.toString();
+
+            return gson.fromJson(json,entity);
 
 
+        }catch (Exception s)
+        {
+            Log.e("AlfahresConnection",s.getMessage());
+            return null;
+        }
 
-
-
+    }
 
 
     public String getHostName() {
         return hostName;
     }
 
-    public void setHostName(String hostName) {
+    public AlfahresConnection setHostName(String hostName) {
         this.hostName = hostName;
+        return this;
     }
 
     public String getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public AlfahresConnection setPort(String port) {
         this.port = port;
+        return this;
     }
 
     public String getBasePath() {
         return basePath;
     }
 
-    public void setBasePath(String basePath) {
+    public AlfahresConnection setBasePath(String basePath) {
         this.basePath = basePath;
+        return this;
     }
 
     public String getRestfulPath() {
         return restfulPath;
     }
 
-    public void setRestfulPath(String restfulPath) {
+    public AlfahresConnection setRestfulPath(String restfulPath) {
         this.restfulPath = restfulPath;
+        return this;
     }
 
     public String getMethodType() {
         return methodType;
     }
 
-    public void setMethodType(String methodType) {
+    public AlfahresConnection setMethodType(String methodType) {
         this.methodType = methodType;
+        return this;
     }
 }

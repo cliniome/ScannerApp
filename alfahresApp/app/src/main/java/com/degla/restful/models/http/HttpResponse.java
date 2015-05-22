@@ -7,6 +7,10 @@ import java.io.Serializable;
  */
 public class HttpResponse implements Serializable {
 
+
+    public static final int OK_HTTP_CODE = 200;
+    public static final int UNAUTHORIZED_HTTP_CODE = 401;
+
     private String responseCode;
     private Object payload;
 
@@ -15,6 +19,14 @@ public class HttpResponse implements Serializable {
     {
         this.setResponseCode(code);
         this.setPayload(payload);
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format("Response Code : %s , Response Body : \n%s\n"
+                ,this.getResponseCode(),this.getPayload().toString());
+
     }
 
     public String getResponseCode() {
