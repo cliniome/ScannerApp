@@ -16,6 +16,12 @@
         <activity
             android:name="wadidejla.com.alfahresapp.AlfahresMain"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="wadidejla.com.alfahresapp.LoginScreen"
+            android:label="LoginScreen"
+            android:noHistory="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

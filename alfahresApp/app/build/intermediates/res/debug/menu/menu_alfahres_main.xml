@@ -4,4 +4,4 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
-<!-- From: file:/C:/Users/snouto/projects/mobile/alfahresApp/AlfahresApp/app/src/main/res/menu/menu_alfahres_main.xml -->
+<!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/menu/menu_alfahres_main.xml -->

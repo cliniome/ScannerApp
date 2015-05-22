@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,4 +12,4 @@
         android:layout_height="wrap_content" />
 
 </RelativeLayout>
-<!-- From: file:/C:/Users/snouto/projects/mobile/alfahresApp/AlfahresApp/app/src/main/res/layout/fragment_alfahres_main.xml -->
+<!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/layout/fragment_alfahres_main.xml -->

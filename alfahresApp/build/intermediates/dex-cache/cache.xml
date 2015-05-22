@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\libs\internal_impl-22.1.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
-        <dex dex="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-12b00685e34eece3e5725bdbf9908709eb91e16e.jar" />
-    </item>
-    <item
-        jar="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\classes.jar"
+        jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
-        <dex dex="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\pre-dexed\debug\classes-b3c6ccc3b569c0ba566c62638824ba7512c1549d.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/classes-2f6756d956e50f35a879611539a6770d2f2c82d8.jar" />
     </item>
     <item
-        jar="C:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.1.1\support-annotations-22.1.1.jar"
+        jar="/home/snouto/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-698f9e7179e3fde94c6a0d0998c2e81a6bdd81b7.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-f2c3fcc2aabf0fb469ce394370a0dc23b3cf81e0.jar" />
     </item>
     <item
-        jar="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.1.1\jars\classes.jar"
+        jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
-        <dex dex="C:\Users\snouto\AndroidStudioProjects\AlfahresApp\app\build\intermediates\pre-dexed\debug\classes-b17fbffa4b2217fde1e37adb4e77f82d2b31f61e.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/classes-f1455cfd05a2adb431553e1661ff00e9ff1f9ac2.jar" />
+    </item>
+    <item
+        jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-ec2356d70ad3ed24ee36272a7b66c333baa49cec.jar" />
     </item>
 
 </items>
