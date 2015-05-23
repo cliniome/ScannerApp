@@ -76,4 +76,20 @@ public class RestfulFile implements Serializable {
     public void setState(String state) {
         this.state = state;
     }
+
+    /**
+     * The first three digits refers to the cabin id
+     * the last two digits , refer to the shelf id
+     */
+    public void prepare()
+    {
+        if(this.getFileNumber() != null && this.getFileNumber().length() > 0)
+        {
+            String cabinId = this.getFileNumber().substring(0,3);
+            String shelfId = this.getFileNumber().substring(3,6);
+
+            this.setCabinetId(cabinId);
+            this.setShelfId(shelfId.substring(shelfId.length() - 1));
+        }
+    }
 }

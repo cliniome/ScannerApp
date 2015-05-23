@@ -200,6 +200,7 @@
     <string name="LOGIN_LBL_USERNAME">User Name</string>
     <string name="LOGIN_UNATHORIZED">UnAuthorized</string>
     <string name="LOGIN_UNAUTH_MESSAGE">You are not Authorized to use The system</string>
+    <string name="SCAN_SETTINGS">Scan</string>
     <string name="SETTINGS_BTN_BACK">Back</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
@@ -260,7 +261,7 @@
     <string name="title_activity_settings">Settings</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="title_section1">Files</string>
+    <string name="title_section1">New Requests</string>
     <string name="title_section2">Checkout Files</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/res/values/values.xml -->
     <eat-comment/>

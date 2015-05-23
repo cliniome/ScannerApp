@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AlFahres System</string>
 
-    <string name="title_section1">Files</string>
+    <string name="title_section1">New Requests</string>
     <string name="title_section2">Checkout Files</string>
 
     <string name="hello_world">Hello world!</string>
@@ -24,5 +24,6 @@
     <string name="file_view_column">Col. No :</string>
     <string name="main_files_alertDlg_Title">Loading Files</string>
     <string name="main_loading_title">Loading Please Wait.....</string>
+    <string name="SCAN_SETTINGS">Scan</string>
 
 </resources>

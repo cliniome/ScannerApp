@@ -18,6 +18,7 @@ import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.FilesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +101,8 @@ public class MainFilesScreenFragment extends Fragment
 
                                         if (files == null)
                                             files = new ArrayList<RestfulFile>();
+
+                                        FilesUtils.prepareFiles(files);
 
                                         SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(files);
                                         FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()

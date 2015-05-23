@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".AlfahresMain">
+
+    <item android:id="@+id/scan_settings"
+        android:icon="@drawable/scan"
+        android:orderInCategory="100" app:showAsAction="ifRoom|withText"
+        android:title="@string/SCAN_SETTINGS"></item>
+
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:icon="@drawable/settings"
+        android:orderInCategory="100" app:showAsAction="ifRoom|withText" />
+
+    <item android:id="@+id/btn_logout_main" android:title="@string/btn_logout_main"
+        android:icon="@drawable/exit"
+        android:orderInCategory="101" app:showAsAction="ifRoom|withText">
+
+    </item>
+
+</menu>
