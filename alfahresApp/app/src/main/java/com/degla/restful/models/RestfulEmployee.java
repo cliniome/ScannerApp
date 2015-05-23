@@ -1,5 +1,7 @@
 package com.degla.restful.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 /**
@@ -8,11 +10,17 @@ import java.io.Serializable;
 public class RestfulEmployee implements Serializable {
 
 
+    @Expose
     private String firstName;
+    @Expose
     private String lastName;
+    @Expose
     private String password;
+    @Expose
     private String userName;
+    @Expose
     private String role;
+    @Expose
     private int id;
 
     public String getFirstName() {

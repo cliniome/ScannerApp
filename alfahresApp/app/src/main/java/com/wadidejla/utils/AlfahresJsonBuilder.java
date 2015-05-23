@@ -13,8 +13,8 @@ public class AlfahresJsonBuilder {
     {
         GsonBuilder builder = new GsonBuilder();
 
+        builder = builder.excludeFieldsWithoutExposeAnnotation();
         //add any additional properties for the builder
-
         //finally return the gson object
         return builder.create();
     }

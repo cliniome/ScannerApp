@@ -1,6 +1,8 @@
 package com.degla.restful.models;
 
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,9 @@ import java.io.Serializable;
 public class BooleanResult implements Serializable {
 
 
+    @Expose
     private boolean state;
+    @Expose
     private String message;
 
     public BooleanResult(){}

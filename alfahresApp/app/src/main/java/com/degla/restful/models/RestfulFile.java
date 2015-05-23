@@ -1,5 +1,7 @@
 package com.degla.restful.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,13 +11,23 @@ import java.util.Date;
 public class RestfulFile implements Serializable {
 
 
+    @Expose
     private String fileNumber;
+    @Expose
     private Date operationDate;
+    @Expose
     private String description;
+    @Expose
     private String state;
+    @Expose
     private String cabinetId;
+    @Expose
     private String shelfId;
+    @Expose
     private String temporaryCabinetId;
+
+
+    private transient RestfulEmployee emp;
 
 
 
@@ -91,5 +103,13 @@ public class RestfulFile implements Serializable {
             this.setCabinetId(cabinId);
             this.setShelfId(shelfId.substring(shelfId.length() - 1));
         }
+    }
+
+    public RestfulEmployee getEmp() {
+        return emp;
+    }
+
+    public void setEmp(RestfulEmployee emp) {
+        this.emp = emp;
     }
 }

@@ -1,4 +1,6 @@
 package com.degla.restful.models;
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +10,9 @@ import java.util.List;
  */
 public class SyncBatch extends BooleanResult implements Serializable {
 
+    @Expose
     private List<RestfulFile> files;
+    @Expose
     private Date createdAt;
 
 

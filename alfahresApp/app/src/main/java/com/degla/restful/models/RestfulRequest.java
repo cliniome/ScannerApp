@@ -1,5 +1,7 @@
 package com.degla.restful.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 /**
@@ -8,11 +10,17 @@ import java.io.Serializable;
 public class RestfulRequest implements Serializable {
 
 
+    @Expose
     private String appointment_Date;
+    @Expose
     private String appointment_Type;
+    @Expose
     private String fileNumber;
+    @Expose
     private String patientName;
+    @Expose
     private String patientNumber;
+    @Expose
     private String userName;
 
 
