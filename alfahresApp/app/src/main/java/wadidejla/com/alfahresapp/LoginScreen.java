@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.degla.restful.models.BooleanResult;
+import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -124,6 +125,9 @@ public class LoginScreen extends ActionBarActivity {
                         try
                         {
 
+                            //Clear any thing
+                            SystemSettingsManager.createInstance(LoginScreen.this).logOut();
+
                             //get the username and password in here
                             final String username = userNameText.getText().toString();
                             final String password = passwordText.getText().toString();
@@ -150,7 +154,7 @@ public class LoginScreen extends ActionBarActivity {
                                                     ,"8080","alfahres","rest");
 
                                             HttpResponse response = connection.path("employee/login").setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                                    .setAuthorization(username,password).call(BooleanResult.class);
+                                                    .setAuthorization(username,password).call(RestfulEmployee.class);
 
                                             if(response != null)
                                             {
@@ -159,7 +163,8 @@ public class LoginScreen extends ActionBarActivity {
 
                                                     if(settingsManager != null)
                                                     {
-                                                        settingsManager.setAccount(new UserAccount(username,password));
+                                                        settingsManager.setAccount((RestfulEmployee) response.getPayload());
+
                                                     }
 
                                                     LoginScreen.this.runOnUiThread(new Runnable() {

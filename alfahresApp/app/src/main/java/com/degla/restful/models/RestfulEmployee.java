@@ -12,6 +12,7 @@ public class RestfulEmployee implements Serializable {
     private String lastName;
     private String password;
     private String userName;
+    private String role;
     private int id;
 
     public String getFirstName() {
@@ -52,5 +53,13 @@ public class RestfulEmployee implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

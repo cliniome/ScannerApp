@@ -38,6 +38,8 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.screens.FilesArrayAdapter;
 import com.wadidejla.screens.MainFilesScreenFragment;
+import com.wadidejla.screens.ScreenRouter;
+import com.wadidejla.screens.SectionsPagerAdapter;
 import com.wadidejla.settings.SystemSettingsManager;
 
 import org.apache.http.protocol.HTTP;
@@ -68,17 +70,14 @@ public class AlfahresMain extends ActionBarActivity {
         setContentView(R.layout.activity_alfahres_main);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        Fragment[] fragments = {
 
-                new MainFilesScreenFragment()
-        };
+        this.init();
 
-        List<Fragment> fragList = new ArrayList<Fragment>();
+    }
 
-        for(Fragment frag : fragments)
-        {
-            fragList.add(frag);
-        }
+    private void init()
+    {
+        List<Fragment> fragList = ScreenRouter.getFragments(this);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),fragList);
 
@@ -87,7 +86,6 @@ public class AlfahresMain extends ActionBarActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         this.initMainScreen();
-
     }
 
     private void initMainScreen() {
@@ -102,13 +100,13 @@ public class AlfahresMain extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SystemSettingsManager.createInstance(this).logOut();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SystemSettingsManager.createInstance(this).logOut();
+
     }
 
     @Override
@@ -150,62 +148,7 @@ public class AlfahresMain extends ActionBarActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private Activity parentActivity;
-
-        private List<Fragment> screens;
-
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public SectionsPagerAdapter(FragmentManager fm , List<Fragment> screens)
-        {
-            this(fm);
-            this.screens = screens;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-
-            Fragment currentFragment = screens.get(position);
-
-
-
-
-            return currentFragment;
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return screens.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-            }
-            return null;
-        }
-
-        public Activity getParentActivity() {
-            return parentActivity;
-        }
-
-        public void setParentActivity(Activity parentActivity) {
-            this.parentActivity = parentActivity;
-        }
-    }
 
 
 
