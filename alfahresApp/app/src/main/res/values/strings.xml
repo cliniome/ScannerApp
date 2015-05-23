@@ -25,5 +25,8 @@
     <string name="main_files_alertDlg_Title">Loading Files</string>
     <string name="main_loading_title">Loading Please Wait.....</string>
     <string name="SCAN_SETTINGS">Scan</string>
+    <string name="LOGIN_SERVER_UNAVAILABLE_TITLE">Unavailable</string>
+    <string name="LOGIN_SERVER_UNAVAILABLE_MSG">Server is not Responding</string>
+    <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>
 
 </resources>

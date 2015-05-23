@@ -85,13 +85,7 @@
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@id/btn_login_clear" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginProgressBar"
-        android:layout_below="@+id/btn_login_login"
-        android:layout_centerHorizontal="true" />
+
 
 
 </RelativeLayout>

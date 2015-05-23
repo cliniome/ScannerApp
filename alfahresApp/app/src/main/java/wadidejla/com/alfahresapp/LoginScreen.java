@@ -3,8 +3,10 @@ package wadidejla.com.alfahresapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -32,7 +34,6 @@ public class LoginScreen extends ActionBarActivity {
 
     private EditText userNameText;
     private EditText passwordText;
-    private ProgressBar loadingBar;
     private SystemSettingsManager settingsManager;
 
 
@@ -87,11 +88,9 @@ public class LoginScreen extends ActionBarActivity {
         {
             //initialize the settings manager
             settingsManager = SystemSettingsManager.createInstance(this);
-            loadingBar = (ProgressBar)findViewById(R.id.loginProgressBar);
-            loadingBar.setVisibility(View.GONE);
+
             userNameText = (EditText)findViewById(R.id.userNameTxt);
             passwordText = (EditText)findViewById(R.id.passwordTxt);
-
 
 
             //get the clear button and assign the Clear action Listener to it
@@ -124,6 +123,10 @@ public class LoginScreen extends ActionBarActivity {
                         //do the login, for now just call the alfahresMain activity
                         try
                         {
+                            Resources res = getResources();
+                            final ProgressDialog loadingdlg = ProgressDialog.show(LoginScreen.this,
+                                    res.getString(R.string.main_loading_title),res.getString(R.string.LOGIN_LOGGING_IN_TITLE));
+
 
                             //Clear any thing
                             SystemSettingsManager.createInstance(LoginScreen.this).logOut();
@@ -140,8 +143,7 @@ public class LoginScreen extends ActionBarActivity {
                                     @Override
                                     public void run() {
 
-                                        LoginScreen.this.loadingBar.setVisibility(View.GONE);
-                                        LoginScreen.this.loadingBar.setVisibility(View.VISIBLE);
+                                        loadingdlg.show();
                                     }
                                 });
 
@@ -172,8 +174,7 @@ public class LoginScreen extends ActionBarActivity {
                                                         public void run() {
 
                                                             //hide the progress bar
-                                                            LoginScreen.this.loadingBar.setVisibility(View.VISIBLE);
-                                                            LoginScreen.this.loadingBar.setVisibility(View.GONE);
+                                                            loadingdlg.dismiss();
                                                             LoginScreen.this.finish();
                                                             //Start the main activity
                                                             Intent mainIntent = new Intent(LoginScreen.this,AlfahresMain.class);
@@ -190,7 +191,7 @@ public class LoginScreen extends ActionBarActivity {
                                                         public void run() {
 
                                                             //stop the progress bar
-                                                            LoginScreen.this.loadingBar.setVisibility(View.GONE);
+                                                            loadingdlg.dismiss();
 
                                                             //show a dialog
                                                             final AlertDialog dlg = new AlertDialog.Builder(LoginScreen.this)
@@ -214,6 +215,36 @@ public class LoginScreen extends ActionBarActivity {
                                                         }
                                                     });
                                                 }
+                                            }else
+                                            {
+                                                LoginScreen.this.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        //stop the progress bar
+                                                        loadingdlg.dismiss();
+
+                                                        //show a dialog
+                                                        final AlertDialog dlg = new AlertDialog.Builder(LoginScreen.this)
+                                                                .setTitle(R.string.LOGIN_SERVER_UNAVAILABLE_TITLE)
+                                                                .setMessage(R.string.LOGIN_SERVER_UNAVAILABLE_MSG)
+                                                                .setCancelable(false)
+                                                                .setIcon(R.drawable.denied)
+                                                                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        dialogInterface.cancel();
+                                                                        //clear the username and password fields
+                                                                        LoginScreen.this.clear();
+
+                                                                    }
+                                                                }).create();
+
+                                                        dlg.show();
+
+                                                    }
+                                                });
                                             }
                                         }
                                     });
@@ -222,7 +253,7 @@ public class LoginScreen extends ActionBarActivity {
                             }else
                             {
 
-                                loadingBar.setVisibility(View.GONE);
+                                loadingdlg.dismiss();
 
                                 //show an alert dialog
                                 final AlertDialog dlg = new AlertDialog
