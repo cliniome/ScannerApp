@@ -123,6 +123,7 @@ public class AlfahresMain extends ActionBarActivity {
         }else if (id == R.id.btn_logout_main)
         {
             //TODO : add your logic to logout in here
+            SystemSettingsManager.createInstance(this).logOut();
             //then go to the login screen
             Intent logoutIntent = new Intent(this,LoginScreen.class);
             logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

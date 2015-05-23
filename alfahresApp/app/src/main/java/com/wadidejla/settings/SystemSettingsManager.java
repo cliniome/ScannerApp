@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.degla.restful.models.RestfulFile;
 import com.wadidejla.network.AlfahresConnection;
+
+import java.util.List;
 
 /**
  * Created by snouto on 22/05/15.
@@ -25,13 +28,19 @@ public class SystemSettingsManager {
     private static SystemSettingsManager _instance;
     private boolean batteryLow = false;
     private boolean canContinue = true;
-
     private UserAccount account;
+    private List<RestfulFile> availableFiles;
 
     private SystemSettingsManager(Context con){
 
         this.context = con;
         this.initSettings();
+
+    }
+
+    public void logOut()
+    {
+        this.setAvailableFiles(null);
 
     }
 
@@ -123,5 +132,13 @@ public class SystemSettingsManager {
 
     public void setAccount(UserAccount account) {
         this.account = account;
+    }
+
+    public List<RestfulFile> getAvailableFiles() {
+        return availableFiles;
+    }
+
+    public void setAvailableFiles(List<RestfulFile> availableFiles) {
+        this.availableFiles = availableFiles;
     }
 }

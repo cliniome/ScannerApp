@@ -46,6 +46,15 @@ public class MainFilesScreenFragment extends Fragment
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     public void initViews(final View rootView)
     {
@@ -56,67 +65,86 @@ public class MainFilesScreenFragment extends Fragment
 
             dlg.setCancelable(false);
 
-            Thread loadingThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
+            if(SystemSettingsManager.createInstance(getActivity()).getAvailableFiles() == null)
+            {
+                Thread loadingThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
 
-                    SystemSettingsManager manager = SystemSettingsManager
-                            .createInstance(getActivity());
+                        SystemSettingsManager manager = SystemSettingsManager
+                                .createInstance(getActivity());
 
-                    AlfahresConnection conn = manager.getConnection();
+                        AlfahresConnection conn = manager.getConnection();
 
-                    final HttpResponse response = conn.setAuthorization(manager.getAccount().getUserName(), manager.getAccount().getPassword())
-                            .setMethodType(conn.GET_HTTP_METHOD)
-                            .path("files/new")
-                            .call(new TypeToken<List<RestfulFile>>() {
-                            }.getType());
-
-
-                    if(Integer.parseInt(response.getResponseCode()) == HttpResponse.OK_HTTP_CODE)
-                    {
+                        final HttpResponse response = conn.setAuthorization(manager.getAccount().getUserName(), manager.getAccount().getPassword())
+                                .setMethodType(conn.GET_HTTP_METHOD)
+                                .path("files/new")
+                                .call(new TypeToken<List<RestfulFile>>() {
+                                }.getType());
 
 
-                        //finally disable the dialog
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                try {
+                        if(Integer.parseInt(response.getResponseCode()) == HttpResponse.OK_HTTP_CODE)
+                        {
 
 
-                                    List<RestfulFile> files = (List<RestfulFile>) response.getPayload();
+                            //finally disable the dialog
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                    if (files == null)
-                                        files = new ArrayList<RestfulFile>();
-
-                                    FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
-                                            , R.layout.single_file_view, files);
-
-                                    listView.setAdapter(filesArrayAdapter);
-                                    filesArrayAdapter.notifyDataSetChanged();
+                                    try {
 
 
-                                    dlg.dismiss();
+                                        List<RestfulFile> files = (List<RestfulFile>) response.getPayload();
 
-                                } catch (Exception e) {
-                                    Log.e("MainFilesScreenFragment", e.getMessage());
+                                        if (files == null)
+                                            files = new ArrayList<RestfulFile>();
+
+                                        SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(files);
+                                        FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
+                                                , R.layout.single_file_view, files);
+
+                                        listView.setAdapter(filesArrayAdapter);
+                                        filesArrayAdapter.notifyDataSetChanged();
+
+
+                                        dlg.dismiss();
+
+                                    } catch (Exception e) {
+                                        Log.e("MainFilesScreenFragment", e.getMessage());
+                                    }
                                 }
-                            }
-                        });
+                            });
 
 
+
+
+
+                        }
 
 
 
                     }
+                });
 
+                loadingThread.start();
 
+            }else
+            {
+                List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getAvailableFiles();
 
-                }
-            });
+                if (files == null)
+                    files = new ArrayList<RestfulFile>();
 
-            loadingThread.start();
+                FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
+                        , R.layout.single_file_view, files);
+
+                listView.setAdapter(filesArrayAdapter);
+                filesArrayAdapter.notifyDataSetChanged();
+                dlg.dismiss();
+            }
+
 
         }catch (Exception s)
         {
