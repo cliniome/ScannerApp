@@ -234,7 +234,14 @@
     <string name="btn_login_clear">Clear</string>
     <string name="btn_login_login">Login Now</string>
     <string name="btn_logout_main">Logout</string>
+    <string name="file_view_cabinetId">Cabin No :</string>
+    <string name="file_view_column">Col. No :</string>
+    <string name="file_view_fileNo">File No :</string>
+    <string name="file_view_patientNo">Patient No :</string>
+    <string name="file_view_shelfId">Shelf No :</string>
     <string name="hello_world">Hello world!</string>
+    <string name="main_files_alertDlg_Title">Loading Files</string>
+    <string name="main_loading_title">Loading Please Wait.....</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
@@ -253,9 +260,8 @@
     <string name="title_activity_settings">Settings</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Files</string>
+    <string name="title_section2">Checkout Files</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
@@ -1499,4 +1505,12 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="RtlOverlay.Widget.AppCompat.Toolbar.Button.Navigation"/>
+    <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="fileNumberStyle">
+
+    </style>
+    <style name="patientNumberStyle">
+
+    </style>
 </resources>

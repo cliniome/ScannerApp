@@ -12,6 +12,7 @@ import com.wadidejla.utils.AlfahresJsonBuilder;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -194,6 +195,49 @@ public class AlfahresConnection {
         }
     }
 
+
+    public HttpResponse call(Type entity)
+    {
+        HttpResponse response = new HttpResponse();
+
+        try
+        {
+            URL connectionUrl = new URL(appendablePath.toString());
+
+            connection = (HttpURLConnection)connectionUrl.openConnection();
+
+            connection.setRequestMethod(getMethodType());
+            this.addHeaders();
+
+            int responseCode = connection.getResponseCode();
+
+            response.setResponseCode(String.valueOf(responseCode));
+
+            if(responseCode == HttpURLConnection.HTTP_OK) {
+                //parse the response Stream
+                Object result = this.parseResponseStream(connection.getInputStream(),entity);
+
+                response.setPayload(result);
+
+            }else
+            {
+                response.setPayload(connection.getResponseMessage());
+            }
+
+            connection.disconnect();
+
+            this.clearInstance();
+
+            return response;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return null;
+        }
+    }
+
     private void clearInstance()
     {
         this.setMethodType(GET_HTTP_METHOD);
@@ -206,6 +250,39 @@ public class AlfahresConnection {
     }
 
     private Object parseResponseStream(InputStream inputStream,Class<?> entity) {
+
+        try
+        {
+            Gson gson = AlfahresJsonBuilder.createGson();
+
+            InputStreamReader reader = new InputStreamReader(inputStream);
+
+            BufferedReader bReader = new BufferedReader(reader);
+
+            StringBuffer buff = new StringBuffer();
+
+            String line = null;
+
+            while((line=bReader.readLine()) != null)
+            {
+                buff.append(line);
+            }
+
+            String json = buff.toString();
+
+            return gson.fromJson(json,entity);
+
+
+        }catch (Exception s)
+        {
+            Log.e("AlfahresConnection",s.getMessage());
+            return null;
+        }
+
+    }
+
+
+    private Object parseResponseStream(InputStream inputStream,Type entity) {
 
         try
         {

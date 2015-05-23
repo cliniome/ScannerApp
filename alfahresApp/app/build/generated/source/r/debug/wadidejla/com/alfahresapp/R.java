@@ -1516,9 +1516,12 @@ containing a value of this type.
         public static final int denied=0x7f02003c;
         public static final int error=0x7f02003d;
         public static final int exit=0x7f02003e;
-        public static final int loginicon=0x7f02003f;
-        public static final int logo=0x7f020040;
-        public static final int settings=0x7f020041;
+        public static final int file1=0x7f02003f;
+        public static final int file2=0x7f020040;
+        public static final int file3=0x7f020041;
+        public static final int loginicon=0x7f020042;
+        public static final int logo=0x7f020043;
+        public static final int settings=0x7f020044;
     }
     public static final class id {
         public static final int action_bar=0x7f0e0040;
@@ -1534,15 +1537,16 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0e003d;
         public static final int action_mode_bar_stub=0x7f0e003c;
         public static final int action_mode_close_button=0x7f0e0025;
-        public static final int action_settings=0x7f0e005a;
+        public static final int action_settings=0x7f0e0061;
         public static final int activity_chooser_view_content=0x7f0e0026;
         public static final int alertTitle=0x7f0e0030;
         public static final int always=0x7f0e0016;
         public static final int beginning=0x7f0e0013;
         public static final int btn_login_clear=0x7f0e0058;
         public static final int btn_login_login=0x7f0e0054;
-        public static final int btn_logout_main=0x7f0e005b;
+        public static final int btn_logout_main=0x7f0e0062;
         public static final int buttonPanel=0x7f0e0036;
+        public static final int cabin_no_lbl=0x7f0e005d;
         public static final int checkbox=0x7f0e0038;
         public static final int collapseActionView=0x7f0e0017;
         public static final int contentPanel=0x7f0e0031;
@@ -1557,6 +1561,7 @@ containing a value of this type.
         public static final int end=0x7f0e0014;
         public static final int expand_activities_button=0x7f0e0027;
         public static final int expanded_menu=0x7f0e0037;
+        public static final int fileNoLbl=0x7f0e005b;
         public static final int home=0x7f0e0004;
         public static final int homeAsUp=0x7f0e000d;
         public static final int icon=0x7f0e002b;
@@ -1568,6 +1573,7 @@ containing a value of this type.
         public static final int listMode=0x7f0e0009;
         public static final int list_item=0x7f0e002a;
         public static final int loginProgressBar=0x7f0e0059;
+        public static final int mainFilesList=0x7f0e005a;
         public static final int middle=0x7f0e0015;
         public static final int multiply=0x7f0e001e;
         public static final int never=0x7f0e0019;
@@ -1593,6 +1599,7 @@ containing a value of this type.
         public static final int search_voice_btn=0x7f0e004d;
         public static final int section_label=0x7f0e0051;
         public static final int select_dialog_listview=0x7f0e004e;
+        public static final int shelf_noLbl=0x7f0e005f;
         public static final int shortcut=0x7f0e0039;
         public static final int showCustom=0x7f0e000f;
         public static final int showHome=0x7f0e0010;
@@ -1608,6 +1615,9 @@ containing a value of this type.
         public static final int title_template=0x7f0e002f;
         public static final int toolbar=0x7f0e004f;
         public static final int topPanel=0x7f0e002e;
+        public static final int txt_fileNo=0x7f0e005c;
+        public static final int txtcabinNo=0x7f0e005e;
+        public static final int txtshelfId=0x7f0e0060;
         public static final int up=0x7f0e0008;
         public static final int useLogo=0x7f0e0012;
         public static final int userNameTxt=0x7f0e0055;
@@ -1648,11 +1658,14 @@ containing a value of this type.
         public static final int action_bar_definition=0x7f040019;
         public static final int activity_alfahres_main=0x7f04001a;
         public static final int fragment_alfahres_main=0x7f04001b;
-        public static final int login_screen_main=0x7f04001c;
-        public static final int select_dialog_item_material=0x7f04001d;
-        public static final int select_dialog_multichoice_material=0x7f04001e;
-        public static final int select_dialog_singlechoice_material=0x7f04001f;
-        public static final int support_simple_spinner_dropdown_item=0x7f040020;
+        public static final int loading=0x7f04001c;
+        public static final int login_screen_main=0x7f04001d;
+        public static final int main_files_layout=0x7f04001e;
+        public static final int select_dialog_item_material=0x7f04001f;
+        public static final int select_dialog_multichoice_material=0x7f040020;
+        public static final int select_dialog_singlechoice_material=0x7f040021;
+        public static final int single_file_view=0x7f040022;
+        public static final int support_simple_spinner_dropdown_item=0x7f040023;
     }
     public static final class menu {
         public static final int menu_alfahres_main=0x7f0f0000;
@@ -1692,22 +1705,28 @@ containing a value of this type.
         public static final int btn_login_clear=0x7f07001b;
         public static final int btn_login_login=0x7f07001c;
         public static final int btn_logout_main=0x7f07001d;
-        public static final int hello_world=0x7f07001e;
-        public static final int pref_description_social_recommendations=0x7f07001f;
-        public static final int pref_header_data_sync=0x7f070020;
-        public static final int pref_header_general=0x7f070021;
-        public static final int pref_header_notifications=0x7f070022;
-        public static final int pref_ringtone_silent=0x7f070023;
-        public static final int pref_title_display_name=0x7f070024;
-        public static final int pref_title_new_message_notifications=0x7f070025;
-        public static final int pref_title_ringtone=0x7f070026;
-        public static final int pref_title_social_recommendations=0x7f070027;
-        public static final int pref_title_sync_frequency=0x7f070028;
-        public static final int pref_title_system_sync_settings=0x7f070029;
-        public static final int title_activity_settings=0x7f07002a;
-        public static final int title_section1=0x7f07002b;
-        public static final int title_section2=0x7f07002c;
-        public static final int title_section3=0x7f07002d;
+        public static final int file_view_cabinetId=0x7f07001e;
+        public static final int file_view_column=0x7f07001f;
+        public static final int file_view_fileNo=0x7f070020;
+        public static final int file_view_patientNo=0x7f070021;
+        public static final int file_view_shelfId=0x7f070022;
+        public static final int hello_world=0x7f070023;
+        public static final int main_files_alertDlg_Title=0x7f070024;
+        public static final int main_loading_title=0x7f070025;
+        public static final int pref_description_social_recommendations=0x7f070026;
+        public static final int pref_header_data_sync=0x7f070027;
+        public static final int pref_header_general=0x7f070028;
+        public static final int pref_header_notifications=0x7f070029;
+        public static final int pref_ringtone_silent=0x7f07002a;
+        public static final int pref_title_display_name=0x7f07002b;
+        public static final int pref_title_new_message_notifications=0x7f07002c;
+        public static final int pref_title_ringtone=0x7f07002d;
+        public static final int pref_title_social_recommendations=0x7f07002e;
+        public static final int pref_title_sync_frequency=0x7f07002f;
+        public static final int pref_title_system_sync_settings=0x7f070030;
+        public static final int title_activity_settings=0x7f070031;
+        public static final int title_section1=0x7f070032;
+        public static final int title_section2=0x7f070033;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f09006b;
@@ -1995,6 +2014,8 @@ containing a value of this type.
         public static final int Widget_AppCompat_TextView_SpinnerItem=0x7f09011a;
         public static final int Widget_AppCompat_Toolbar=0x7f09011b;
         public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f09011c;
+        public static final int fileNumberStyle=0x7f09011d;
+        public static final int patientNumberStyle=0x7f09011e;
     }
     public static final class xml {
         public static final int pref_data_sync=0x7f060000;

@@ -10,4 +10,12 @@
     <style name="ApplicationTheme" parent="ThemeOverlay.AppCompat.Dark">
     </style>
 
+    <style name="fileNumberStyle">
+
+    </style>
+
+    <style name="patientNumberStyle">
+
+    </style>
+
 </resources>

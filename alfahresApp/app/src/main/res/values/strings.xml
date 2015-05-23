@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">AlFahres System</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Files</string>
+    <string name="title_section2">Checkout Files</string>
 
     <string name="hello_world">Hello world!</string>
 
@@ -18,5 +17,12 @@
     <string name="LOGIN_UNAUTH_MESSAGE">You are not Authorized to use The system</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_logout_main">Logout</string>
+    <string name="file_view_fileNo">File No :</string>
+    <string name="file_view_patientNo">Patient No :</string>
+    <string name="file_view_cabinetId">Cabin No :</string>
+    <string name="file_view_shelfId">Shelf No :</string>
+    <string name="file_view_column">Col. No :</string>
+    <string name="main_files_alertDlg_Title">Loading Files</string>
+    <string name="main_loading_title">Loading Please Wait.....</string>
 
 </resources>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.wadidejla.network.AlfahresConnection;
+
 /**
  * Created by snouto on 22/05/15.
  */
@@ -21,11 +23,29 @@ public class SystemSettingsManager {
     private int sync_Frequency;
     private Context context;
     private static SystemSettingsManager _instance;
+    private boolean batteryLow = false;
+    private boolean canContinue = true;
+
+    private UserAccount account;
+
     private SystemSettingsManager(Context con){
 
         this.context = con;
         this.initSettings();
 
+    }
+
+
+    public AlfahresConnection getConnection()
+    {
+        AlfahresConnection conn = new AlfahresConnection(getServerAddress(),"8080","alfahres","rest");
+        return conn;
+    }
+
+
+    public synchronized boolean canProceed()
+    {
+        return ((!isBatteryLow()) && canContinue);
     }
 
     private void initSettings() {
@@ -79,5 +99,29 @@ public class SystemSettingsManager {
 
     public void setSync_Frequency(int sync_Frequency) {
         this.sync_Frequency = sync_Frequency;
+    }
+
+    public boolean isBatteryLow() {
+        return batteryLow;
+    }
+
+    public void setBatteryLow(boolean batteryLow) {
+        this.batteryLow = batteryLow;
+    }
+
+    public boolean isCanContinue() {
+        return canContinue;
+    }
+
+    public void setCanContinue(boolean canContinue) {
+        this.canContinue = canContinue;
+    }
+
+    public UserAccount getAccount() {
+        return account;
+    }
+
+    public void setAccount(UserAccount account) {
+        this.account = account;
     }
 }

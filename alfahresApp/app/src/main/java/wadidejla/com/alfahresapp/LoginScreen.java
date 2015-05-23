@@ -21,6 +21,7 @@ import com.degla.restful.models.BooleanResult;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.settings.UserAccount;
 
 /**
  * Created by snouto on 22/05/15.
@@ -155,6 +156,12 @@ public class LoginScreen extends ActionBarActivity {
                                             {
                                                 if(Integer.parseInt(response.getResponseCode()) == 200)
                                                 {
+
+                                                    if(settingsManager != null)
+                                                    {
+                                                        settingsManager.setAccount(new UserAccount(username,password));
+                                                    }
+
                                                     LoginScreen.this.runOnUiThread(new Runnable() {
                                                         @Override
                                                         public void run() {
