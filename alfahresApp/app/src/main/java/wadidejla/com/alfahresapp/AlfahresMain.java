@@ -30,10 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
+import com.wadidejla.barcode.IntentIntegrator;
+import com.wadidejla.barcode.IntentResult;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.screens.FilesArrayAdapter;
@@ -73,6 +76,20 @@ public class AlfahresMain extends ActionBarActivity {
 
         this.init();
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+
+        if(result != null)
+        {
+            Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
+            ,Toast.LENGTH_LONG).show();
+
+        }
     }
 
     private void init()
@@ -138,6 +155,10 @@ public class AlfahresMain extends ActionBarActivity {
             logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             this.finish();
             startActivity(logoutIntent);
+        }else if (id == R.id.scan_settings)
+        {
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.initiateScan();
         }
 
         return super.onOptionsItemSelected(item);
