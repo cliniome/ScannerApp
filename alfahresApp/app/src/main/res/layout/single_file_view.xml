@@ -36,8 +36,6 @@
             android:id="@+id/txt_fileNo"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textStyle="bold" />
 
         <TextView

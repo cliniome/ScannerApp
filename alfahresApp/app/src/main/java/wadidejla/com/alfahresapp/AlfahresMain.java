@@ -99,6 +99,17 @@ public class AlfahresMain extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SystemSettingsManager.createInstance(this).logOut();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SystemSettingsManager.createInstance(this).logOut();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
