@@ -16,6 +16,7 @@ import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.FilesUtils;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ class SyncFilesArrayAdapter extends ArrayAdapter<RestfulFile> {
     public SyncFilesArrayAdapter(Context context , int resource , List<RestfulFile> localFiles)
     {
         super(context,resource,localFiles);
+        FilesUtils.prepareFiles(localFiles);
         this.setFiles(localFiles);
     }
 

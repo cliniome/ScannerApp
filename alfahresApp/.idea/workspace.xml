@@ -32,10 +32,11 @@
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ba156f6-7bfc-4faf-a278-612f5357459c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/wadidejla/com/alfahresapp/AlfahresMain.class" afterPath="$PROJECT_DIR$/app/build/intermediates/classes/debug/wadidejla/com/alfahresapp/AlfahresMain.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/service/AlfahresSyncService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/outputs/apk/app-debug-unaligned.apk" afterPath="$PROJECT_DIR$/app/build/outputs/apk/app-debug-unaligned.apk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/outputs/apk/app-debug.apk" afterPath="$PROJECT_DIR$/app/build/outputs/apk/app-debug.apk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
@@ -43,9 +44,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/AlfahresMain.java" afterPath="$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/AlfahresMain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/FilesDBManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/FilesDBManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="alfahresApp.iws" />
@@ -115,8 +117,8 @@
         <option value="layoutResourceFile" />
         <option value="layoutResourceFile_vertical" />
         <option value="resourceFile" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -1417,7 +1419,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/action_bar_definition.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/pref_general.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/pref_notification.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/SettingsActivity.java" />
@@ -1454,20 +1455,21 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/degla/restful/models/RestfulFile.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/AlfahresDBHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/ScreenRouter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SectionsPagerAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/ViewPagerSlave.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/main_files_layout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/keeper_menu.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/LocalSyncFilesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/FilesDBManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/AlfahresMain.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/service/AlfahresSyncService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java" />
       </list>
     </option>
   </component>
@@ -1640,7 +1642,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="barcode" />
+              <option name="myItemId" value="db" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2048,7 +2050,13 @@
       <option name="project" value="LOCAL" />
       <updated>1432741410121</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="adding the scanning/removing files feature">
+      <created>1432746566505</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1432746566505</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2186,25 +2194,12 @@
           <properties />
           <option name="timeStamp" value="81" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/AlfahresMain.java</url>
-          <line>154</line>
-          <properties />
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="83" />
+      <option name="time" value="87" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/563dcb685903c96ce8abbd03adf7fa49e19aa8b4/gson-2.3.1-sources.jar!/com/google/gson/reflect/TypeToken.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="99" column="16" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/loading.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -2437,24 +2432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="105" column="24" selection-start-line="38" selection-start-column="7" selection-end-line="105" selection-end-column="24" />
-          <folding>
-            <element signature="e#2036#3532#0" expanded="true" />
-            <element signature="e#2263#2295#0" expanded="true" />
-            <element signature="e#2338#3428#0" expanded="true" />
-            <element signature="e#3427#3428#0" expanded="true" />
-            <element signature="e#3531#3532#0" expanded="true" />
-            <element signature="e#3609#3610#0" expanded="true" />
-            <element signature="e#3637#3638#0" expanded="true" />
-            <element signature="e#3690#3691#0" expanded="true" />
-            <element signature="e#3724#3725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/settings/SystemSettingsManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2462,16 +2439,6 @@
           <folding>
             <element signature="e#2090#2091#0" expanded="true" />
             <element signature="e#2130#2131#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="26" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2566,22 +2533,8 @@
         <state vertical-scroll-proportion="0.30456853">
           <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
           <folding>
-            <element signature="e#418#441#0" expanded="true" />
-            <element signature="e#540#564#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5939086">
-          <caret line="197" column="32" selection-start-line="194" selection-start-column="15" selection-end-line="197" selection-end-column="32" />
-          <folding>
-            <element signature="e#1604#1653#0" expanded="true" />
-            <element signature="e#6768#7541#0" expanded="true" />
-            <element signature="e#7243#7506#0" expanded="true" />
-            <element signature="e#7505#7506#0" expanded="true" />
-            <element signature="e#7540#7541#0" expanded="true" />
+            <element signature="e#418#441#0" expanded="false" />
+            <element signature="e#540#564#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2597,46 +2550,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="93" column="96" selection-start-line="93" selection-start-column="96" selection-end-line="93" selection-end-column="96" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2313#2345#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1928934">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27988338">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/FilesDBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3177843">
-          <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1400#1413#0" expanded="true" />
-            <element signature="e#4355#4368#0" expanded="true" />
-            <element signature="e#7268#7281#0" expanded="true" />
-            <element signature="method#insertFiles#0;class#FilesDBManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2648,24 +2566,85 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/service/AlfahresSyncService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#269#270#0" expanded="true" />
+            <element signature="e#296#297#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/db/FilesDBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1400#1413#0" expanded="true" />
+            <element signature="e#4355#4368#0" expanded="true" />
+            <element signature="e#7268#7281#0" expanded="true" />
+            <element signature="method#insertFiles#0;class#FilesDBManager#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/MainFilesScreenFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5918367">
+          <caret line="138" column="85" selection-start-line="138" selection-start-column="85" selection-end-line="138" selection-end-column="85" />
+          <folding>
+            <element signature="e#4393#4406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/FilesArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/screens/SyncFilesArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.80466473">
+          <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/AlFahresFilesManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40947548">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wadidejla/utils/FilesManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/wadidejla/com/alfahresapp/AlfahresMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46355686">
-          <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.38409474">
+          <caret line="187" column="35" selection-start-line="187" selection-start-column="35" selection-end-line="187" selection-end-column="35" />
           <folding>
-            <element signature="e#4070#4097#0" expanded="true" />
-            <element signature="e#4284#7167#0" expanded="true" />
             <element signature="e#5006#6011#0" expanded="true" />
-            <element signature="e#5504#5883#0" expanded="true" />
-            <element signature="e#5882#5883#0" expanded="true" />
             <element signature="e#6010#6011#0" expanded="true" />
-            <element signature="e#6127#7101#0" expanded="true" />
-            <element signature="e#6594#6973#0" expanded="true" />
-            <element signature="e#6972#6973#0" expanded="true" />
-            <element signature="e#7100#7101#0" expanded="true" />
-            <element signature="e#7166#7167#0" expanded="true" />
-            <element signature="e#11654#11655#0" expanded="true" />
-            <element signature="e#11689#11690#0" expanded="true" />
           </folding>
         </state>
       </provider>

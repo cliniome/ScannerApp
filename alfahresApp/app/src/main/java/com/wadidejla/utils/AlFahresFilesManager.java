@@ -114,10 +114,11 @@ public class AlFahresFilesManager implements FilesManager {
 
             RestfulFile foundFile = getFileWithBarcode(file.getFileNumber());
 
-            foundFile.setState(file.getState());
+
 
             if(foundFile != null)
             {
+                foundFile.setState(file.getState());
                 //add the current file into the sync_Files table
                 boolean result = filesDBManager.insertFile(foundFile);
 

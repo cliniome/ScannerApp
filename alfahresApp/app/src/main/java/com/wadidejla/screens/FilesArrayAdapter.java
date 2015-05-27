@@ -3,6 +3,7 @@ package com.wadidejla.screens;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.FilesUtils;
 
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
     public FilesArrayAdapter(Context context , int resource , List<RestfulFile> availableFiles)
     {
         super(context,resource,availableFiles);
+
+        if(availableFiles != null && availableFiles.size() > 0)
+            FilesUtils.prepareFiles(availableFiles);
         this.files = availableFiles;
     }
 
@@ -78,12 +83,24 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                 if (i == 0) // that means mark file as missing
                                 {
                                     //access the files Manager from the settings
-                                    FilesManager filesManager = SystemSettingsManager.createInstance(getContext())
-                                            .getSyncFilesManager();
+                                   try
+                                   {
+                                       FilesManager filesManager = SystemSettingsManager.createInstance(getContext())
+                                               .getSyncFilesManager();
 
-                                    file.setState(FileModelStates.MISSING.toString());
-                                    filesManager.operateOnFile(file);
-                                    dialogInterface.dismiss();
+                                       file.setState(FileModelStates.MISSING.toString());
+                                       filesManager.operateOnFile(file);
+
+                                   }catch (Exception s)
+                                   {
+                                       Log.w("FilesArrayAdapter",s.getMessage());
+
+                                   }
+                                    finally {
+
+                                       dialogInterface.dismiss();
+                                   }
+
 
                                 } else {
                                     //show details of the selected file

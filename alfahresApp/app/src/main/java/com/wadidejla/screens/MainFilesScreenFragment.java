@@ -112,6 +112,8 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
                                     try {
 
+                                        SystemSettingsManager settingsManager = SystemSettingsManager
+                                                .createInstance(getActivity());
 
                                         List<RestfulFile> files = (List<RestfulFile>) response.getPayload();
 
@@ -120,10 +122,21 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
                                         FilesUtils.prepareFiles(files);
 
-                                        SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(files);
+                                        List<RestfulFile> tempList = new ArrayList<RestfulFile>();
+
+                                        for(RestfulFile file : files)
+                                        {
+                                            if(settingsManager.getSyncFilesManager()
+                                                    .getFilesDBManager().getFileByNumber(file.getFileNumber()) == null)
+                                            {
+                                                tempList.add(file);
+                                            }
+                                        }
+
+                                        SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(tempList);
 
                                         FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
-                                                , R.layout.single_file_view, files);
+                                                , R.layout.single_file_view, tempList);
 
                                         listView.setAdapter(filesArrayAdapter);
                                         filesArrayAdapter.notifyDataSetChanged();
