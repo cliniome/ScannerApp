@@ -68,7 +68,7 @@ public class SystemSettingsManager {
     }
 
 
-    public FilesManager getSyncFilesManager()
+    public synchronized  FilesManager getSyncFilesManager()
     {
         return this.filesManager;
     }

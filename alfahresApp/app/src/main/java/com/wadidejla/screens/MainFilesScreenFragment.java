@@ -208,7 +208,9 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
                 Uri ringToneUri = Uri.parse("android.resource://wadidejla.com.alfahresapp/"+R.raw.marked);
 
                 Ringtone ringtone = RingtoneManager.getRingtone(getActivity(),ringToneUri);
-                ringtone.play();
+
+                if(ringtone != null)
+                    ringtone.play();
             }
 
         }

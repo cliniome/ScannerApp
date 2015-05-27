@@ -36,7 +36,7 @@ public class FilesDBManager {
     }
 
 
-    public List<RestfulFile> getFilesByColumnValue(String columnName,String value)
+    public synchronized List<RestfulFile> getFilesByColumnValue(String columnName,String value)
     {
         try
         {
@@ -99,7 +99,7 @@ public class FilesDBManager {
         }
     }
 
-    public List<RestfulFile> getAllFilesForEmployee(String empID)
+    public synchronized  List<RestfulFile> getAllFilesForEmployee(String empID)
     {
         try
         {
@@ -163,7 +163,7 @@ public class FilesDBManager {
         }
     }
 
-    public List<RestfulFile> getAllFiles()
+    public synchronized List<RestfulFile> getAllFiles()
     {
         try
         {
@@ -228,7 +228,7 @@ public class FilesDBManager {
     }
 
 
-    public RestfulFile getFileByNumber(String fileNumber)
+    public synchronized RestfulFile getFileByNumber(String fileNumber)
     {
         try
         {
@@ -247,7 +247,7 @@ public class FilesDBManager {
         }
     }
 
-    public boolean deleteFile(String fileNumber)
+    public synchronized boolean deleteFile(String fileNumber)
     {
         try
         {
@@ -271,7 +271,7 @@ public class FilesDBManager {
         }
     }
 
-    public boolean updateFile(RestfulFile file)
+    public synchronized boolean updateFile(RestfulFile file)
     {
         //delete the file first
         boolean result = this.deleteFile(file.getFileNumber());
@@ -285,7 +285,7 @@ public class FilesDBManager {
 
     }
 
-    public boolean updateAllFilesFor(String empID , String temporaryCabinetId)
+    public synchronized boolean updateAllFilesFor(String empID , String temporaryCabinetId)
     {
         try
         {
@@ -321,7 +321,7 @@ public class FilesDBManager {
      * @param file
      * @return
      */
-    public boolean insertFile(RestfulFile file)
+    public synchronized boolean insertFile(RestfulFile file)
     {
         try
         {
@@ -368,7 +368,7 @@ public class FilesDBManager {
     }
 
 
-    public boolean  insertFiles(List<RestfulFile> files)
+    public synchronized boolean  insertFiles(List<RestfulFile> files)
     {
         try
         {
@@ -390,11 +390,11 @@ public class FilesDBManager {
         }
     }
 
-    public String getTableName() {
+    public synchronized String getTableName() {
         return tableName;
     }
 
-    public void setTableName(String tableName) {
+    public synchronized void setTableName(String tableName) {
         this.tableName = tableName;
     }
 }
