@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
@@ -86,9 +87,10 @@ public class AlfahresMain extends ActionBarActivity {
 
         if(result != null)
         {
-            //now try to remove it
+            //now try to remove it and mark it as checked out
             boolean bresult = SystemSettingsManager.createInstance(this)
-                    .getSyncFilesManager().operateOnFile(result.getContents());
+                    .getSyncFilesManager().operateOnFile(result.getContents()
+                            ,FileModelStates.CHECKED_OUT.toString());
             if(bresult)
             {
                 Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())

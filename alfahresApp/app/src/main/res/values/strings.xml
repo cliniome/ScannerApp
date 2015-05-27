@@ -28,5 +28,7 @@
     <string name="LOGIN_SERVER_UNAVAILABLE_TITLE">Unavailable</string>
     <string name="LOGIN_SERVER_UNAVAILABLE_MSG">Server is not Responding</string>
     <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>
+    <string name="SINGLE_CHOICE_DLG_TITLE">Choose an Option...</string>
+    <string name="SINGLE_CHOICE_DLG_MSG">Choose one Option below.</string>
 
 </resources>

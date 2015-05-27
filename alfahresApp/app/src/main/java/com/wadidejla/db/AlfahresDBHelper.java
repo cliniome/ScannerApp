@@ -26,6 +26,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_CLINIC_NAME="clinicName";
     public static final String COL_CLINIC_DOC_NAME="clinicDocName";
     public static final String COL_BATCH_REQUEST_NUMBER ="batchRequestNumber";
+    public static final String COL_EMP_USERNAME = "EmpUserName";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -48,7 +49,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
             + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
-            EMP_ID +" text not null,"+ COL_CLINIC_NAME +" text null," +
+            EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," +COL_CLINIC_NAME +" text null," +
             COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
             " );";
 
@@ -58,7 +59,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
             + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
-            EMP_ID +" text not null,"+ COL_CLINIC_NAME +" text null," +
+            EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," + COL_CLINIC_NAME +" text null," +
             COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
             " );";
 
@@ -68,7 +69,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     {
         return new String[]
            {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
-           COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER};
+           COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME};
 
     }
 

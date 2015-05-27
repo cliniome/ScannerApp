@@ -8,6 +8,7 @@
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/mainFilesList"
+        android:background="?android:activatedBackgroundIndicator"
         android:soundEffectsEnabled="true"
         android:drawSelectorOnTop="true"
         android:focusableInTouchMode="true"

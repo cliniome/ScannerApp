@@ -35,12 +35,14 @@ public class AlFahresFilesManager implements FilesManager {
 
 
     @Override
-    public synchronized boolean operateOnFile(String barcode) {
+    public synchronized boolean operateOnFile(String barcode,String state) {
 
         try
         {
 
             RestfulFile foundFile = getFileWithBarcode(barcode);
+
+            foundFile.setState(state);
 
             if(foundFile != null)
             {
@@ -97,6 +99,49 @@ public class AlFahresFilesManager implements FilesManager {
     @Override
     public String getOperatingTable() {
         return this.operatingTable;
+    }
+
+    @Override
+    public boolean operateOnFile(RestfulFile file) {
+
+
+        try
+        {
+
+            RestfulFile foundFile = getFileWithBarcode(file.getFileNumber());
+
+            foundFile.setState(file.getState());
+
+            if(foundFile != null)
+            {
+                //add the current file into the sync_Files table
+                boolean result = filesDBManager.insertFile(foundFile);
+
+                if(result)
+                {
+                    //now remove it from the list
+                    result = files.remove(foundFile);
+                }
+
+                //now notify all listeners
+                if(result)
+                {
+                    for(FilesOnChangeListener listener : this.getFilesListener())
+                    {
+                        listener.notifyChange();
+                    }
+                }
+
+                return result;
+
+            }else return false;
+
+        }catch (Exception s)
+        {
+            Log.w(CLASS_NAME,s.getMessage());
+            return false;
+        }
+
     }
 
     @Override

@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class FilesDBManager {
 
+    private static final String CLASS_NAME="FilesDBManager";
+
+
     private AlfahresDBHelper dbHelper;
     private String tableName;
 
@@ -37,14 +40,14 @@ public class FilesDBManager {
     {
         try
         {
-            String[] selectableFields = dbHelper.getAllFilesColumns();
-            String whereClause = columnName +"=" + value;
+            String[] selectableFields = dbHelper.getAllSyncFilesColumns();
+            String whereClause = columnName +"='" + value+"'";
             String[] whereArgs = null;
             String groupBy = null;
             String having = null;
             String order = null;
 
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             List<RestfulFile> files = new ArrayList<RestfulFile>();
 
@@ -75,6 +78,10 @@ public class FilesDBManager {
                 file.setClinicName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_BATCH_REQUEST_NUMBER);
                 file.setBatchRequestNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
+                file.getEmp().setUserName(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
+                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
 
                 files.add(file);
 
@@ -134,6 +141,10 @@ public class FilesDBManager {
                 file.setClinicName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_BATCH_REQUEST_NUMBER);
                 file.setBatchRequestNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
+                file.getEmp().setUserName(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
+                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
 
                 files.add(file);
 
@@ -153,6 +164,48 @@ public class FilesDBManager {
     }
 
 
+    public RestfulFile getFileByNumber(String fileNumber)
+    {
+        try
+        {
+            List<RestfulFile> existingFiles = getFilesByColumnValue(AlfahresDBHelper.KEY_ID,fileNumber);
+
+            if(existingFiles != null && existingFiles.size() > 0)
+            {
+                return existingFiles.get(0); // get the first one in the results.
+
+            }else return null;
+
+        }catch (Exception s)
+        {
+            Log.w("FilesDBManager",s.getMessage());
+            return null;
+        }
+    }
+
+    public boolean deleteFile(String fileNumber)
+    {
+        try
+        {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            String whereClause = AlfahresDBHelper.KEY_ID + "='" + fileNumber + "'";
+            String[] whereArgs = null;
+
+            int rows = db.delete(AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES,whereClause,whereArgs);
+
+            db.close();
+
+            if(rows > 0) return true;
+            else return false;
+
+
+        }catch (Exception s)
+        {
+            Log.w(CLASS_NAME,s.getMessage());
+            return false;
+        }
+    }
     /**
      * This method will insert a new file into the database
      * @param file
@@ -162,6 +215,14 @@ public class FilesDBManager {
     {
         try
         {
+            //check to see if the file already exists
+            RestfulFile existingFile = getFileByNumber(file.getFileNumber());
+            if(existingFile != null)
+            {
+                //delete it to replace it
+                this.deleteFile(existingFile.getFileNumber());
+            }
+
             ContentValues values = new ContentValues();
             values.put(KEY_ID,file.getFileNumber());
             values.put(COL_CABINETID,file.getCabinetId());
@@ -173,9 +234,11 @@ public class FilesDBManager {
             values.put(COL_STATE,file.getState());
             values.put(COL_TEMP_CABINID,file.getTemporaryCabinetId());
             values.put(EMP_ID,String.valueOf(file.getEmp().getId()));
+            values.put(COL_EMP_USERNAME,file.getEmp().getUserName());
             values.put(COL_CLINIC_DOC_NAME,file.getClinicDocName());
             values.put(COL_CLINIC_NAME,file.getClinicName());
             values.put(COL_BATCH_REQUEST_NUMBER,file.getBatchRequestNumber());
+
 
             //now insert the current row into the database
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -191,6 +254,7 @@ public class FilesDBManager {
             Log.w(dbHelper.DATABASE_NAME,s.getMessage());
             return false;
         }
+
     }
 
 

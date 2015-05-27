@@ -2,6 +2,9 @@ package com.wadidejla.screens;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -178,7 +181,15 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
             FilesArrayAdapter adapter = (FilesArrayAdapter) listView.getAdapter();
             if(adapter != null)
                 //notify about the change
-            adapter.notifyDataSetChanged();
+            {
+                adapter.notifyDataSetChanged();
+                //then notify the user
+                Uri ringToneUri = Uri.parse("android.resource://wadidejla.com.alfahresapp/"+R.raw.marked);
+
+                Ringtone ringtone = RingtoneManager.getRingtone(getActivity(),ringToneUri);
+                ringtone.play();
+            }
+
         }
 
     }

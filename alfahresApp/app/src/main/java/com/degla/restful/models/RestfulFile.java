@@ -36,6 +36,12 @@ public class RestfulFile implements Serializable {
     private transient RestfulEmployee emp;
 
 
+    public RestfulFile(){
+
+        this.setEmp( new RestfulEmployee());
+
+    }
+
 
 
     public String getFileNumber() {
@@ -108,6 +114,23 @@ public class RestfulFile implements Serializable {
             this.setCabinetId(cabinId);
             this.setShelfId(shelfId.substring(shelfId.length() - 1));
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(o instanceof RestfulFile)
+        {
+            RestfulFile passedFile = (RestfulFile)o;
+
+            if(passedFile.getFileNumber().equals(this.getFileNumber()))
+                return true;
+            else return false;
+
+        }
+
+        return false;
     }
 
     public RestfulEmployee getEmp() {
