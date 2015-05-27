@@ -26,6 +26,12 @@ public class RestfulFile implements Serializable {
     @Expose
     private String temporaryCabinetId;
 
+    @Expose
+    private String clinicName;
+    @Expose
+    private String clinicDocName;
+    @Expose
+    private String batchRequestNumber;
 
     private transient RestfulEmployee emp;
 
@@ -99,7 +105,6 @@ public class RestfulFile implements Serializable {
         {
             String cabinId = this.getFileNumber().substring(0,3);
             String shelfId = this.getFileNumber().substring(3,6);
-
             this.setCabinetId(cabinId);
             this.setShelfId(shelfId.substring(shelfId.length() - 1));
         }
@@ -111,5 +116,29 @@ public class RestfulFile implements Serializable {
 
     public void setEmp(RestfulEmployee emp) {
         this.emp = emp;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
+    }
+
+    public String getClinicDocName() {
+        return clinicDocName;
+    }
+
+    public void setClinicDocName(String clinicDocName) {
+        this.clinicDocName = clinicDocName;
+    }
+
+    public String getBatchRequestNumber() {
+        return batchRequestNumber;
+    }
+
+    public void setBatchRequestNumber(String batchRequestNumber) {
+        this.batchRequestNumber = batchRequestNumber;
     }
 }

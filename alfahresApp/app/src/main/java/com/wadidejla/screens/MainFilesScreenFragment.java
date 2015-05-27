@@ -18,6 +18,8 @@ import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.FilesOnChangeListener;
 import com.wadidejla.utils.FilesUtils;
 
 import java.util.ArrayList;
@@ -29,11 +31,12 @@ import wadidejla.com.alfahresapp.R;
  * Created by snouto on 23/05/15.
  */
 
-public class MainFilesScreenFragment extends Fragment
+public class MainFilesScreenFragment extends Fragment implements FilesOnChangeListener
 {
 
     private Activity parentActivity;
     private ListView listView;
+    private FilesManager filesManager;
 
 
     @Nullable
@@ -44,6 +47,8 @@ public class MainFilesScreenFragment extends Fragment
         getActivity().setTitle(R.string.title_section1);
         listView = (ListView)rootView.findViewById(R.id.mainFilesList);
         this.initViews(rootView);
+        filesManager = SystemSettingsManager.createInstance(getActivity()).getSyncFilesManager();
+        filesManager.getFilesListener().add(this);
         return rootView;
     }
 
@@ -105,6 +110,7 @@ public class MainFilesScreenFragment extends Fragment
                                         FilesUtils.prepareFiles(files);
 
                                         SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(files);
+
                                         FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
                                                 , R.layout.single_file_view, files);
 
@@ -162,5 +168,18 @@ public class MainFilesScreenFragment extends Fragment
 
     public void setParentActivity(Activity parentActivity) {
         this.parentActivity = parentActivity;
+    }
+
+    @Override
+    public void notifyChange() {
+
+        if(listView != null)
+        {
+            FilesArrayAdapter adapter = (FilesArrayAdapter) listView.getAdapter();
+            if(adapter != null)
+                //notify about the change
+            adapter.notifyDataSetChanged();
+        }
+
     }
 }

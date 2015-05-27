@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.degla.restful.models.BooleanResult;
 import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.settings.UserAccount;
 
@@ -81,11 +84,21 @@ public class LoginScreen extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void initMainScreen() {
+
+        //set the Settings Manager listener - On Shared Preference Change Listener
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        AlfahresPreferenceManager manager = new AlfahresPreferenceManager(this);
+        prefs.registerOnSharedPreferenceChangeListener(manager);
+
+    }
+
 
     private void init()
     {
         try
         {
+            this.initMainScreen();
             //initialize the settings manager
             settingsManager = SystemSettingsManager.createInstance(this);
 

@@ -86,8 +86,14 @@ public class AlfahresMain extends ActionBarActivity {
 
         if(result != null)
         {
-            Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
-            ,Toast.LENGTH_LONG).show();
+            //now try to remove it
+            boolean bresult = SystemSettingsManager.createInstance(this)
+                    .getSyncFilesManager().operateOnFile(result.getContents());
+            if(bresult)
+            {
+                Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
+                        ,Toast.LENGTH_LONG).show();
+            }
 
         }
     }

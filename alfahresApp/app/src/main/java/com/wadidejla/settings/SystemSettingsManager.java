@@ -6,7 +6,10 @@ import android.preference.PreferenceManager;
 
 import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.db.AlfahresDBHelper;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.utils.AlFahresFilesManager;
+import com.wadidejla.utils.FilesManager;
 
 import java.util.List;
 
@@ -31,11 +34,23 @@ public class SystemSettingsManager {
     private boolean canContinue = true;
     private RestfulEmployee account;
     private List<RestfulFile> availableFiles;
+    private AlFahresFilesManager filesManager;
 
     private SystemSettingsManager(Context con){
 
         this.context = con;
         this.initSettings();
+        this.initManager();
+
+    }
+
+    private void initManager(){
+
+        AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null
+                ,AlfahresDBHelper.DATABASE_VERSION);
+        filesManager = new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES);
+        filesManager.setFiles(this.getAvailableFiles());
+
 
     }
 
@@ -50,6 +65,12 @@ public class SystemSettingsManager {
     {
         AlfahresConnection conn = new AlfahresConnection(getServerAddress(),"8080","alfahres","rest");
         return conn;
+    }
+
+
+    public FilesManager getSyncFilesManager()
+    {
+        return this.filesManager;
     }
 
 
@@ -133,6 +154,16 @@ public class SystemSettingsManager {
     }
 
     public void setAvailableFiles(List<RestfulFile> availableFiles) {
+
+        if(availableFiles != null)
+        {
+            //set the files to the filesManager
+            filesManager.setFiles(availableFiles);
+            for(RestfulFile file : availableFiles)
+            {
+                file.setEmp(getAccount());
+            }
+        }
         this.availableFiles = availableFiles;
     }
 

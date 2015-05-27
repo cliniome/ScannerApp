@@ -11,7 +11,7 @@ import android.util.Log;
 public class AlfahresDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME="alfahres.db";
-    public static final String DATABASE_VERSION="1";
+    public static final int DATABASE_VERSION=1;
     public static final String DATABASE_TABLE_FILES="files";
     public static final String DATABASE_TABLE_SYNC_FILES="syncfiles";
     public static final String DATABASE_TABLE_EMPLOYEE = "employees";
@@ -23,6 +23,9 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_CABINETID="cabinetId";
     public static final String COL_SHELFID="shelfId";
     public static final String COL_TEMP_CABINID="temporaryCabinId";
+    public static final String COL_CLINIC_NAME="clinicName";
+    public static final String COL_CLINIC_DOC_NAME="clinicDocName";
+    public static final String COL_BATCH_REQUEST_NUMBER ="batchRequestNumber";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -42,24 +45,45 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     //Database Create Statements for both tables
     private static final String DATABASE_TABLE_FILES_CREATE = "create table "
             + DATABASE_TABLE_FILES +" ( " + KEY_ID + " text primary key, " +
-            COL_CABINETID +" text not null," + COL_DESCRIPTION +" text not null,"
-            + COL_OPERATION_DATE +" text not null," + COL_SHELFID + " text not null," +
-            COL_STATE + " text not null," + COL_TEMP_CABINID + " text not null," +
-            EMP_ID +" text not null"+
+            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
+            + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
+            COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
+            EMP_ID +" text not null,"+ COL_CLINIC_NAME +" text null," +
+            COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
             " );";
 
 
     private static final String DATABASE_TABLE_SYNC_FILES_CREATE = "create table "
             + DATABASE_TABLE_SYNC_FILES +" ( " + KEY_ID + " text primary key, " +
-            COL_CABINETID +" text not null," + COL_DESCRIPTION +" text not null,"
-            + COL_OPERATION_DATE +" text not null," + COL_SHELFID + " text not null," +
-            COL_STATE + " text not null," + COL_TEMP_CABINID + " text not null," +
-            EMP_ID +" text not null"+
+            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
+            + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
+            COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
+            EMP_ID +" text not null,"+ COL_CLINIC_NAME +" text null," +
+            COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
             " );";
 
 
 
+    public String[] getAllFilesColumns()
+    {
+        return new String[]
+           {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
+           COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER};
 
+    }
+
+    public String[] getAllSyncFilesColumns()
+    {
+        return getAllFilesColumns();
+    }
+
+    public String[] getAllEmployeesColumns()
+    {
+        return new String[] {
+
+                EMP_ID,EMP_LASTNAME,EMP_USERNAME,EMP_ROLE_NAME,EMP_FIRSTNAME
+        };
+    }
 
     //default constructor
     public AlfahresDBHelper(Context conn , String name ,  SQLiteDatabase.CursorFactory factory,int version)
