@@ -22,6 +22,7 @@ import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
 import com.wadidejla.utils.FilesOnChangeListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -118,31 +119,42 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
                     .setTitle(R.string.main_loading_title)
                     .setMessage(R.string.main_files_alertDlg_Title)
                     .create();
+
             dlg.show();
 
             Thread backGroundThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    FilesDBManager filesDBManager = filesManager.getFilesDBManager();
-                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+                    try
+                    {
+                        FilesDBManager filesDBManager = filesManager.getFilesDBManager();
+                        SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-                    List<RestfulFile> localFiles = filesDBManager.getAllFilesForEmployee(String.
-                            valueOf(settingsManager.getAccount().getId()));
+                        List<RestfulFile> localFiles = filesDBManager.getAllFilesForEmployee(String.
+                                valueOf(settingsManager.getAccount().getId()));
 
-                    final SyncFilesArrayAdapter filesArrayAdapter = new SyncFilesArrayAdapter(getActivity()
-                            ,R.layout.single_file_view,localFiles);
+                        if(localFiles == null)
+                            localFiles = new ArrayList<RestfulFile>();
 
-                   getActivity().runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
+                        final SyncFilesArrayAdapter filesArrayAdapter = new SyncFilesArrayAdapter(getActivity()
+                                ,R.layout.single_file_view,localFiles);
 
-                           listView.setAdapter(filesArrayAdapter);
-                           filesArrayAdapter.notifyDataSetChanged();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 
-                           dlg.dismiss();
-                       }
-                   });
+                                listView.setAdapter(filesArrayAdapter);
+                                filesArrayAdapter.notifyDataSetChanged();
+
+                                dlg.dismiss();
+                            }
+                        });
+
+                    }catch (Exception s)
+                    {
+                        Log.w("LocalSyncFilesFragment",s.getMessage());
+                    }
                 }
             });
 

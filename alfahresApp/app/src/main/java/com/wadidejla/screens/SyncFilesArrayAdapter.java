@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
@@ -52,6 +53,13 @@ class SyncFilesArrayAdapter extends ArrayAdapter<RestfulFile> {
 
         //get the current Restful File to bind to
         final RestfulFile file = this.getFiles().get(position);
+
+        if(file != null && file.getState().equals(FileModelStates.MISSING.toString()))
+        {
+            ImageView imgView = (ImageView)rootView.findViewById(R.id.missing_file_img);
+
+            imgView.setImageResource(R.drawable.missing);
+        }
 
         //get the file id TextView
         TextView txtFileId = (TextView) rootView.findViewById(R.id.txt_fileNo);

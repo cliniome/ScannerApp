@@ -203,18 +203,25 @@ public class AlfahresMain extends ActionBarActivity {
 
            }else if (currentFragment instanceof MainFilesScreenFragment)
            {
-               //now try to remove it and mark it as checked out
-               boolean bresult = SystemSettingsManager.createInstance(this)
-                       .getSyncFilesManager().operateOnFile(result.getContents()
-                               ,FileModelStates.CHECKED_OUT.toString());
-               if(bresult)
-               {
-                   Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
-                           ,Toast.LENGTH_LONG).show();
-               }else
-               {
-                   Toast.makeText(this, String.format("No matched Files Found"), Toast.LENGTH_LONG).show();
-               }
+              try
+              {
+                  //now try to remove it and mark it as checked out
+                  boolean bresult = SystemSettingsManager.createInstance(this)
+                          .getSyncFilesManager().operateOnFile(result.getContents()
+                                  ,FileModelStates.CHECKED_OUT.toString());
+                  if(bresult)
+                  {
+                      Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
+                              ,Toast.LENGTH_LONG).show();
+                  }else
+                  {
+                      Toast.makeText(this, String.format("No matched Files Found"), Toast.LENGTH_LONG).show();
+                  }
+
+              }catch (Exception s)
+              {
+                  Log.w("AlfahresMain",s.getMessage());
+              }
            }
 
         }

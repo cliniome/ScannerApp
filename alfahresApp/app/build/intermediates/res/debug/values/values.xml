@@ -203,6 +203,7 @@
     <string name="LOGIN_SERVER_UNAVAILABLE_TITLE">Unavailable</string>
     <string name="LOGIN_UNATHORIZED">UnAuthorized</string>
     <string name="LOGIN_UNAUTH_MESSAGE">You are not Authorized to use The system</string>
+    <string name="MISSING_FILE_ICON_DESC">Missing File Description</string>
     <string name="SCAN_SETTINGS">Scan</string>
     <string name="SETTINGS_BTN_BACK">Back</string>
     <string name="SINGLE_CHOICE_DLG_MSG">Choose one Option below.</string>

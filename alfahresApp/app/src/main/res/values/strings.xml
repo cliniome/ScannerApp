@@ -31,5 +31,6 @@
     <string name="SINGLE_CHOICE_DLG_TITLE">Choose an Option...</string>
     <string name="SINGLE_CHOICE_DLG_MSG">Choose one Option below.</string>
     <string name="TXT_FORCE_SYNC">Force Sync</string>
+    <string name="MISSING_FILE_ICON_DESC">Missing File Description</string>
 
 </resources>

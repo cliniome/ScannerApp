@@ -79,5 +79,21 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/missing_file_img"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/MISSING_FILE_ICON_DESC" />
+
+
+    </LinearLayout>
+
 
 </LinearLayout>
