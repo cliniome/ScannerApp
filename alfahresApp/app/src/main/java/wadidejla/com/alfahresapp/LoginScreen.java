@@ -26,6 +26,7 @@ import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
+import com.wadidejla.service.AlfahresSyncService;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.settings.UserAccount;
 
@@ -99,6 +100,7 @@ public class LoginScreen extends ActionBarActivity {
         try
         {
             this.initMainScreen();
+
             //initialize the settings manager
             settingsManager = SystemSettingsManager.createInstance(this);
 
@@ -181,6 +183,13 @@ public class LoginScreen extends ActionBarActivity {
                                                         settingsManager.setAccount((RestfulEmployee) response.getPayload());
 
                                                     }
+
+
+
+                                                    Intent syncService = new Intent(LoginScreen.this
+                                                            ,AlfahresSyncService.class);
+                                                    //start the service
+                                                    startService(syncService);
 
                                                     LoginScreen.this.runOnUiThread(new Runnable() {
                                                         @Override

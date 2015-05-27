@@ -12,6 +12,7 @@ import com.wadidejla.utils.AlfahresJsonBuilder;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,6 +39,7 @@ public class AlfahresConnection {
     private List<Parameter> headers;
     private String methodType = "GET";
     private HttpURLConnection connection;
+    private Object dataPayload;
 
     public AlfahresConnection(String hostName,String port , String basePath,String restfulPath){
 
@@ -152,6 +154,12 @@ public class AlfahresConnection {
 
     }
 
+    public AlfahresConnection setBody(Object data)
+    {
+        this.dataPayload = data;
+        return this;
+    }
+
 
     public HttpResponse call(Class<?> entity)
     {
@@ -164,7 +172,29 @@ public class AlfahresConnection {
             connection = (HttpURLConnection)connectionUrl.openConnection();
 
             connection.setRequestMethod(getMethodType());
+
+
+            //Add the body payload
+
+            if(this.dataPayload != null)
+            {
+                //Add the content-type flag
+                this.addHeader(new Parameter("content-type","application/json;charset=UTF-8"));
+                this.addHeaders();
+                //convert the payload into json string
+                Gson gson = AlfahresJsonBuilder.createGson();
+
+                String jsonPayload = gson.toJson(this.dataPayload);
+
+                OutputStream outputStream = connection.getOutputStream();
+
+                byte[] binaryPayload = jsonPayload.getBytes("UTF-8");
+
+                outputStream.write(binaryPayload);
+
+            }else
             this.addHeaders();
+
 
             int responseCode = connection.getResponseCode();
 
@@ -196,6 +226,8 @@ public class AlfahresConnection {
     }
 
 
+
+
     public HttpResponse call(Type entity)
     {
         HttpResponse response = new HttpResponse();
@@ -207,7 +239,30 @@ public class AlfahresConnection {
             connection = (HttpURLConnection)connectionUrl.openConnection();
 
             connection.setRequestMethod(getMethodType());
-            this.addHeaders();
+            //Add the body payload
+
+            if(this.dataPayload != null)
+            {
+                //Add the content-type flag
+                this.addHeader(new Parameter("Content-Type","application/json"));
+                //End of the body payload
+                this.addHeaders();
+                //convert the payload into json string
+                Gson gson = AlfahresJsonBuilder.createGson();
+
+                String jsonPayload = gson.toJson(this.dataPayload);
+
+                OutputStream outputStream = connection.getOutputStream();
+
+                byte[] binaryPayload = jsonPayload.getBytes("UTF-8");
+
+                outputStream.write(binaryPayload);
+
+
+            }else
+
+             this.addHeaders();
+
 
             int responseCode = connection.getResponseCode();
 

@@ -10,6 +10,5 @@
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
     app:navigationContentDescription="@string/SETTINGS_BTN_BACK"
-    app:navigationIcon="?attr/homeAsUpIndicator"
     app:title="@string/action_settings"
     />

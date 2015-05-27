@@ -33,7 +33,8 @@ public class RestfulFile implements Serializable {
     @Expose
     private String batchRequestNumber;
 
-    private transient RestfulEmployee emp;
+    @Expose
+    private  RestfulEmployee emp;
 
 
     public RestfulFile(){

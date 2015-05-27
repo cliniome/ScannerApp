@@ -33,6 +33,23 @@ public class SyncBatch extends BooleanResult implements Serializable {
         else return true;
     }
 
+    public boolean containsFile(RestfulFile file)
+    {
+        boolean result = false;
+
+        for(RestfulFile currentFile : this.getFiles())
+        {
+            if(currentFile.getFileNumber().equals(file.getFileNumber()))
+            {
+                result = true;
+                break;
+            }
+        }
+
+
+        return result;
+    }
+
 
     public List<RestfulFile> getFiles() {
         return files;
