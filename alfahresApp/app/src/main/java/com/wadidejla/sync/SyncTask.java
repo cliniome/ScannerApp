@@ -65,7 +65,7 @@ public class SyncTask implements Runnable {
                    }
                    finally {
 
-                       long waitingMillis =  5000;
+                       long waitingMillis =  systemSettingsManager.getSync_Frequency() * 60 * 1000L;
 
                        try {
                            Thread.sleep(waitingMillis);

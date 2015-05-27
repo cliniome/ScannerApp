@@ -142,7 +142,14 @@ public class SettingsActivity extends PreferenceActivity {
         fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_data_sync);
         getPreferenceScreen().addPreference(fakeHeader);
-        addPreferencesFromResource(R.xml.pref_data_sync);
+        try
+        {
+            addPreferencesFromResource(R.xml.pref_data_sync);
+
+        }catch (Exception s)
+        {
+            Log.w("SettingsActivity",s.getMessage());
+        }
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
