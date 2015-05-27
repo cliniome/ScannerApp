@@ -8,6 +8,12 @@
         android:orderInCategory="100" app:showAsAction="ifRoom|withText"
         android:title="@string/SCAN_SETTINGS"></item>
 
+    <item android:id="@+id/sync_btn" android:icon="@drawable/sync"
+        android:title="@string/TXT_FORCE_SYNC"
+        android:visible="false"
+        android:orderInCategory="100" app:showAsAction="ifRoom|withText">
+    </item>
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:icon="@drawable/settings"
         android:orderInCategory="100" app:showAsAction="ifRoom|withText" />

@@ -11,6 +11,7 @@
         android:background="?android:activatedBackgroundIndicator"
         android:soundEffectsEnabled="true"
         android:drawSelectorOnTop="true"
+
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_height="match_parent">

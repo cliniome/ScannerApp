@@ -30,12 +30,14 @@ public class ScreenRouter {
 
         List<Fragment> fragments = new ArrayList<Fragment>();
 
+
         if(settingsManager.getAccount() != null)
         {
             if(settingsManager.getAccount().getRole().equals(KEEPER_ROLE))
             {
                 //that is the keeper
                 fragments.add(new MainFilesScreenFragment());
+                fragments.add(new LocalSyncFilesFragment());
 
             }else if (settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
             {

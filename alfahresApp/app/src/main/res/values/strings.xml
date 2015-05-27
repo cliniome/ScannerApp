@@ -2,7 +2,7 @@
     <string name="app_name">AlFahres System</string>
 
     <string name="title_section1">New Requests</string>
-    <string name="title_section2">Checkout Files</string>
+    <string name="title_section2">Checked Out Files</string>
 
     <string name="hello_world">Hello world!</string>
 
@@ -30,5 +30,6 @@
     <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>
     <string name="SINGLE_CHOICE_DLG_TITLE">Choose an Option...</string>
     <string name="SINGLE_CHOICE_DLG_MSG">Choose one Option below.</string>
+    <string name="TXT_FORCE_SYNC">Force Sync</string>
 
 </resources>

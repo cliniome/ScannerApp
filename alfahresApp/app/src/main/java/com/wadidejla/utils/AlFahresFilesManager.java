@@ -34,6 +34,9 @@ public class AlFahresFilesManager implements FilesManager {
 
 
 
+
+
+
     @Override
     public synchronized boolean operateOnFile(String barcode,String state) {
 
@@ -148,6 +151,12 @@ public class AlFahresFilesManager implements FilesManager {
     @Override
     public List<FilesOnChangeListener> getFilesListener() {
         return this.listeners;
+    }
+
+    @Override
+    public FilesDBManager getFilesDBManager() {
+
+        return this.filesDBManager;
     }
 
     public void setOperatingTable(String operatingTable) {

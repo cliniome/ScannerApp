@@ -1,6 +1,7 @@
 package com.wadidejla.utils;
 
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.db.FilesDBManager;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface FilesManager {
     public String getOperatingTable();
     public boolean operateOnFile(RestfulFile file);
     public List<FilesOnChangeListener> getFilesListener();
+
+    public FilesDBManager getFilesDBManager();
 }

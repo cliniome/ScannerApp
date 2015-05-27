@@ -41,9 +41,11 @@ import com.wadidejla.barcode.IntentResult;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.screens.FilesArrayAdapter;
+import com.wadidejla.screens.LocalSyncFilesFragment;
 import com.wadidejla.screens.MainFilesScreenFragment;
 import com.wadidejla.screens.ScreenRouter;
 import com.wadidejla.screens.SectionsPagerAdapter;
+import com.wadidejla.screens.ViewPagerSlave;
 import com.wadidejla.settings.SystemSettingsManager;
 
 import org.apache.http.protocol.HTTP;
@@ -65,7 +67,7 @@ public class AlfahresMain extends ActionBarActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
+    private List<Fragment> fragmentList;
 
 
     @Override
@@ -74,16 +76,34 @@ public class AlfahresMain extends ActionBarActivity {
         setContentView(R.layout.activity_alfahres_main);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-
         this.init();
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        Fragment currentFragment = fragmentList.get(mViewPager.getCurrentItem());
+
+        if(currentFragment != null)
+        {
+            if(currentFragment instanceof LocalSyncFilesFragment)
+            {
+                menu.findItem(R.id.scan_settings).setVisible(false);
+                menu.findItem(R.id.sync_btn).setVisible(true);
+
+
+            }
+        }
+
+        return true;
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if(result != null)
         {
@@ -105,13 +125,53 @@ public class AlfahresMain extends ActionBarActivity {
 
     private void init()
     {
-        List<Fragment> fragList = ScreenRouter.getFragments(this);
+        final List<Fragment> fragList = ScreenRouter.getFragments(this);
+        this.setFragmentList(fragList);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),fragList);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                Fragment currentFragment = fragList.get(position);
+
+                if(currentFragment instanceof MainFilesScreenFragment)
+                {
+                    String title = ((MainFilesScreenFragment)currentFragment).getTitle();
+                    AlfahresMain.this.setTitle(title);
+                }else if (currentFragment instanceof LocalSyncFilesFragment)
+                {
+                    String title = ((LocalSyncFilesFragment)currentFragment).getTitle();
+
+                    AlfahresMain.this.setTitle(title);
+                }
+
+                //notify all of them about any changes
+                ViewPagerSlave slave = (ViewPagerSlave)currentFragment;
+
+                if(slave != null)
+                    slave.update();
+
+
+                invalidateOptionsMenu();
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         this.initMainScreen();
     }
@@ -159,7 +219,7 @@ public class AlfahresMain extends ActionBarActivity {
             return true;
         }else if (id == R.id.btn_logout_main)
         {
-            //TODO : add your logic to logout in here
+
             SystemSettingsManager.createInstance(this).logOut();
             //then go to the login screen
             Intent logoutIntent = new Intent(this,LoginScreen.class);
@@ -173,6 +233,14 @@ public class AlfahresMain extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<Fragment> getFragmentList() {
+        return fragmentList;
+    }
+
+    public void setFragmentList(List<Fragment> fragmentList) {
+        this.fragmentList = fragmentList;
     }
 
 

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
@@ -25,6 +26,8 @@ import com.wadidejla.utils.FilesManager;
 import com.wadidejla.utils.FilesOnChangeListener;
 import com.wadidejla.utils.FilesUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +37,13 @@ import wadidejla.com.alfahresapp.R;
  * Created by snouto on 23/05/15.
  */
 
-public class MainFilesScreenFragment extends Fragment implements FilesOnChangeListener
+public class MainFilesScreenFragment extends Fragment implements FilesOnChangeListener , ViewPagerSlave
 {
 
     private Activity parentActivity;
     private ListView listView;
     private FilesManager filesManager;
+    private String title;
 
 
     @Nullable
@@ -48,7 +52,11 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
         View rootView = inflater.inflate(R.layout.main_files_layout,container,false);
         getActivity().setTitle(R.string.title_section1);
+        this.setTitle(getResources().getString(R.string.title_section1));
         listView = (ListView)rootView.findViewById(R.id.mainFilesList);
+        TextView emptyView = new TextView(getActivity());
+        emptyView.setText("No Requests for the Moment.");
+        listView.setEmptyView(emptyView);
         this.initViews(rootView);
         filesManager = SystemSettingsManager.createInstance(getActivity()).getSyncFilesManager();
         filesManager.getFilesListener().add(this);
@@ -190,6 +198,58 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
                 ringtone.play();
             }
 
+        }
+
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public void update() {
+
+        try
+        {
+
+            Thread backGroundThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getAvailableFiles();
+
+                    if (files == null)
+                        files = new ArrayList<RestfulFile>();
+
+                    final FilesArrayAdapter adapter = new FilesArrayAdapter(getActivity(),R.layout.single_file_view,files);
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            listView.setAdapter(adapter);
+
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    });
+
+                }
+            });
+
+            backGroundThread.start();
+
+
+
+
+
+        }catch (Exception s)
+        {
+            Log.w("MainFilesScreenFragment",s.getMessage());
         }
 
     }
