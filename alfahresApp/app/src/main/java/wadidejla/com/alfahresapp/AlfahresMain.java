@@ -95,6 +95,9 @@ public class AlfahresMain extends ActionBarActivity {
             {
                 Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
                         ,Toast.LENGTH_LONG).show();
+            }else
+            {
+                Toast.makeText(this,String.format("No matched Files Found"),Toast.LENGTH_LONG).show();
             }
 
         }
