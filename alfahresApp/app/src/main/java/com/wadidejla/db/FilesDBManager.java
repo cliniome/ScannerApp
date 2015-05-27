@@ -256,12 +256,58 @@ public class FilesDBManager {
             String whereClause = AlfahresDBHelper.KEY_ID + "='" + fileNumber + "'";
             String[] whereArgs = null;
 
-            int rows = db.delete(AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES,whereClause,whereArgs);
+            int rows = db.delete(AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES, whereClause, whereArgs);
 
             db.close();
 
             if(rows > 0) return true;
             else return false;
+
+
+        }catch (Exception s)
+        {
+            Log.w(CLASS_NAME,s.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateFile(RestfulFile file)
+    {
+        //delete the file first
+        boolean result = this.deleteFile(file.getFileNumber());
+
+        if(result)
+        {
+            //add it again
+            return this.insertFile(file);
+
+        }else return false;
+
+    }
+
+    public boolean updateAllFilesFor(String empID , String temporaryCabinetId)
+    {
+        try
+        {
+            List<RestfulFile> availableFiles = this.getAllFilesForEmployee(empID);
+            boolean result = true;
+
+            if(availableFiles != null && availableFiles.size() > 0)
+            {
+                for(RestfulFile file : availableFiles)
+                {
+                    file.setTemporaryCabinetId(temporaryCabinetId);
+                    result &= this.updateFile(file);
+                }
+
+            }else
+            {
+                result = false;
+            }
+
+
+            return result;
+
 
 
         }catch (Exception s)

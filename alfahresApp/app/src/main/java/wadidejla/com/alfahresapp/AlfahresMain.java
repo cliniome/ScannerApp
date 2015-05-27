@@ -7,7 +7,9 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -38,6 +40,7 @@ import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
 import com.wadidejla.barcode.IntentIntegrator;
 import com.wadidejla.barcode.IntentResult;
+import com.wadidejla.db.FilesDBManager;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.screens.FilesArrayAdapter;
@@ -47,6 +50,7 @@ import com.wadidejla.screens.ScreenRouter;
 import com.wadidejla.screens.SectionsPagerAdapter;
 import com.wadidejla.screens.ViewPagerSlave;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.AlFahresFilesManager;
 
 import org.apache.http.protocol.HTTP;
 
@@ -89,7 +93,7 @@ public class AlfahresMain extends ActionBarActivity {
         {
             if(currentFragment instanceof LocalSyncFilesFragment)
             {
-                menu.findItem(R.id.scan_settings).setVisible(false);
+
                 menu.findItem(R.id.sync_btn).setVisible(true);
 
 
@@ -103,22 +107,115 @@ public class AlfahresMain extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(result != null)
+        Fragment currentFragment = null;
+
+        if(fragmentList != null)
         {
-            //now try to remove it and mark it as checked out
-            boolean bresult = SystemSettingsManager.createInstance(this)
-                    .getSyncFilesManager().operateOnFile(result.getContents()
-                            ,FileModelStates.CHECKED_OUT.toString());
-            if(bresult)
-            {
-                Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
-                        ,Toast.LENGTH_LONG).show();
-            }else
-            {
-                Toast.makeText(this,String.format("No matched Files Found"),Toast.LENGTH_LONG).show();
-            }
+            currentFragment = fragmentList.get(mViewPager.getCurrentItem());
+
+        }
+
+        if(result != null && resultCode == Activity.RESULT_OK)
+        {
+           if (currentFragment instanceof  LocalSyncFilesFragment)
+           {
+
+               //TODO : Do the update for all restful Files in here
+               final AlertDialog dlg = new AlertDialog.Builder(this)
+                       .setTitle(R.string.main_loading_title)
+                       .setMessage("Updating files...")
+                       .setCancelable(false).create();
+
+               dlg.show();
+
+               Thread newThread = new Thread(new Runnable() {
+                   @Override
+                   public void run() {
+
+                       SystemSettingsManager systemSettingsManager = SystemSettingsManager.createInstance(AlfahresMain.this);
+
+                       FilesDBManager dbManager = systemSettingsManager.getSyncFilesManager()
+                               .getFilesDBManager();
+
+                       boolean bresult = dbManager.updateAllFilesFor(
+                               String.valueOf(systemSettingsManager.getAccount().getId()),
+                               result.getContents()
+                       );
+
+                       if(bresult)
+                       {
+
+
+                           AlfahresMain.this.runOnUiThread(new Runnable() {
+                               @Override
+                               public void run() {
+
+                                   dlg.dismiss();
+
+                                   final AlertDialog cancelDlg = new AlertDialog.Builder(AlfahresMain.this)
+                                           .setTitle("Done.").setMessage("Done Updating files.")
+                                           .setCancelable(true)
+                                           .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                   dialogInterface.dismiss();
+
+                                               }
+                                           }).create();
+
+                                   cancelDlg.show();
+
+                               }
+                           });
+                       }else
+                       {
+                           AlfahresMain.this.runOnUiThread(new Runnable() {
+                               @Override
+                               public void run() {
+
+                                   final AlertDialog cancelDlg = new AlertDialog.Builder(AlfahresMain.this)
+                                           .setTitle("Error.").setMessage("There was a problem updating the files.")
+                                           .setCancelable(true)
+                                           .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                   dialogInterface.dismiss();
+
+                                               }
+                                           }).create();
+
+                                   cancelDlg.show();
+
+                               }
+                           });
+                       }
+
+                   }
+               });
+
+               newThread.start();
+
+
+
+           }else if (currentFragment instanceof MainFilesScreenFragment)
+           {
+               //now try to remove it and mark it as checked out
+               boolean bresult = SystemSettingsManager.createInstance(this)
+                       .getSyncFilesManager().operateOnFile(result.getContents()
+                               ,FileModelStates.CHECKED_OUT.toString());
+               if(bresult)
+               {
+                   Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
+                           ,Toast.LENGTH_LONG).show();
+               }else
+               {
+                   Toast.makeText(this, String.format("No matched Files Found"), Toast.LENGTH_LONG).show();
+               }
+           }
 
         }
     }
@@ -200,7 +297,7 @@ public class AlfahresMain extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        ScreenRouter.getPersonalizedMenu(this,getMenuInflater(),menu);
+        ScreenRouter.getPersonalizedMenu(this, getMenuInflater(), menu);
         return true;
     }
 
@@ -210,6 +307,8 @@ public class AlfahresMain extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -226,6 +325,7 @@ public class AlfahresMain extends ActionBarActivity {
             logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             this.finish();
             startActivity(logoutIntent);
+
         }else if (id == R.id.scan_settings)
         {
             IntentIntegrator integrator = new IntentIntegrator(this);
