@@ -6,8 +6,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,8 +23,6 @@ import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
 import com.wadidejla.utils.FilesOnChangeListener;
 import com.wadidejla.utils.FilesUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +78,7 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
             dlg.setCancelable(false);
 
-            if(SystemSettingsManager.createInstance(getActivity()).getAvailableFiles() == null)
+            if(SystemSettingsManager.createInstance(getActivity()).getNewRequests() == null)
             {
                 Thread loadingThread = new Thread(new Runnable() {
                     @Override
@@ -133,7 +129,7 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
                                             }
                                         }
 
-                                        SystemSettingsManager.createInstance(getActivity()).setAvailableFiles(tempList);
+                                        SystemSettingsManager.createInstance(getActivity()).setNewRequests(tempList);
 
                                         FilesArrayAdapter filesArrayAdapter = new FilesArrayAdapter(getActivity()
                                                 , R.layout.single_file_view, tempList);
@@ -165,7 +161,7 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
             }else
             {
-                List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getAvailableFiles();
+                List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getNewRequests();
 
                 if (files == null)
                     files = new ArrayList<RestfulFile>();
@@ -235,7 +231,7 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
                 @Override
                 public void run() {
 
-                    List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getAvailableFiles();
+                    List<RestfulFile> files = SystemSettingsManager.createInstance(getActivity()).getNewRequests();
 
                     if (files == null)
                         files = new ArrayList<RestfulFile>();

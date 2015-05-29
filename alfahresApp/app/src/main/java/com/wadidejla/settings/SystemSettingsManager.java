@@ -11,6 +11,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.FilesManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,18 +28,23 @@ public class SystemSettingsManager {
     private String serverAddress;
     private boolean receiveNotification;
     private String ringtoneName;
-    private int sync_Frequency;
+    private int sync_Frequency = 5;
     private Context context;
     private static SystemSettingsManager _instance;
     private boolean batteryLow = false;
     private boolean canContinue = true;
     private RestfulEmployee account;
-    private List<RestfulFile> availableFiles;
+    private List<RestfulFile> newRequests;
+    private List<RestfulFile> receivedFiles;
+
     private AlFahresFilesManager filesManager;
+
 
     private SystemSettingsManager(Context con){
 
         this.context = con;
+        this.newRequests = new ArrayList<RestfulFile>();
+        this.receivedFiles = new ArrayList<RestfulFile>();
         this.initSettings();
         this.initManager();
 
@@ -49,14 +55,16 @@ public class SystemSettingsManager {
         AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null
                 ,AlfahresDBHelper.DATABASE_VERSION);
         filesManager = new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES);
-        filesManager.setFiles(this.getAvailableFiles());
+        filesManager.setFiles(this.getNewRequests());
 
 
     }
 
     public void logOut()
     {
-        this.setAvailableFiles(null);
+        this.setNewRequests(null);
+        this.setReceivedFiles(null);
+
 
     }
 
@@ -73,6 +81,16 @@ public class SystemSettingsManager {
         return this.filesManager;
     }
 
+    public synchronized  FilesManager getReceivedSyncFilesManager()
+    {
+        AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null
+                ,AlfahresDBHelper.DATABASE_VERSION);
+        AlFahresFilesManager filesManager = new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES);
+        filesManager.setFiles(this.getNewRequests());
+
+        return filesManager;
+    }
+
 
     public synchronized boolean canProceed()
     {
@@ -85,8 +103,18 @@ public class SystemSettingsManager {
 
         if(prefs != null)
         {
-            String hostName = prefs.getString(TXT_SYSTEM_IP_KEY,"");
+            String hostName = prefs.getString(TXT_SYSTEM_IP_KEY, "");
             this.setServerAddress(hostName);
+            try
+            {
+                int syncFrequency = prefs.getInt(SYNC_FREQUENCY,5);
+
+                this.setSync_Frequency(syncFrequency);
+
+            }catch (Exception s)
+            {
+
+            }
         }
     }
 
@@ -149,22 +177,22 @@ public class SystemSettingsManager {
     }
 
 
-    public List<RestfulFile> getAvailableFiles() {
-        return availableFiles;
+    public List<RestfulFile> getNewRequests() {
+        return newRequests;
     }
 
-    public void setAvailableFiles(List<RestfulFile> availableFiles) {
+    public void setNewRequests(List<RestfulFile> newRequests) {
 
-        if(availableFiles != null)
+        if(newRequests != null)
         {
             //set the files to the filesManager
-            filesManager.setFiles(availableFiles);
-            for(RestfulFile file : availableFiles)
+            filesManager.setFiles(newRequests);
+            for(RestfulFile file : newRequests)
             {
                 file.setEmp(getAccount());
             }
         }
-        this.availableFiles = availableFiles;
+        this.newRequests = newRequests;
     }
 
     public RestfulEmployee getAccount() {
@@ -173,5 +201,22 @@ public class SystemSettingsManager {
 
     public void setAccount(RestfulEmployee account) {
         this.account = account;
+    }
+
+
+    public List<RestfulFile> getReceivedFiles() {
+        return receivedFiles;
+    }
+
+    public void setReceivedFiles(List<RestfulFile> receivedFiles) {
+        this.receivedFiles = receivedFiles;
+
+        if(this.receivedFiles != null)
+        {
+            for(RestfulFile file : this.receivedFiles)
+            {
+                file.setEmp(getAccount());
+            }
+        }
     }
 }

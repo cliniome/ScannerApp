@@ -63,7 +63,10 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DESCRIPTION);
                 file.setDescription(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_OPERATION_DATE);
-                file.setOperationDate(new Date(cursor.getString(columnIndex)));
+                String timeStamp = cursor.getString(columnIndex);
+                if( timeStamp!= null)
+                    file.setOperationDate(Long.parseLong(timeStamp));
+
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SHELFID);
                 file.setShelfId(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_STATE);
@@ -126,7 +129,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DESCRIPTION);
                 file.setDescription(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_OPERATION_DATE);
-                file.setOperationDate(new Date(cursor.getString(columnIndex)));
+                file.setOperationDate(Long.parseLong(cursor.getString(columnIndex)));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SHELFID);
                 file.setShelfId(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_STATE);
@@ -190,7 +193,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DESCRIPTION);
                 file.setDescription(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_OPERATION_DATE);
-                file.setOperationDate(new Date(cursor.getString(columnIndex)));
+                file.setOperationDate(Long.parseLong(cursor.getString(columnIndex)));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SHELFID);
                 file.setShelfId(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_STATE);
@@ -338,7 +341,7 @@ public class FilesDBManager {
             values.put(COL_CABINETID,file.getCabinetId());
             values.put(COL_DESCRIPTION,file.getDescription());
             if(file.getOperationDate() == null)
-                file.setOperationDate(new Date());
+                file.setOperationDate(new Date().getTime());
             values.put(COL_OPERATION_DATE,file.getOperationDate().toString());
             values.put(COL_SHELFID,file.getShelfId());
             values.put(COL_STATE,file.getState());

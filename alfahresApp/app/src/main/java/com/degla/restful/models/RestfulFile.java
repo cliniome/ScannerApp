@@ -14,7 +14,7 @@ public class RestfulFile implements Serializable {
     @Expose
     private String fileNumber;
     @Expose
-    private Date operationDate;
+    private Long operationDate;
     @Expose
     private String description;
     @Expose
@@ -53,13 +53,6 @@ public class RestfulFile implements Serializable {
         this.fileNumber = fileNumber;
     }
 
-    public Date getOperationDate() {
-        return operationDate;
-    }
-
-    public void setOperationDate(Date operationDate) {
-        this.operationDate = operationDate;
-    }
 
     public String getDescription() {
         return description;
@@ -164,5 +157,14 @@ public class RestfulFile implements Serializable {
 
     public void setBatchRequestNumber(String batchRequestNumber) {
         this.batchRequestNumber = batchRequestNumber;
+    }
+
+
+    public Long getOperationDate() {
+        return operationDate;
+    }
+
+    public void setOperationDate(Long operationDate) {
+        this.operationDate = operationDate;
     }
 }

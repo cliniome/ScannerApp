@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.wadidejla.sync.SyncTask;
+import com.wadidejla.tasks.SyncTask;
 
 /**
  * Created by snouto on 27/05/15.

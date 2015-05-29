@@ -4,8 +4,18 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.degla.restful.models.FileModelStates;
+import com.degla.restful.models.RestfulFile;
+import com.degla.restful.models.SyncBatch;
+import com.wadidejla.listeners.KeeperOnClickListener;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.ActionItem;
+import com.wadidejla.utils.Actionable;
+import com.wadidejla.utils.AlFahresFilesManager;
+import com.wadidejla.utils.FilesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +48,7 @@ public class ScreenRouter {
                 //that is the keeper
                 fragments.add(new MainFilesScreenFragment());
                 fragments.add(new LocalSyncFilesFragment());
+                fragments.add(new ScanAndReceiveFragment());
 
             }else if (settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
             {
@@ -63,7 +74,7 @@ public class ScreenRouter {
             if(settingsManager.getAccount().getRole().equals(KEEPER_ROLE))
             {
                 //that is the Keeper
-                inflater.inflate(R.menu.keeper_menu,menu);
+                inflater.inflate(R.menu.keeper_menu, menu);
 
             }else if (settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
             {
@@ -77,6 +88,44 @@ public class ScreenRouter {
                 //that is the admin role
             }
         }
+
+    }
+
+
+    public static GenericFilesAdapter getGenericKeeperArrayAdapter(final Context conn,List<RestfulFile> files)
+    {
+        KeeperOnClickListener listener = new KeeperOnClickListener(conn);
+        listener.getActionItems().add(new ActionItem("Mark file as Missing", new Actionable() {
+            @Override
+            public void doAction(Object onItem,ArrayAdapter adapter) {
+
+                SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(conn);
+
+                AlFahresFilesManager filesManager = (AlFahresFilesManager) settingsManager.getReceivedSyncFilesManager();
+
+
+
+                filesManager.setFiles(settingsManager.getReceivedFiles());
+
+                RestfulFile file = (RestfulFile)onItem;
+
+                if(file == null) return;
+
+                file.setState(FileModelStates.MISSING.toString());
+
+                filesManager.operateOnFile(file);
+
+                adapter.notifyDataSetChanged();
+            }
+        }));
+
+
+        GenericFilesAdapter adapter = new GenericFilesAdapter(conn,R.layout.single_file_view,files);
+
+        adapter.setListener(listener);
+
+
+        return adapter;
 
     }
 }

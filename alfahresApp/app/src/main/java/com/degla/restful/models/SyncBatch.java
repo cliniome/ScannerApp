@@ -13,7 +13,7 @@ public class SyncBatch extends BooleanResult implements Serializable {
     @Expose
     private List<RestfulFile> files;
     @Expose
-    private Date createdAt;
+    private Long createdAt;
 
 
 
@@ -59,11 +59,12 @@ public class SyncBatch extends BooleanResult implements Serializable {
         this.files = files;
     }
 
-    public Date getCreatedAt() {
+
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 }

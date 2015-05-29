@@ -46,10 +46,12 @@ import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.screens.FilesArrayAdapter;
 import com.wadidejla.screens.LocalSyncFilesFragment;
 import com.wadidejla.screens.MainFilesScreenFragment;
+import com.wadidejla.screens.ScanAndReceiveFragment;
 import com.wadidejla.screens.ScreenRouter;
 import com.wadidejla.screens.SectionsPagerAdapter;
 import com.wadidejla.screens.ViewPagerSlave;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.tasks.ScanAndReceiveTask;
 import com.wadidejla.utils.AlFahresFilesManager;
 
 import org.apache.http.protocol.HTTP;
@@ -93,9 +95,11 @@ public class AlfahresMain extends ActionBarActivity {
         {
             if(currentFragment instanceof LocalSyncFilesFragment)
             {
-
                 menu.findItem(R.id.sync_btn).setVisible(true);
 
+            }else if (currentFragment instanceof ScanAndReceiveFragment)
+            {
+                menu.findItem(R.id.sync_btn).setVisible(false);
 
             }
         }
@@ -119,10 +123,10 @@ public class AlfahresMain extends ActionBarActivity {
 
         if(result != null && resultCode == Activity.RESULT_OK)
         {
+
+
            if (currentFragment instanceof  LocalSyncFilesFragment)
            {
-
-               //TODO : Do the update for all restful Files in here
                final AlertDialog dlg = new AlertDialog.Builder(this)
                        .setTitle(R.string.main_loading_title)
                        .setMessage("Updating files...")
@@ -211,6 +215,7 @@ public class AlfahresMain extends ActionBarActivity {
                                   ,FileModelStates.CHECKED_OUT.toString());
                   if(bresult)
                   {
+
                       Toast.makeText(this,String.format("Format:%s , BarCode : %s",result.getFormatName(),result.getContents())
                               ,Toast.LENGTH_LONG).show();
                   }else
@@ -222,6 +227,23 @@ public class AlfahresMain extends ActionBarActivity {
               {
                   Log.w("AlfahresMain",s.getMessage());
               }
+           }else if(currentFragment instanceof ScanAndReceiveFragment)
+           {
+               final AlertDialog dialog = new AlertDialog.Builder(this)
+                       .setTitle(R.string.main_files_alertDlg_Title)
+                       .setMessage(R.string.main_loading_title)
+                       .setCancelable(false).create();
+
+               dialog.show();
+
+               ScanAndReceiveTask scanTask = new ScanAndReceiveTask(this,result.getContents()
+                       ,(ScanAndReceiveFragment)currentFragment);
+               scanTask.setDialog(dialog);
+
+               Thread scanThread = new Thread(scanTask);
+
+               scanThread.start();
+
            }
 
         }
@@ -255,7 +277,11 @@ public class AlfahresMain extends ActionBarActivity {
                 }else if (currentFragment instanceof LocalSyncFilesFragment)
                 {
                     String title = ((LocalSyncFilesFragment)currentFragment).getTitle();
+                    AlfahresMain.this.setTitle(title);
 
+                }else if (currentFragment instanceof ScanAndReceiveFragment)
+                {
+                    String title= ((ScanAndReceiveFragment)currentFragment).getTitle();
                     AlfahresMain.this.setTitle(title);
                 }
 

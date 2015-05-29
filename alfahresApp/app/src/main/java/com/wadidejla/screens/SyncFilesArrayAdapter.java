@@ -97,7 +97,7 @@ class SyncFilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                     file.setState("");
                                     filesManager.getFilesDBManager().deleteFile(file.getFileNumber());
                                     SyncFilesArrayAdapter.this.getFiles().remove(file);
-                                    SystemSettingsManager.createInstance(getContext()).getAvailableFiles().add(file);
+                                    SystemSettingsManager.createInstance(getContext()).getNewRequests().add(file);
 
                                     Uri ringToneUri = Uri.parse("android.resource://wadidejla.com.alfahresapp/"+R.raw.marked);
 
