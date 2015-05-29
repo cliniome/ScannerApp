@@ -28,7 +28,7 @@ public class SystemSettingsManager {
     private String serverAddress;
     private boolean receiveNotification;
     private String ringtoneName;
-    private int sync_Frequency = 5;
+    private int sync_Frequency = 30;
     private Context context;
     private static SystemSettingsManager _instance;
     private boolean batteryLow = false;
