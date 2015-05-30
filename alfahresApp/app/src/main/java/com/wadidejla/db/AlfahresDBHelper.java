@@ -11,7 +11,7 @@ import android.util.Log;
 public class AlfahresDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME="alfahres.db";
-    public static final int DATABASE_VERSION=1;
+    public static final int DATABASE_VERSION=2;
     public static final String DATABASE_TABLE_FILES="files";
     public static final String DATABASE_TABLE_SYNC_FILES="syncfiles";
     public static final String DATABASE_TABLE_EMPLOYEE = "employees";
@@ -27,6 +27,15 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_CLINIC_DOC_NAME="clinicDocName";
     public static final String COL_BATCH_REQUEST_NUMBER ="batchRequestNumber";
     public static final String COL_EMP_USERNAME = "EmpUserName";
+
+    //New Fields
+    public static final String COL_APPOINTMENT_TYPE="AppointmentType";
+    public static final String COL_APPOINTMENT_DATE = "AppointmentDate";
+    public static final String COL_APPOINTMENT_DATE_H="AppointmentDateHijri";
+    public static final String COL_APPOINTMENT_TIME="AppointmentTime";
+    public static final String COL_APPOINTMENT_MADE_BY="AppointmentMadeBy";
+    public static final String COL_PATIENTNUMBER ="patientNumber";
+    public static final String COL_PATIENTNAME = "patientName";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -46,7 +55,11 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     //Database Create Statements for both tables
     private static final String DATABASE_TABLE_FILES_CREATE = "create table "
             + DATABASE_TABLE_FILES +" ( " + KEY_ID + " text primary key, " +
-            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
+            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
+            COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
+            COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
+            COL_APPOINTMENT_TIME + " text null, " + COL_APPOINTMENT_MADE_BY + " text null , "
+            + COL_APPOINTMENT_TYPE + " text null , "
             + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
             EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," +COL_CLINIC_NAME +" text null," +
@@ -54,12 +67,16 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
             " );";
 
 
-    private static final String DATABASE_TABLE_SYNC_FILES_CREATE = "create table "
+    private static final String DATABASE_TABLE_SYNC_FILES_CREATE ="create table "
             + DATABASE_TABLE_SYNC_FILES +" ( " + KEY_ID + " text primary key, " +
-            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null,"
+            COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
+            COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
+            COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
+            COL_APPOINTMENT_TIME + " text null, " + COL_APPOINTMENT_MADE_BY + " text null , "
+            + COL_APPOINTMENT_TYPE + " text null , "
             + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
-            EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," + COL_CLINIC_NAME +" text null," +
+            EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," +COL_CLINIC_NAME +" text null," +
             COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
             " );";
 
@@ -69,7 +86,9 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     {
         return new String[]
            {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
-           COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME};
+           COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME,
+           COL_APPOINTMENT_TYPE,COL_APPOINTMENT_MADE_BY,COL_APPOINTMENT_TIME,COL_APPOINTMENT_DATE_H,
+           COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME};
 
     }
 

@@ -12,7 +12,7 @@
     </string>
 
     <string name="pref_title_display_name">Alfahres IP Address</string>
-    <string name="SYSTEM_IP">192.168.1.7</string>
+    <string name="SYSTEM_IP">192.168.1.9</string>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

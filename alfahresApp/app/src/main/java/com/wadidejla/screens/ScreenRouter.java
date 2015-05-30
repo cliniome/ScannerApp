@@ -1,6 +1,8 @@
 package com.wadidejla.screens;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,7 @@ import com.wadidejla.utils.ActionItem;
 import com.wadidejla.utils.Actionable;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,8 +97,6 @@ public class ScreenRouter {
 
                 AlFahresFilesManager filesManager = (AlFahresFilesManager) settingsManager.getReceivedSyncFilesManager();
 
-
-
                 filesManager.setFiles(settingsManager.getReceivedFiles());
 
                 RestfulFile file = (RestfulFile)onItem;
@@ -107,6 +108,28 @@ public class ScreenRouter {
                 filesManager.operateOnFile(file);
 
                 adapter.notifyDataSetChanged();
+            }
+        }));
+
+        listener.getActionItems().add(new ActionItem("Show File Details", new Actionable() {
+            @Override
+            public void doAction(Object OnItem, ArrayAdapter adapter) {
+
+                RestfulFile file = (RestfulFile)OnItem;
+
+                final AlertDialog detailsDialog = new AlertDialog.Builder(conn)
+                        .setTitle(file.getFileNumber())
+                        .setView(ViewUtils.getDetailsViewFor(file, conn))
+                        .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+
+
+                detailsDialog.show();
+
             }
         }));
 

@@ -62,9 +62,13 @@ public class ScanAndReceiveFragment extends Fragment implements FilesOnChangeLis
 
             if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
             {
+                List<RestfulFile> receivedFiles = SystemSettingsManager.createInstance(getActivity()).getReceivedFiles();
+
+                if(receivedFiles == null) receivedFiles = new ArrayList<RestfulFile>();
+
                   //bind the listview to the received files if present
                 GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(getActivity(),
-                        SystemSettingsManager.createInstance(getActivity()).getReceivedFiles());
+                        receivedFiles);
 
                 listView.setAdapter(adapter);
             }
@@ -107,15 +111,15 @@ public class ScanAndReceiveFragment extends Fragment implements FilesOnChangeLis
                         if(localFiles == null)
                             localFiles = new ArrayList<RestfulFile>();
 
-                        final SyncFilesArrayAdapter filesArrayAdapter = new SyncFilesArrayAdapter(getActivity()
-                                ,R.layout.single_file_view,localFiles);
+                        final GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(getActivity(),
+                                localFiles);
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                listView.setAdapter(filesArrayAdapter);
-                                filesArrayAdapter.notifyDataSetChanged();
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
 
                                 dlg.dismiss();
                             }

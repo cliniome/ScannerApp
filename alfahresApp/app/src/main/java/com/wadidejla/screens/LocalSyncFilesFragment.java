@@ -74,7 +74,9 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
         {
             //bind it now to the list View
             //through a separate files Adapter
-            SyncFilesArrayAdapter adapter = new SyncFilesArrayAdapter(getActivity(),R.layout.single_file_view,localFiles);
+            /*SyncFilesArrayAdapter adapter = new SyncFilesArrayAdapter(getActivity(),R.layout.single_file_view,localFiles);*/
+            GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(getActivity(),
+                    localFiles);
 
             listView.setAdapter(adapter);
 
@@ -121,9 +123,7 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
     public void onResume() {
         super.onResume();
 
-        SyncFilesArrayAdapter syncAdapter = (SyncFilesArrayAdapter)listView.getAdapter();
 
-        syncAdapter.notifyDataSetChanged();
     }
 
 
@@ -156,15 +156,15 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
                         if(localFiles == null)
                             localFiles = new ArrayList<RestfulFile>();
 
-                        final SyncFilesArrayAdapter filesArrayAdapter = new SyncFilesArrayAdapter(getActivity()
-                                ,R.layout.single_file_view,localFiles);
+                        final GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(getActivity(),
+                                localFiles);
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                listView.setAdapter(filesArrayAdapter);
-                                filesArrayAdapter.notifyDataSetChanged();
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
 
                                 dlg.dismiss();
                             }

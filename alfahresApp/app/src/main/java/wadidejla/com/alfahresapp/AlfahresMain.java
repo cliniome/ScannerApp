@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
+import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
@@ -56,6 +57,7 @@ import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.tasks.ScanAndReceiveTask;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.EmployeeUtils;
+import com.wadidejla.utils.RoleTypes;
 
 import org.apache.http.protocol.HTTP;
 
@@ -103,8 +105,24 @@ public class AlfahresMain extends ActionBarActivity {
             }else if (currentFragment instanceof ScanAndReceiveFragment)
             {
                 menu.findItem(R.id.sync_btn).setVisible(false);
-                menu.findItem(R.id.markFiles).setVisible(true);
+                SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(this);
+                try
+                {
 
+                    RestfulEmployee emp = (RestfulEmployee)settingsManager.getAccount();
+
+                    if(emp != null)
+                    {
+                        if(!emp.getRole().equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
+                        {
+                            menu.findItem(R.id.markFiles).setVisible(true);
+                        }
+                    }
+
+                }catch (Exception s)
+                {
+                    Log.w("AlfahresMain",s.getMessage());
+                }
             }
         }
 

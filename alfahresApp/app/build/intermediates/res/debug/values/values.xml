@@ -211,7 +211,7 @@
     <string name="SINGLE_CHOICE_DLG_TITLE">Choose an Option...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
-    <string name="SYSTEM_IP">192.168.1.7</string>
+    <string name="SYSTEM_IP">192.168.1.9</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="TITLE_LOGIN">Al Fahres System</string>
