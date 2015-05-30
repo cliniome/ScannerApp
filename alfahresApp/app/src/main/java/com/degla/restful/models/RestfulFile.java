@@ -34,6 +34,24 @@ public class RestfulFile implements Serializable {
     private String batchRequestNumber;
 
     @Expose
+    private String patientName;
+    @Expose
+    private String patientNumber;
+
+
+    //New Requests
+    @Expose
+    private String appointmentType;
+    @Expose
+    private String appointmentDate;
+    @Expose
+    private String appointmentDateH;
+    @Expose
+    private String appointmentTime;
+    @Expose
+    private String appointmentMadeBy;
+
+    @Expose
     private  RestfulEmployee emp;
 
 
@@ -166,5 +184,61 @@ public class RestfulFile implements Serializable {
 
     public void setOperationDate(Long operationDate) {
         this.operationDate = operationDate;
+    }
+
+    public String getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(String appointmentType) {
+        this.appointmentType = appointmentType;
+    }
+
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getAppointmentDateH() {
+        return appointmentDateH;
+    }
+
+    public void setAppointmentDateH(String appointmentDateH) {
+        this.appointmentDateH = appointmentDateH;
+    }
+
+    public String getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(String appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
+
+    public String getAppointmentMadeBy() {
+        return appointmentMadeBy;
+    }
+
+    public void setAppointmentMadeBy(String appointmentMadeBy) {
+        this.appointmentMadeBy = appointmentMadeBy;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getPatientNumber() {
+        return patientNumber;
+    }
+
+    public void setPatientNumber(String patientNumber) {
+        this.patientNumber = patientNumber;
     }
 }

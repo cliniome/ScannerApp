@@ -23,6 +23,19 @@ public class RestfulRequest implements Serializable {
     @Expose
     private String userName;
 
+    @Expose
+    private String batchRequestNumber;
+    @Expose
+    private String appointmentType;
+    @Expose
+    private String appointmentDate;
+    @Expose
+    private String appointmentDateH;
+    @Expose
+    private String appointmentTime;
+    @Expose
+    private String appointmentMadeBy;
+
 
 
     public String getAppointment_Date() {
@@ -71,5 +84,53 @@ public class RestfulRequest implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getBatchRequestNumber() {
+        return batchRequestNumber;
+    }
+
+    public void setBatchRequestNumber(String batchRequestNumber) {
+        this.batchRequestNumber = batchRequestNumber;
+    }
+
+    public String getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(String appointmentType) {
+        this.appointmentType = appointmentType;
+    }
+
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getAppointmentDateH() {
+        return appointmentDateH;
+    }
+
+    public void setAppointmentDateH(String appointmentDateH) {
+        this.appointmentDateH = appointmentDateH;
+    }
+
+    public String getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(String appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
+
+    public String getAppointmentMadeBy() {
+        return appointmentMadeBy;
+    }
+
+    public void setAppointmentMadeBy(String appointmentMadeBy) {
+        this.appointmentMadeBy = appointmentMadeBy;
     }
 }

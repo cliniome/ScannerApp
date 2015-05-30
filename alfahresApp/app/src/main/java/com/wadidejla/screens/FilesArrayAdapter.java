@@ -16,10 +16,12 @@ import com.degla.restful.models.RestfulFile;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
 import com.wadidejla.utils.FilesUtils;
+import com.wadidejla.utils.ViewUtils;
 
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
+
 
 /**
  * Created by snouto on 23/05/15.
@@ -105,6 +107,19 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                 } else {
                                     //show details of the selected file
                                     //TODO : add show details window in here to show the details of the selected file.
+
+                                    final AlertDialog detailsDialog = new AlertDialog.Builder(getContext())
+                                            .setTitle(file.getFileNumber())
+                                            .setView(ViewUtils.getDetailsViewFor(file,getContext()))
+                                            .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                }
+                                            }).create();
+
+                                    dialogInterface.dismiss();
+                                    detailsDialog.show();
                                 }
 
                             }

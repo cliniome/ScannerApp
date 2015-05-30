@@ -33,5 +33,13 @@
     <string name="TXT_FORCE_SYNC">Force Sync</string>
     <string name="MISSING_FILE_ICON_DESC">Missing File Description</string>
     <string name="SCAN_RECEIVE_TITLE">Scan And Receive</string>
+    <string name="file_fileNumber">File No.</string>
+    <string name="file_patientNumber">Patient No.</string>
+    <string name="file_patientName">Pat. Name</string>
+    <string name="file_batchNumber">Batch No.</string>
+    <string name="file_appointment_date">Appt. Date</string>
+    <string name="file_appointment_time">Appt. Time</string>
+    <string name="file_appointment_HijriDate">Appt. Hijri</string>
+    <string name="file_appointment_type">Appt. Type</string>
 
 </resources>

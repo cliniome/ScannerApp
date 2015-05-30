@@ -243,6 +243,14 @@
     <string name="btn_login_clear">Clear</string>
     <string name="btn_login_login">Login Now</string>
     <string name="btn_logout_main">Logout</string>
+    <string name="file_appointment_HijriDate">Appt. Hijri</string>
+    <string name="file_appointment_date">Appt. Date</string>
+    <string name="file_appointment_time">Appt. Time</string>
+    <string name="file_appointment_type">Appt. Type</string>
+    <string name="file_batchNumber">Batch No.</string>
+    <string name="file_fileNumber">File No.</string>
+    <string name="file_patientName">Pat. Name</string>
+    <string name="file_patientNumber">Patient No.</string>
     <string name="file_view_cabinetId">Cabin No :</string>
     <string name="file_view_column">Col. No :</string>
     <string name="file_view_fileNo">File No :</string>
@@ -1518,6 +1526,9 @@
     <eat-comment/>
     <style name="fileNumberStyle">
 
+    </style>
+    <style name="headerText">
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="patientNumberStyle">
 
