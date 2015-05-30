@@ -56,6 +56,22 @@ public class ViewUtils {
                 TextView txtbatchNumber = (TextView)rootView.findViewById(R.id.Txt_file_batchNumber);
                 txtbatchNumber.setText(file.getBatchRequestNumber());
 
+                //Get the clinic name
+                TextView txtClinicName = (TextView)rootView.findViewById(R.id.Txt_file_clinicName);
+                txtClinicName.setText(file.getClinicName());
+
+                //get The clinic Code
+                TextView txtClinicCode = (TextView)rootView.findViewById(R.id.Txt_file_clinicCode);
+                txtClinicCode.setText(file.getClinicCode());
+
+                //Get the Doc Name
+                TextView txtDocName = (TextView)rootView.findViewById(R.id.Txt_file_docName);
+                txtDocName.setText(file.getClinicDocName());
+
+                //Get the doc Code
+                TextView txtDocCode = (TextView)rootView.findViewById(R.id.Txt_file_docCode);
+                txtDocCode.setText(file.getClinicDocCode());
+
 
                 return rootView;
 

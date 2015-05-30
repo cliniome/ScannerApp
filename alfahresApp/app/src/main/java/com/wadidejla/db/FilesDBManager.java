@@ -107,6 +107,14 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_PATIENTNUMBER);
                 file.setPatientNumber(cursor.getString(columnIndex));
 
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_CODE);
+                file.setClinicCode(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_DOC_CODE);
+                file.setClinicDocCode(cursor.getString(columnIndex));
+
+
                 files.add(file);
 
             }
@@ -189,6 +197,11 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_PATIENTNUMBER);
                 file.setPatientNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_CODE);
+                file.setClinicCode(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_DOC_CODE);
+                file.setClinicDocCode(cursor.getString(columnIndex));
 
                 files.add(file);
 
@@ -273,6 +286,11 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_PATIENTNUMBER);
                 file.setPatientNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_CODE);
+                file.setClinicCode(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_DOC_CODE);
+                file.setClinicDocCode(cursor.getString(columnIndex));
 
                 files.add(file);
 
@@ -419,6 +437,8 @@ public class FilesDBManager {
             values.put(COL_APPOINTMENT_TYPE,file.getAppointmentType());
             values.put(COL_PATIENTNAME,file.getPatientName());
             values.put(COL_PATIENTNUMBER,file.getPatientNumber());
+            values.put(COL_CLINIC_CODE,file.getClinicCode());
+            values.put(COL_CLINIC_DOC_CODE,file.getClinicDocCode());
 
 
             //now insert the current row into the database

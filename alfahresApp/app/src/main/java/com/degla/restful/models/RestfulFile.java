@@ -30,6 +30,12 @@ public class RestfulFile implements Serializable {
     private String clinicName;
     @Expose
     private String clinicDocName;
+
+    @Expose
+    private String clinicCode;
+
+    @Expose
+    private String clinicDocCode;
     @Expose
     private String batchRequestNumber;
 
@@ -240,5 +246,21 @@ public class RestfulFile implements Serializable {
 
     public void setPatientNumber(String patientNumber) {
         this.patientNumber = patientNumber;
+    }
+
+    public String getClinicCode() {
+        return clinicCode;
+    }
+
+    public void setClinicCode(String clinicCode) {
+        this.clinicCode = clinicCode;
+    }
+
+    public String getClinicDocCode() {
+        return clinicDocCode;
+    }
+
+    public void setClinicDocCode(String clinicDocCode) {
+        this.clinicDocCode = clinicDocCode;
     }
 }

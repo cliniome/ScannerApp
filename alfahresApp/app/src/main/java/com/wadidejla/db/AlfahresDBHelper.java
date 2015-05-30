@@ -36,6 +36,8 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_APPOINTMENT_MADE_BY="AppointmentMadeBy";
     public static final String COL_PATIENTNUMBER ="patientNumber";
     public static final String COL_PATIENTNAME = "patientName";
+    public static final String COL_CLINIC_CODE = "clinicCode";
+    public static final String COL_CLINIC_DOC_CODE = "clinicDocCode";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -55,6 +57,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     //Database Create Statements for both tables
     private static final String DATABASE_TABLE_FILES_CREATE = "create table "
             + DATABASE_TABLE_FILES +" ( " + KEY_ID + " text primary key, " +
+            COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
             COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
             COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
@@ -69,6 +72,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_TABLE_SYNC_FILES_CREATE ="create table "
             + DATABASE_TABLE_SYNC_FILES +" ( " + KEY_ID + " text primary key, " +
+            COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
             COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
             COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
@@ -88,7 +92,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
            {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
            COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME,
            COL_APPOINTMENT_TYPE,COL_APPOINTMENT_MADE_BY,COL_APPOINTMENT_TIME,COL_APPOINTMENT_DATE_H,
-           COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME};
+           COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME,COL_CLINIC_CODE,COL_CLINIC_DOC_CODE};
 
     }
 

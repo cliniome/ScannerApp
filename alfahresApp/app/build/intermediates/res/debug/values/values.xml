@@ -248,6 +248,10 @@
     <string name="file_appointment_time">Appt. Time</string>
     <string name="file_appointment_type">Appt. Type</string>
     <string name="file_batchNumber">Batch No.</string>
+    <string name="file_clinicCode">clinic Code</string>
+    <string name="file_clinicName">Clinic Name</string>
+    <string name="file_docCode">Doc. Code</string>
+    <string name="file_docName">Doc. Name</string>
     <string name="file_fileNumber">File No.</string>
     <string name="file_patientName">Pat. Name</string>
     <string name="file_patientNumber">Patient No.</string>
