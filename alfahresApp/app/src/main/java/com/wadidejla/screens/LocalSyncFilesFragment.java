@@ -3,6 +3,8 @@ package com.wadidejla.screens;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -87,7 +89,23 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
     @Override
     public void notifyChange() {
 
+        if(listView != null)
+        {
+            FilesArrayAdapter adapter = (FilesArrayAdapter) listView.getAdapter();
+            if(adapter != null)
+            //notify about the change
+            {
+                adapter.notifyDataSetChanged();
+                //then notify the user
+                Uri ringToneUri = Uri.parse("android.resource://wadidejla.com.alfahresapp/"+R.raw.marked);
 
+                Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), ringToneUri);
+
+                if(ringtone != null)
+                    ringtone.play();
+            }
+
+        }
 
     }
 
@@ -107,6 +125,9 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
 
         syncAdapter.notifyDataSetChanged();
     }
+
+
+
 
     @Override
     public void update() {

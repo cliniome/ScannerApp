@@ -1,6 +1,7 @@
 package com.wadidejla.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,9 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.degla.restful.models.RestfulFile;
+import com.wadidejla.db.FilesDBManager;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesManager;
 import com.wadidejla.utils.FilesOnChangeListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
 
@@ -77,6 +83,59 @@ public class ScanAndReceiveFragment extends Fragment implements FilesOnChangeLis
 
     @Override
     public void update() {
+
+        try
+        {
+            final AlertDialog dlg = new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.main_loading_title)
+                    .setMessage(R.string.main_files_alertDlg_Title)
+                    .create();
+
+            dlg.show();
+
+            Thread backGroundThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try
+                    {
+                        FilesDBManager filesDBManager = filesManager.getFilesDBManager();
+                        SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+
+                        List<RestfulFile> localFiles = settingsManager.getReceivedFiles();
+
+                        if(localFiles == null)
+                            localFiles = new ArrayList<RestfulFile>();
+
+                        final SyncFilesArrayAdapter filesArrayAdapter = new SyncFilesArrayAdapter(getActivity()
+                                ,R.layout.single_file_view,localFiles);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                listView.setAdapter(filesArrayAdapter);
+                                filesArrayAdapter.notifyDataSetChanged();
+
+                                dlg.dismiss();
+                            }
+                        });
+
+                    }catch (Exception s)
+                    {
+                        Log.w("LocalSyncFilesFragment",s.getMessage());
+                    }
+                }
+            });
+
+            backGroundThread.start();
+            //access all Local Files
+
+
+        }catch (Exception s)
+        {
+            Log.w("LocalSyncFilesFragment",s.getMessage());
+        }
 
     }
 

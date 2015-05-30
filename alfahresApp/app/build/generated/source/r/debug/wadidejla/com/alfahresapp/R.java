@@ -1524,7 +1524,8 @@ containing a value of this type.
         public static final int missing=0x7f020044;
         public static final int scan=0x7f020045;
         public static final int settings=0x7f020046;
-        public static final int sync=0x7f020047;
+        public static final int stamp=0x7f020047;
+        public static final int sync=0x7f020048;
     }
     public static final class id {
         public static final int Txt_file_appointment_Hijri=0x7f0f0054;
@@ -1546,14 +1547,14 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0f003d;
         public static final int action_mode_bar_stub=0x7f0f003c;
         public static final int action_mode_close_button=0x7f0f0025;
-        public static final int action_settings=0x7f0f0069;
+        public static final int action_settings=0x7f0f006a;
         public static final int activity_chooser_view_content=0x7f0f0026;
         public static final int alertTitle=0x7f0f0030;
         public static final int always=0x7f0f0016;
         public static final int beginning=0x7f0f0013;
         public static final int btn_login_clear=0x7f0f005e;
         public static final int btn_login_login=0x7f0f005a;
-        public static final int btn_logout_main=0x7f0f006a;
+        public static final int btn_logout_main=0x7f0f006b;
         public static final int buttonPanel=0x7f0f0036;
         public static final int cabin_no_lbl=0x7f0f0062;
         public static final int checkbox=0x7f0f0038;
@@ -1582,6 +1583,7 @@ containing a value of this type.
         public static final int listMode=0x7f0f0009;
         public static final int list_item=0x7f0f002a;
         public static final int mainFilesList=0x7f0f005f;
+        public static final int markFiles=0x7f0f0069;
         public static final int middle=0x7f0f0015;
         public static final int missing_file_img=0x7f0f0066;
         public static final int multiply=0x7f0f001e;
@@ -1746,20 +1748,21 @@ containing a value of this type.
         public static final int hello_world=0x7f080034;
         public static final int main_files_alertDlg_Title=0x7f080035;
         public static final int main_loading_title=0x7f080036;
-        public static final int pref_description_social_recommendations=0x7f080037;
-        public static final int pref_header_data_sync=0x7f080038;
-        public static final int pref_header_general=0x7f080039;
-        public static final int pref_header_notifications=0x7f08003a;
-        public static final int pref_ringtone_silent=0x7f08003b;
-        public static final int pref_title_display_name=0x7f08003c;
-        public static final int pref_title_new_message_notifications=0x7f08003d;
-        public static final int pref_title_ringtone=0x7f08003e;
-        public static final int pref_title_social_recommendations=0x7f08003f;
-        public static final int pref_title_sync_frequency=0x7f080040;
-        public static final int pref_title_system_sync_settings=0x7f080041;
-        public static final int title_activity_settings=0x7f080042;
-        public static final int title_section1=0x7f080043;
-        public static final int title_section2=0x7f080044;
+        public static final int menu_stamp=0x7f080037;
+        public static final int pref_description_social_recommendations=0x7f080038;
+        public static final int pref_header_data_sync=0x7f080039;
+        public static final int pref_header_general=0x7f08003a;
+        public static final int pref_header_notifications=0x7f08003b;
+        public static final int pref_ringtone_silent=0x7f08003c;
+        public static final int pref_title_display_name=0x7f08003d;
+        public static final int pref_title_new_message_notifications=0x7f08003e;
+        public static final int pref_title_ringtone=0x7f08003f;
+        public static final int pref_title_social_recommendations=0x7f080040;
+        public static final int pref_title_sync_frequency=0x7f080041;
+        public static final int pref_title_system_sync_settings=0x7f080042;
+        public static final int title_activity_settings=0x7f080043;
+        public static final int title_section1=0x7f080044;
+        public static final int title_section2=0x7f080045;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0a006b;

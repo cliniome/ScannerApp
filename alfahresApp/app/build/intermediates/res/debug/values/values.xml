@@ -259,6 +259,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="main_files_alertDlg_Title">Loading Files</string>
     <string name="main_loading_title">Loading Please Wait.....</string>
+    <string name="menu_stamp">Mark Files</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
@@ -278,7 +279,7 @@
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="title_section1">New Requests</string>
-    <string name="title_section2">Checked Out Files</string>
+    <string name="title_section2">Ongoing Files</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>

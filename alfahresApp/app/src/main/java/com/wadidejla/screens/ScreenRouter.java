@@ -50,17 +50,13 @@ public class ScreenRouter {
                 fragments.add(new LocalSyncFilesFragment());
                 fragments.add(new ScanAndReceiveFragment());
 
-            }else if (settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
+            }else
             {
                 //that is the receptionist
+                fragments.add(new LocalSyncFilesFragment());
+                fragments.add(new ScanAndReceiveFragment());
             }
-            else if (settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
-            {
-                //that is the coordinator
-            }else if (settingsManager.getAccount().getRole().equals(ADMIN_ROLE))
-            {
-                //that is the admin role
-            }
+
         }
         return fragments;
 
@@ -76,17 +72,12 @@ public class ScreenRouter {
                 //that is the Keeper
                 inflater.inflate(R.menu.keeper_menu, menu);
 
-            }else if (settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
+            }else
             {
                 //that is the receptionist
+                inflater.inflate(R.menu.keeper_menu, menu);
             }
-            else if (settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
-            {
-                //that is the coordinator
-            }else if (settingsManager.getAccount().getRole().equals(ADMIN_ROLE))
-            {
-                //that is the admin role
-            }
+
         }
 
     }

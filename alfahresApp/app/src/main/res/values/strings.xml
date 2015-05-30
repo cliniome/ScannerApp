@@ -2,7 +2,7 @@
     <string name="app_name">AlFahres System</string>
 
     <string name="title_section1">New Requests</string>
-    <string name="title_section2">Checked Out Files</string>
+    <string name="title_section2">Ongoing Files</string>
 
     <string name="hello_world">Hello world!</string>
 
@@ -41,5 +41,6 @@
     <string name="file_appointment_time">Appt. Time</string>
     <string name="file_appointment_HijriDate">Appt. Hijri</string>
     <string name="file_appointment_type">Appt. Type</string>
+    <string name="menu_stamp">Mark Files</string>
 
 </resources>

@@ -155,6 +155,39 @@ public class AlFahresFilesManager implements FilesManager {
     }
 
     @Override
+    public boolean operateOnFiles() {
+        try
+        {
+            boolean result = true;
+
+            if(getFiles() != null && getFiles().size() > 0)
+            {
+                for(RestfulFile file : getFiles())
+                {
+                   result = result && filesDBManager.insertFile(file);
+
+                }
+
+
+                if(result && getFilesListener() != null && getFilesListener().size() > 0)
+                {
+                    for(FilesOnChangeListener listener : getFilesListener())
+                    {
+                        listener.notifyChange();
+                    }
+                }
+            }
+
+            return result;
+
+        }catch (Exception s)
+        {
+            Log.w("FilesManager",s.getMessage());
+            return false;
+        }
+    }
+
+    @Override
     public FilesDBManager getFilesDBManager() {
 
         return this.filesDBManager;

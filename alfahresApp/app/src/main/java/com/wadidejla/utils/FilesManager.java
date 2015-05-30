@@ -15,6 +15,6 @@ public interface FilesManager {
     public String getOperatingTable();
     public boolean operateOnFile(RestfulFile file);
     public List<FilesOnChangeListener> getFilesListener();
-
+    public boolean operateOnFiles();
     public FilesDBManager getFilesDBManager();
 }

@@ -51,8 +51,11 @@ import com.wadidejla.screens.ScreenRouter;
 import com.wadidejla.screens.SectionsPagerAdapter;
 import com.wadidejla.screens.ViewPagerSlave;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.tasks.ManualSyncTask;
+import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.tasks.ScanAndReceiveTask;
 import com.wadidejla.utils.AlFahresFilesManager;
+import com.wadidejla.utils.EmployeeUtils;
 
 import org.apache.http.protocol.HTTP;
 
@@ -100,6 +103,7 @@ public class AlfahresMain extends ActionBarActivity {
             }else if (currentFragment instanceof ScanAndReceiveFragment)
             {
                 menu.findItem(R.id.sync_btn).setVisible(false);
+                menu.findItem(R.id.markFiles).setVisible(true);
 
             }
         }
@@ -367,7 +371,36 @@ public class AlfahresMain extends ActionBarActivity {
             startActivity(settingsIntent);
 
             return true;
-        }else if (id == R.id.btn_logout_main)
+        }else if (id == R.id.markFiles)
+        {
+            final AlertDialog choiceDialog = new AlertDialog.Builder(this)
+                    .setTitle("Mark Files as...")
+                    .setItems(EmployeeUtils.MARK_FILES_ITEMS, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                            MarkingTask markingTask = null;
+
+                            if(i == 0) // that means mark files as received
+                            {
+                                markingTask = new MarkingTask(AlfahresMain.this,EmployeeUtils.RECEIVE_FILES);
+
+                            }else // mark files as send out
+                            {
+                                markingTask = new MarkingTask(AlfahresMain.this,EmployeeUtils.SEND_FILES);
+                            }
+
+                            Thread markingThread = new Thread(markingTask);
+                            dialogInterface.dismiss();
+                            markingThread.start();
+
+                        }
+                    }).create();
+
+            choiceDialog.show();
+
+        } else if (id == R.id.btn_logout_main)
         {
 
             SystemSettingsManager.createInstance(this).logOut();
@@ -381,6 +414,53 @@ public class AlfahresMain extends ActionBarActivity {
         {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.initiateScan();
+        }else if (id == R.id.sync_btn)
+        {
+            final AlertDialog syncingDialog = new AlertDialog.Builder(this)
+                    .setTitle("Syncing Files...")
+                    .setMessage("Please Wait...")
+                    .setCancelable(false)
+                    .create();
+
+            syncingDialog.show();
+            //that means the user is picking synchornization manually
+            Thread manualSync = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    ManualSyncTask syncTask = new ManualSyncTask(AlfahresMain.this);
+
+                    //now do the syncing process
+                    syncTask.run();
+
+                    AlfahresMain.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //afterwards, check to see if the current fragment is localSync
+                            int currentFragmentIndex = AlfahresMain.this.mViewPager.getCurrentItem();
+
+                            Fragment currentFragment = AlfahresMain.this.mSectionsPagerAdapter.getItem(currentFragmentIndex);
+
+                            if(currentFragment instanceof LocalSyncFilesFragment)
+                            {
+                                LocalSyncFilesFragment fragment = new LocalSyncFilesFragment();
+                                fragment.notifyChange();
+                                syncingDialog.dismiss();
+                            }
+
+                        }
+                    });
+
+
+                }
+            });
+
+            manualSync.start();
+
+
+
+
         }
 
         return super.onOptionsItemSelected(item);

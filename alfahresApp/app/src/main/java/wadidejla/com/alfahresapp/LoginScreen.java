@@ -186,10 +186,10 @@ public class LoginScreen extends ActionBarActivity {
 
 
 
-                                                    Intent syncService = new Intent(LoginScreen.this
+                                                   /* Intent syncService = new Intent(LoginScreen.this
                                                             ,AlfahresSyncService.class);
                                                     //start the service
-                                                    startService(syncService);
+                                                    startService(syncService);*/
 
                                                     LoginScreen.this.runOnUiThread(new Runnable() {
                                                         @Override
