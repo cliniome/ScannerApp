@@ -255,6 +255,7 @@ public class AlfahresMain extends ActionBarActivity {
         this.setFragmentList(fragList);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),fragList);
+        mSectionsPagerAdapter.setParentActivity(this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -274,15 +275,32 @@ public class AlfahresMain extends ActionBarActivity {
                 {
                     String title = ((MainFilesScreenFragment)currentFragment).getTitle();
                     AlfahresMain.this.setTitle(title);
+
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().clear();
+
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().add((MainFilesScreenFragment)currentFragment);
+
                 }else if (currentFragment instanceof LocalSyncFilesFragment)
                 {
                     String title = ((LocalSyncFilesFragment)currentFragment).getTitle();
                     AlfahresMain.this.setTitle(title);
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().clear();
+
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().add((LocalSyncFilesFragment)currentFragment);
 
                 }else if (currentFragment instanceof ScanAndReceiveFragment)
                 {
                     String title= ((ScanAndReceiveFragment)currentFragment).getTitle();
                     AlfahresMain.this.setTitle(title);
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().clear();
+
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().add((ScanAndReceiveFragment)currentFragment);
                 }
 
                 //notify all of them about any changes

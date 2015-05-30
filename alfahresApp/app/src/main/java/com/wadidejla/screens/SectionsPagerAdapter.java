@@ -58,6 +58,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         Fragment currentFragment = screens.get(position);
 
+
+
         return currentFragment;
     }
 

@@ -41,13 +41,18 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
     private FilesManager filesManager;
     private String title;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setTitle(getResources().getString(R.string.title_section1));
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.main_files_layout,container,false);
-        getActivity().setTitle(R.string.title_section1);
+        //getActivity().setTitle(R.string.title_section1);
         this.setTitle(getResources().getString(R.string.title_section1));
         listView = (ListView)rootView.findViewById(R.id.mainFilesList);
         TextView emptyView = new TextView(getActivity());
