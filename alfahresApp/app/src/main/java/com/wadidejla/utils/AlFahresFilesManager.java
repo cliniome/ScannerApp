@@ -119,6 +119,7 @@ public class AlFahresFilesManager implements FilesManager {
             if(foundFile != null)
             {
                 foundFile.setState(file.getState());
+                foundFile.setReadyFile(RestfulFile.READY_FILE);
                 //add the current file into the sync_Files table
                 boolean result = filesDBManager.insertFile(foundFile);
 
@@ -164,6 +165,7 @@ public class AlFahresFilesManager implements FilesManager {
             {
                 for(RestfulFile file : getFiles())
                 {
+                    file.setReadyFile(RestfulFile.READY_FILE);
                    result = result && filesDBManager.insertFile(file);
 
                 }
@@ -198,6 +200,9 @@ public class AlFahresFilesManager implements FilesManager {
     }
 
     public List<RestfulFile> getFiles() {
+
+        if(this.files == null)
+            this.files = new ArrayList<RestfulFile>();
         return files;
     }
 

@@ -1,9 +1,13 @@
 package com.wadidejla.tasks;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.View;
 
 import com.degla.restful.models.BooleanResult;
 import com.degla.restful.models.FileModelStates;
@@ -15,6 +19,8 @@ import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import wadidejla.com.alfahresapp.R;
 
 /**
  * Created by snouto on 30/05/15.
@@ -63,8 +69,29 @@ public class ManualSyncTask implements Runnable {
                         Log.w(CLASS_NAME, s.getMessage());
 
                     }
+                }else
+                {
+                   if(context instanceof Activity)
+                   {
+                       ((Activity)context).runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
 
+                               final AlertDialog dialog = new AlertDialog.Builder(context)
+                                       .setTitle(R.string.SYNC_OFFLINE_TITLE)
+                                       .setMessage(R.string.SYNC_DIALOG_MESSAGE)
+                                       .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                           @Override
+                                           public void onClick(DialogInterface dialogInterface, int i) {
 
+                                               dialogInterface.dismiss();
+                                           }
+                                       }).create();
+
+                               dialog.show();
+                           }
+                       });
+                   }
                 }
 
             }catch (Exception s)
@@ -74,6 +101,8 @@ public class ManualSyncTask implements Runnable {
         }
 
     }
+
+
 
     private void beginSynchronization() throws Exception {
 
@@ -85,7 +114,7 @@ public class ManualSyncTask implements Runnable {
 
         //get all the restful files
         List<RestfulFile> availableFiles = systemSettingsManager.getSyncFilesManager().getFilesDBManager()
-                .getAllFiles();
+                .getAllReadyFiles();
 
         if(availableFiles != null && availableFiles.size() > 0)
 

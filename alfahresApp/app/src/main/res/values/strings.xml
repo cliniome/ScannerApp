@@ -46,5 +46,7 @@
     <string name="file_clinicCode">clinic Code</string>
     <string name="file_docName">Doc. Name</string>
     <string name="file_docCode">Doc. Code</string>
+    <string name="SYNC_OFFLINE_TITLE">Notification...</string>
+    <string name="SYNC_DIALOG_MESSAGE">Operation has been Scheduled when connectivity becomes available.</string>
 
 </resources>

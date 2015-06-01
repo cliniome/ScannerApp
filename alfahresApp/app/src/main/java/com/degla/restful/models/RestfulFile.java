@@ -11,6 +11,9 @@ import java.util.Date;
 public class RestfulFile implements Serializable {
 
 
+    public static final int READY_FILE = 1;
+    public static final int NOT_READY_FILE = 0;
+
     @Expose
     private String fileNumber;
     @Expose
@@ -56,6 +59,8 @@ public class RestfulFile implements Serializable {
     private String appointmentTime;
     @Expose
     private String appointmentMadeBy;
+
+    private int readyFile;
 
     @Expose
     private  RestfulEmployee emp;
@@ -262,5 +267,13 @@ public class RestfulFile implements Serializable {
 
     public void setClinicDocCode(String clinicDocCode) {
         this.clinicDocCode = clinicDocCode;
+    }
+
+    public int getReadyFile() {
+        return readyFile;
+    }
+
+    public void setReadyFile(int readyFile) {
+        this.readyFile = readyFile;
     }
 }

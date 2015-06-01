@@ -100,7 +100,7 @@ public class SyncTask implements Runnable {
 
         //get all the restful files
         List<RestfulFile> availableFiles = systemSettingsManager.getSyncFilesManager().getFilesDBManager()
-                .getAllFiles();
+                .getAllReadyFiles();
 
         if(availableFiles != null && availableFiles.size() > 0)
 

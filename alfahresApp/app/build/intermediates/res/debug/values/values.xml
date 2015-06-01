@@ -209,6 +209,8 @@
     <string name="SETTINGS_BTN_BACK">Back</string>
     <string name="SINGLE_CHOICE_DLG_MSG">Choose one Option below.</string>
     <string name="SINGLE_CHOICE_DLG_TITLE">Choose an Option...</string>
+    <string name="SYNC_DIALOG_MESSAGE">Operation has been Scheduled when connectivity becomes available.</string>
+    <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
     <string name="SYSTEM_IP">192.168.1.9</string>

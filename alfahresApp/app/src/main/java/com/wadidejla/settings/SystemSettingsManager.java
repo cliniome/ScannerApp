@@ -205,6 +205,9 @@ public class SystemSettingsManager {
 
 
     public List<RestfulFile> getReceivedFiles() {
+        if(this.receivedFiles == null)
+            this.receivedFiles = new ArrayList<RestfulFile>();
+
         return receivedFiles;
     }
 
