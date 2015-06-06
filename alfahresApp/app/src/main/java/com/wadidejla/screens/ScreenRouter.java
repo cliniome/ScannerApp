@@ -19,6 +19,7 @@ import com.wadidejla.utils.ActionItem;
 import com.wadidejla.utils.Actionable;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.SoundUtils;
 import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -154,9 +155,11 @@ public class ScreenRouter {
 
                 file.setState(FileModelStates.MISSING.toString());
 
-                filesManager.operateOnFile(file,settingsManager.getAccount());
+                filesManager.operateOnFile(file, settingsManager.getAccount());
 
                 adapter.notifyDataSetChanged();
+
+                SoundUtils.playSound(conn);
             }
         }));
 
