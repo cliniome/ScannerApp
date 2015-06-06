@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 /**
  * Created by snouto on 29/05/15.
  */
-public interface Actionable {
+public interface Actionable<T> {
 
-    public void doAction(Object OnItem , ArrayAdapter adapter);
+    public void doAction(Object OnItem , T adapter);
 }

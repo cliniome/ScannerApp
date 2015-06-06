@@ -15,6 +15,7 @@ import com.wadidejla.screens.GenericFilesAdapter;
 import com.wadidejla.screens.ScanAndReceiveFragment;
 import com.wadidejla.screens.ScreenRouter;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.AlFahresFilesManager;
 
 /**
  * Created by snouto on 29/05/15.
@@ -87,6 +88,7 @@ public class ScanAndReceiveTask implements Runnable {
                                if(batch != null && batch.getFiles() != null)
                                {
                                    settingsManager.setReceivedFiles(batch.getFiles());
+
                                    //Create the Keeper Listener
                                    GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(context
                                            ,settingsManager.getReceivedFiles());

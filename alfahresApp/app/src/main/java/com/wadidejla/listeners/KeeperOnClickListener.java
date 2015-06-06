@@ -17,19 +17,19 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 29/05/15.
  */
-public class KeeperOnClickListener implements View.OnLongClickListener {
+public class KeeperOnClickListener<T> implements View.OnLongClickListener {
 
     private Context context;
 
-    private List<ActionItem> actionItems;
+    private List<ActionItem<T>> actionItems;
 
-    private ArrayAdapter parentAdapter;
+    private T parentAdapter;
 
 
     public KeeperOnClickListener(Context con)
     {
         this.setContext(con);
-        this.setActionItems(new ArrayList<ActionItem>());
+        this.setActionItems(new ArrayList<ActionItem<T>>());
     }
 
 
@@ -93,19 +93,19 @@ public class KeeperOnClickListener implements View.OnLongClickListener {
     }
 
 
-    public List<ActionItem> getActionItems() {
+    public List<ActionItem<T>> getActionItems() {
         return actionItems;
     }
 
-    public void setActionItems(List<ActionItem> actionItems) {
+    public void setActionItems(List<ActionItem<T>> actionItems) {
         this.actionItems = actionItems;
     }
 
-    public ArrayAdapter getParentAdapter() {
+    public T getParentAdapter() {
         return parentAdapter;
     }
 
-    public void setParentAdapter(ArrayAdapter parentAdapter) {
+    public void setParentAdapter(T parentAdapter) {
         this.parentAdapter = parentAdapter;
     }
 }

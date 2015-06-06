@@ -2,12 +2,17 @@ package com.wadidejla.utils;
 
 import android.util.Log;
 
+import com.degla.restful.models.CollectionBatch;
+import com.degla.restful.models.FileModelStates;
+import com.degla.restful.models.RestfulClinic;
+import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.db.AlfahresDBHelper;
 import com.wadidejla.db.EmployeeDBManager;
 import com.wadidejla.db.FilesDBManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +55,7 @@ public class AlFahresFilesManager implements FilesManager {
             if(foundFile != null)
             {
                 foundFile.setState(state);
+                foundFile.setReadyFile(RestfulFile.READY_FILE);
                 //add the current file into the sync_Files table
                 boolean result = filesDBManager.insertFile(foundFile);
 
@@ -106,7 +112,7 @@ public class AlFahresFilesManager implements FilesManager {
     }
 
     @Override
-    public boolean operateOnFile(RestfulFile file) {
+    public boolean operateOnFile(RestfulFile file,RestfulEmployee emp) {
 
 
         try
@@ -118,6 +124,7 @@ public class AlFahresFilesManager implements FilesManager {
 
             if(foundFile != null)
             {
+                foundFile.setEmp(emp);
                 foundFile.setState(file.getState());
                 foundFile.setReadyFile(RestfulFile.READY_FILE);
                 //add the current file into the sync_Files table
@@ -156,7 +163,7 @@ public class AlFahresFilesManager implements FilesManager {
     }
 
     @Override
-    public boolean operateOnFiles() {
+    public boolean operateOnFiles(int flag,RestfulEmployee emp) {
         try
         {
             boolean result = true;
@@ -165,7 +172,8 @@ public class AlFahresFilesManager implements FilesManager {
             {
                 for(RestfulFile file : getFiles())
                 {
-                    file.setReadyFile(RestfulFile.READY_FILE);
+                    file.setReadyFile(flag);
+                    file.setEmp(emp);
                    result = result && filesDBManager.insertFile(file);
 
                 }
@@ -195,6 +203,79 @@ public class AlFahresFilesManager implements FilesManager {
         return this.filesDBManager;
     }
 
+    private RestfulClinic getClinic(String code , List<RestfulClinic> clinics)
+    {
+        RestfulClinic clinic = null;
+        for(RestfulClinic current : clinics)
+        {
+            if(current.getClinicCode().equalsIgnoreCase(code))
+            {
+                clinic = current;
+                break;
+            }
+        }
+
+        return clinic;
+    }
+
+    @Override
+    public CollectionBatch getCoordinatorFiles(int flag,RestfulEmployee emp) {
+
+        try
+        {
+            CollectionBatch batch = new CollectionBatch();
+
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(AlfahresDBHelper.COL_STATE.toString()).append("=").append("'")
+                    .append(FileModelStates.COORDINATOR_IN.toString()).append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_READY_FILE).append("=").append("'")
+                    .append(String.valueOf(flag)).append("'").append(" AND ")
+                    .append(AlfahresDBHelper.EMP_ID).append("=").append("'").append(emp.getId())
+            .append("'");
+
+            String whereClause = buffer.toString();
+
+            List<RestfulFile> availableFiles = filesDBManager.getFilesWhere(whereClause);
+
+            if(availableFiles != null && availableFiles.size() > 0)
+            {
+                List<RestfulClinic> clinics = new ArrayList<RestfulClinic>();
+
+                for(RestfulFile file : availableFiles)
+                {
+                    RestfulClinic currentClinic = getClinic(file.getClinicCode(),clinics);
+
+                    if(currentClinic == null)
+                    {
+                        RestfulClinic newClinic = new RestfulClinic();
+                        newClinic.setFiles(new ArrayList<RestfulFile>());
+                        newClinic.setClinicCode(file.getClinicCode());
+                        newClinic.setClinicName(file.getClinicName());
+
+                        newClinic.getFiles().add(file);
+
+                        clinics.add(newClinic);
+                    }else
+                    {
+                        currentClinic.getFiles().add(file);
+                    }
+                }
+
+                batch.setCreatedAt(new Date().getTime());
+                batch.setClinics(clinics);
+
+                return batch;
+
+
+            }else throw new Exception("There are no files");
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new CollectionBatch();
+        }
+    }
+
     public void setOperatingTable(String operatingTable) {
         this.operatingTable = operatingTable;
     }
@@ -207,6 +288,8 @@ public class AlFahresFilesManager implements FilesManager {
     }
 
     public void setFiles(List<RestfulFile> files) {
+
+
         this.files = files;
     }
 }

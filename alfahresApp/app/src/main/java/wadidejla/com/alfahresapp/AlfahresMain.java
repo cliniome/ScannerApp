@@ -44,6 +44,7 @@ import com.wadidejla.barcode.IntentResult;
 import com.wadidejla.db.FilesDBManager;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.preferences.AlfahresPreferenceManager;
+import com.wadidejla.screens.CoordinatorCollectionFragment;
 import com.wadidejla.screens.FilesArrayAdapter;
 import com.wadidejla.screens.LocalSyncFilesFragment;
 import com.wadidejla.screens.MainFilesScreenFragment;
@@ -323,6 +324,17 @@ public class AlfahresMain extends ActionBarActivity {
 
                     SystemSettingsManager.createInstance(AlfahresMain.this)
                             .getSyncFilesManager().getFilesListener().add((ScanAndReceiveFragment)currentFragment);
+                }else if (currentFragment instanceof CoordinatorCollectionFragment)
+                {
+                    String title = ((CoordinatorCollectionFragment)currentFragment).getTitle();
+                    AlfahresMain.this.setTitle(title);
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().clear();
+
+
+                    SystemSettingsManager.createInstance(AlfahresMain.this)
+                            .getSyncFilesManager().getFilesListener().add((CoordinatorCollectionFragment)currentFragment);
+
                 }
 
                 //notify all of them about any changes
@@ -391,32 +403,19 @@ public class AlfahresMain extends ActionBarActivity {
             return true;
         }else if (id == R.id.markFiles)
         {
-            final AlertDialog choiceDialog = new AlertDialog.Builder(this)
-                    .setTitle("Mark Files as...")
-                    .setItems(EmployeeUtils.MARK_FILES_ITEMS, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+            final AlertDialog waitDialog = new AlertDialog.Builder(this)
+                    .setTitle("Marking Files...")
+                    .setMessage("Please Wait...")
+                    .setCancelable(false).create();
+
+            waitDialog.show();
+            MarkingTask currentMarkingTask = new MarkingTask(this,EmployeeUtils.RECEIVE_FILES);
+            currentMarkingTask.setDialog(waitDialog);
+
+            Thread markingThread = new Thread(currentMarkingTask);
+            markingThread.start();
 
 
-                            MarkingTask markingTask = null;
-
-                            if(i == 0) // that means mark files as received
-                            {
-                                markingTask = new MarkingTask(AlfahresMain.this,EmployeeUtils.RECEIVE_FILES);
-
-                            }else // mark files as send out
-                            {
-                                markingTask = new MarkingTask(AlfahresMain.this,EmployeeUtils.SEND_FILES);
-                            }
-
-                            Thread markingThread = new Thread(markingTask);
-                            dialogInterface.dismiss();
-                            markingThread.start();
-
-                        }
-                    }).create();
-
-            choiceDialog.show();
 
         } else if (id == R.id.btn_logout_main)
         {

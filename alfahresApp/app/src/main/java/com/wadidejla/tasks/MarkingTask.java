@@ -1,5 +1,7 @@
 package com.wadidejla.tasks;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 
 import com.degla.restful.models.RestfulFile;
@@ -17,6 +19,7 @@ public class MarkingTask implements Runnable {
 
     private Context context;
     private int operationType;
+    private AlertDialog dialog;
 
     public MarkingTask(Context context,int operationType)
     {
@@ -29,35 +32,55 @@ public class MarkingTask implements Runnable {
     @Override
     public void run() {
 
-        SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getContext());
-
-        List<RestfulFile> receivedFiles = settingsManager.getReceivedFiles();
-
-        if(receivedFiles != null && receivedFiles.size() > 0)
+        try
         {
-            String state = EmployeeUtils.getStatesForFiles(settingsManager.getAccount(),
-                    this.getOperationType());
+            SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getContext());
 
-            for(RestfulFile file : receivedFiles)
+            List<RestfulFile> receivedFiles = settingsManager.getReceivedFiles();
+
+            if(receivedFiles != null && receivedFiles.size() > 0)
             {
-                file.setState(state);
+                String state = EmployeeUtils.getStatesForFiles(settingsManager.getAccount(),
+                        this.getOperationType());
+
+                for(RestfulFile file : receivedFiles)
+                {
+                    file.setState(state);
+                }
+
+                AlFahresFilesManager syncManager = (AlFahresFilesManager) settingsManager
+                        .getReceivedSyncFilesManager();
+
+                if(syncManager != null)
+                {
+                    syncManager.setFiles(receivedFiles);
+
+                    syncManager.operateOnFiles(RestfulFile.READY_FILE,
+                            settingsManager.getAccount());
+
+                    //now delete all received files
+                    settingsManager.getReceivedFiles().clear();
+
+
+                }
+
             }
 
-            AlFahresFilesManager syncManager = (AlFahresFilesManager) settingsManager
-                    .getReceivedSyncFilesManager();
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+        }
+        finally {
 
-            if(syncManager != null)
-            {
-                syncManager.setFiles(receivedFiles);
+            Activity currentActivity = (Activity)getContext();
 
-                syncManager.operateOnFiles();
+            currentActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
-                //now delete all received files
-                settingsManager.getReceivedFiles().clear();
-
-
-            }
-
+                    dialog.dismiss();
+                }
+            });
         }
 
     }
@@ -76,5 +99,13 @@ public class MarkingTask implements Runnable {
 
     public void setOperationType(int operationType) {
         this.operationType = operationType;
+    }
+
+    public AlertDialog getDialog() {
+        return dialog;
+    }
+
+    public void setDialog(AlertDialog dialog) {
+        this.dialog = dialog;
     }
 }

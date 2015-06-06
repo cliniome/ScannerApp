@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
@@ -53,9 +54,15 @@ public class ScreenRouter {
                 fragments.add(new LocalSyncFilesFragment());
                 fragments.add(new ScanAndReceiveFragment());
 
-            }else
+            }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
                 //that is the receptionist
+                fragments.add(new CoordinatorCollectionFragment());
+                fragments.add(new LocalSyncFilesFragment());
+                fragments.add(new ScanAndReceiveFragment());
+
+            }else
+            {
                 fragments.add(new LocalSyncFilesFragment());
                 fragments.add(new ScanAndReceiveFragment());
             }
@@ -70,26 +77,68 @@ public class ScreenRouter {
         SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(con);
         if(settingsManager.getAccount() != null)
         {
-            if(settingsManager.getAccount().getRole().equals(KEEPER_ROLE))
-            {
-                //that is the Keeper
-                inflater.inflate(R.menu.keeper_menu, menu);
-
-            }else
-            {
-                //that is the receptionist
-                inflater.inflate(R.menu.keeper_menu, menu);
-            }
+            inflater.inflate(R.menu.keeper_menu,menu);
 
         }
 
     }
 
+    public static KeeperOnClickListener<BaseExpandableListAdapter> getExpandableListener(final Context conn)
+    {
+        KeeperOnClickListener<BaseExpandableListAdapter> listener = new KeeperOnClickListener<BaseExpandableListAdapter>(conn);
+        listener.getActionItems().add(new ActionItem<BaseExpandableListAdapter>("Mark file as Missing", new Actionable<BaseExpandableListAdapter>() {
+            @Override
+            public void doAction(Object onItem,BaseExpandableListAdapter adapter) {
+
+                //Access the adapter
+                CoordinatorExpandableAdapter expandableAdapter = (CoordinatorExpandableAdapter)adapter;
+                SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(conn);
+                FilesManager filesManager = settingsManager.getSyncFilesManager();
+
+                if(expandableAdapter != null)
+                {
+                    RestfulFile file = (RestfulFile)onItem;
+                    file.setEmp(settingsManager.getAccount());
+                    file.setState(FileModelStates.MISSING.toString());
+                    file.setReadyFile(RestfulFile.READY_FILE);
+                    filesManager.getFilesDBManager().insertFile(file);
+                    expandableAdapter.removeFile(file);
+
+                }
+            }
+        }));
+
+        listener.getActionItems().add(new ActionItem("Show File Details", new Actionable<BaseExpandableListAdapter>() {
+            @Override
+            public void doAction(Object OnItem, BaseExpandableListAdapter adapter) {
+
+                RestfulFile file = (RestfulFile)OnItem;
+
+                final AlertDialog detailsDialog = new AlertDialog.Builder(conn)
+                        .setTitle(file.getFileNumber())
+                        .setView(ViewUtils.getDetailsViewFor(file, conn))
+                        .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+
+
+                detailsDialog.show();
+
+            }
+        }));
+
+
+        return listener;
+    }
+
 
     public static GenericFilesAdapter getGenericKeeperArrayAdapter(final Context conn,List<RestfulFile> files)
     {
-        KeeperOnClickListener listener = new KeeperOnClickListener(conn);
-        listener.getActionItems().add(new ActionItem("Mark file as Missing", new Actionable() {
+        KeeperOnClickListener<ArrayAdapter> listener = new KeeperOnClickListener<ArrayAdapter>(conn);
+        listener.getActionItems().add(new ActionItem<ArrayAdapter>("Mark file as Missing", new Actionable<ArrayAdapter>() {
             @Override
             public void doAction(Object onItem,ArrayAdapter adapter) {
 
@@ -105,13 +154,13 @@ public class ScreenRouter {
 
                 file.setState(FileModelStates.MISSING.toString());
 
-                filesManager.operateOnFile(file);
+                filesManager.operateOnFile(file,settingsManager.getAccount());
 
                 adapter.notifyDataSetChanged();
             }
         }));
 
-        listener.getActionItems().add(new ActionItem("Show File Details", new Actionable() {
+        listener.getActionItems().add(new ActionItem("Show File Details", new Actionable<ArrayAdapter>() {
             @Override
             public void doAction(Object OnItem, ArrayAdapter adapter) {
 

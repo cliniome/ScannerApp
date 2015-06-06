@@ -3,11 +3,11 @@ package com.wadidejla.utils;
 /**
  * Created by snouto on 29/05/15.
  */
-public class ActionItem {
+public class ActionItem<T> {
 
     private String actionName;
 
-    private Actionable action;
+    private Actionable<T> action;
 
 
     public ActionItem(String actionName)

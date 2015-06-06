@@ -196,6 +196,7 @@
     <integer name="abc_max_action_buttons">2</integer>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="LOGIN_LBL_PASSWORD">Password</string>
     <string name="LOGIN_LBL_USERNAME">User Name</string>
     <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>

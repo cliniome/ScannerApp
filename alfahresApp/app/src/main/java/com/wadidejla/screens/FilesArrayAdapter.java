@@ -91,7 +91,8 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                                .getSyncFilesManager();
 
                                        file.setState(FileModelStates.MISSING.toString());
-                                       filesManager.operateOnFile(file);
+                                       filesManager.operateOnFile(file,
+                                               SystemSettingsManager.createInstance(getContext()).getAccount());
 
                                    }catch (Exception s)
                                    {

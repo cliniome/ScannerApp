@@ -9,7 +9,9 @@ import com.degla.restful.models.RestfulFile;
 import com.wadidejla.db.AlfahresDBHelper;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.utils.AlFahresFilesManager;
+import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.FilesManager;
+import com.wadidejla.utils.FilesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,9 @@ public class SystemSettingsManager {
     private RestfulEmployee account;
     private List<RestfulFile> newRequests;
     private List<RestfulFile> receivedFiles;
-
     private AlFahresFilesManager filesManager;
+
+    private boolean collectingBegun =false;
 
 
     private SystemSettingsManager(Context con){
@@ -56,6 +59,7 @@ public class SystemSettingsManager {
                 ,AlfahresDBHelper.DATABASE_VERSION);
         filesManager = new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES);
         filesManager.setFiles(this.getNewRequests());
+        this.setCollectingBegun(false);
 
 
     }
@@ -64,6 +68,7 @@ public class SystemSettingsManager {
     {
         this.setNewRequests(null);
         this.setReceivedFiles(null);
+        this.setCollectingBegun(false);
 
 
     }
@@ -219,7 +224,16 @@ public class SystemSettingsManager {
             for(RestfulFile file : this.receivedFiles)
             {
                 file.setEmp(getAccount());
+                file.setState(EmployeeUtils.getStatesForFiles(getAccount(),EmployeeUtils.RECEIVE_FILES));
             }
         }
+    }
+
+    public boolean isCollectingBegun() {
+        return collectingBegun;
+    }
+
+    public void setCollectingBegun(boolean collectingBegun) {
+        this.collectingBegun = collectingBegun;
     }
 }
