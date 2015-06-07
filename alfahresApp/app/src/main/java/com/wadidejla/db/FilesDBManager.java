@@ -83,7 +83,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
 
                 //Getting the new fields
@@ -183,7 +183,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
 
                 //Getting the new fields
@@ -281,7 +281,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
                 //Getting the new fields
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE);
@@ -334,7 +334,6 @@ public class FilesDBManager {
         {
             String[] selectableFields = dbHelper.getAllFilesColumns();
             String whereClause = AlfahresDBHelper.EMP_ID+"='"+empID+"'";
-
             String[] whereArgs = null;
             String groupBy = null;
             String having = null;
@@ -374,7 +373,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
                 //Getting the new fields
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE);
@@ -466,7 +465,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
                 //Getting the new fields
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE);
@@ -558,7 +557,7 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
                 file.getEmp().setUserName(cursor.getString(columnIndex));
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
-                file.getEmp().setId(Integer.parseInt(cursor.getString(columnIndex)));
+                file.getEmp().setUserName(cursor.getString(columnIndex));
 
                 //Getting the new fields
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE);
@@ -602,6 +601,31 @@ public class FilesDBManager {
             Log.w(AlfahresDBHelper.DATABASE_NAME,s.getMessage());
 
             return null;
+        }
+    }
+
+
+    public synchronized  boolean fileExists(RestfulFile file)
+    {
+        try
+        {
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.KEY_ID).append("=").append("'").append(file.getFileNumber()).append("'")
+                    .append(" AND ").append(AlfahresDBHelper.EMP_ID).append("=").append("'").append(file.getEmp().getUserName()).append("'");
+
+
+            List<RestfulFile> existingFiles = getFilesWhere(whereClause.toString());
+
+            if(existingFiles != null && existingFiles.size() > 0)
+            {
+               return true;
+
+            }else return false;
+
+        }catch (Exception s)
+        {
+            Log.w("FilesDBManager",s.getMessage());
+            return false;
         }
     }
 
@@ -721,7 +745,7 @@ public class FilesDBManager {
             values.put(COL_SHELFID,file.getShelfId());
             values.put(COL_STATE,file.getState());
             values.put(COL_TEMP_CABINID,file.getTemporaryCabinetId());
-            values.put(EMP_ID,String.valueOf(file.getEmp().getId()));
+            values.put(EMP_ID,String.valueOf(file.getEmp().getUserName()));
             values.put(COL_EMP_USERNAME,file.getEmp().getUserName());
             values.put(COL_CLINIC_DOC_NAME,file.getClinicDocName());
             values.put(COL_CLINIC_NAME,file.getClinicName());

@@ -1,11 +1,14 @@
 package com.wadidejla.utils;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 
 import org.w3c.dom.Text;
@@ -18,6 +21,56 @@ import wadidejla.com.alfahresapp.R;
 public class ViewUtils {
 
     private static final String CLASS_NAME = "ViewUtils";
+
+
+
+    public static View getDetailsTitleViewFor(RestfulFile file ,Context context)
+    {
+        try
+        {
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View rootView = inflater.inflate(R.layout.custom_file_title,null,false);
+
+            if(rootView != null)
+            {
+                //set the image for the title according to the state of the file
+                //if file has readyFile = 1 , it means it is complete
+                //otherwise , it is incomplete, under preview
+                //then , check if the file is missing or not
+                ImageView titleImg = (ImageView)rootView.findViewById(R.id.fileimgtitle);
+
+                if (file.getState() != null && file.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
+                {
+                    //that means the file is missing so set the imageview to missing drawable from the resources folder
+                    titleImg.setImageDrawable(context.getResources().getDrawable(R.drawable.missing));
+
+                }else if (file.getReadyFile() != 0) // that means the file is ready
+                {
+                    //show the complete drawable
+                    titleImg.setImageDrawable(context.getResources().getDrawable(R.drawable.complete));
+                }else
+                {
+                    //it means the file is not ready at all , so display the preview icon
+                    titleImg.setImageDrawable(context.getResources().getDrawable(R.drawable.preview));
+                }
+
+                //now set the file number
+                TextView fileTxt = (TextView)rootView.findViewById(R.id.txt_filetitle);
+                fileTxt.setTypeface(null, Typeface.BOLD);
+
+                fileTxt.setText(file.getFileNumber());
+
+            }
+
+            return rootView;
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return null;
+        }
+    }
 
 
     public static View getDetailsViewFor(RestfulFile file,Context context)

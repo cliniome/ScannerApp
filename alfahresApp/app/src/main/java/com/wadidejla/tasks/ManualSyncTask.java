@@ -123,28 +123,9 @@ public class ManualSyncTask implements Runnable {
 
             for(RestfulFile file : availableFiles)
             {
-                if(file.getState() != null &&
-                        file.getState().equals(FileModelStates.MISSING.toString()))
-                {
-                    readyFiles.add(file);
-                    continue;
-                }
+                if(file.isReadyForSync())
+                 readyFiles.add(file);
 
-                if(file.getState() !=null && !file.getState().equals(FileModelStates.MISSING.toString()))
-                {
-                    //it means that this file state is something else
-                    //check to see if that file contains emp ID , username and
-                    //the most important is a temporary Cabin ID
-                    if(file.getEmp() != null && file.getEmp().getUserName() != null &&
-                            (file.getEmp().getId() != 0 && file.getEmp().getId() != -1) &&
-                            file.getTemporaryCabinetId() != null && file.getTemporaryCabinetId().length() > 0)
-                    {
-                        //it means that this file is ready
-                        readyFiles.add(file);
-                        continue;
-
-                    }
-                }
             }
 
             //now add all these files to a syncBatch

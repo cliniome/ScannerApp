@@ -116,7 +116,7 @@ public class ScreenRouter {
                 RestfulFile file = (RestfulFile)OnItem;
 
                 final AlertDialog detailsDialog = new AlertDialog.Builder(conn)
-                        .setTitle(file.getFileNumber())
+                        .setCustomTitle(ViewUtils.getDetailsTitleViewFor(file,conn))
                         .setView(ViewUtils.getDetailsViewFor(file, conn))
                         .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
                             @Override
@@ -170,7 +170,7 @@ public class ScreenRouter {
                 RestfulFile file = (RestfulFile)OnItem;
 
                 final AlertDialog detailsDialog = new AlertDialog.Builder(conn)
-                        .setTitle(file.getFileNumber())
+                        .setCustomTitle(ViewUtils.getDetailsTitleViewFor(file,conn))
                         .setView(ViewUtils.getDetailsViewFor(file, conn))
                         .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
                             @Override

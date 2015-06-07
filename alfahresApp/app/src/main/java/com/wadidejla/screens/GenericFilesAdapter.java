@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
@@ -72,6 +73,25 @@ public class GenericFilesAdapter extends ArrayAdapter<RestfulFile> {
         TextView txtShelfId = (TextView) rootView.findViewById(R.id.txtshelfId);
 
         txtShelfId.setText(file.getShelfId());
+
+        ImageView imgView = (ImageView)rootView.findViewById(R.id.missing_file_img);
+
+        if (file.getState() != null && file.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
+        {
+            //that means the file is missing so set the imageview to missing drawable from the resources folder
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.missing));
+
+        }else if (file.getReadyFile() != 0 && file.getTemporaryCabinetId() != null &&
+                file.getTemporaryCabinetId().length() >= 0) // that means the file is ready
+        {
+            //show the complete drawable
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.complete));
+        }else
+        {
+            //it means the file is not ready at all , so display the preview icon
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
+        }
+
 
         //attach a long click listener to the current view
         this.getListener().setParentAdapter(this);

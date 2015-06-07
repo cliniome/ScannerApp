@@ -127,6 +127,9 @@ public class MainFilesScreenFragment extends Fragment implements FilesOnChangeLi
 
                                         for(RestfulFile file : files)
                                         {
+                                            //add the current employee to the current file
+                                            file.setEmp(settingsManager.getAccount());
+
                                             if(settingsManager.getSyncFilesManager()
                                                     .getFilesDBManager().getFileByNumber(file.getFileNumber()) == null)
                                             {

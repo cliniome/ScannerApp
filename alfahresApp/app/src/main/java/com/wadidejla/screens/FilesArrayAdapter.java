@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,24 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
 
         txtShelfId.setText(file.getShelfId());
 
+        ImageView imgView = (ImageView)rootView.findViewById(R.id.missing_file_img);
+
+        if (file.getState() != null && file.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
+        {
+            //that means the file is missing so set the imageview to missing drawable from the resources folder
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.missing));
+
+        }else if (file.getReadyFile() != 0 && file.getTemporaryCabinetId() != null &&
+                file.getTemporaryCabinetId().length() >= 0) // that means the file is ready
+        {
+            //show the complete drawable
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.complete));
+        }else
+        {
+            //it means the file is not ready at all , so display the preview icon
+            imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
+        }
+
         //attach a long click listener to the current view
         rootView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -85,24 +104,21 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                 if (i == 0) // that means mark file as missing
                                 {
                                     //access the files Manager from the settings
-                                   try
-                                   {
-                                       FilesManager filesManager = SystemSettingsManager.createInstance(getContext())
-                                               .getSyncFilesManager();
+                                    try {
+                                        FilesManager filesManager = SystemSettingsManager.createInstance(getContext())
+                                                .getSyncFilesManager();
 
-                                       file.setState(FileModelStates.MISSING.toString());
-                                       filesManager.operateOnFile(file,
-                                               SystemSettingsManager.createInstance(getContext()).getAccount());
+                                        file.setState(FileModelStates.MISSING.toString());
+                                        filesManager.operateOnFile(file,
+                                                SystemSettingsManager.createInstance(getContext()).getAccount());
 
-                                   }catch (Exception s)
-                                   {
-                                       Log.w("FilesArrayAdapter",s.getMessage());
+                                    } catch (Exception s) {
+                                        Log.w("FilesArrayAdapter", s.getMessage());
 
-                                   }
-                                    finally {
+                                    } finally {
 
-                                       dialogInterface.dismiss();
-                                   }
+                                        dialogInterface.dismiss();
+                                    }
 
 
                                 } else {
@@ -110,8 +126,8 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                                     //TODO : add show details window in here to show the details of the selected file.
 
                                     final AlertDialog detailsDialog = new AlertDialog.Builder(getContext())
-                                            .setTitle(file.getFileNumber())
-                                            .setView(ViewUtils.getDetailsViewFor(file,getContext()))
+                                            .setCustomTitle(ViewUtils.getDetailsTitleViewFor(file, getContext()))
+                                            .setView(ViewUtils.getDetailsViewFor(file, getContext()))
                                             .setPositiveButton("Ok.", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -127,9 +143,6 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
                         }).create();
 
                 choiceDlg.show();
-
-
-
 
 
                 return true;

@@ -70,7 +70,7 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
         SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
         List<RestfulFile> localFiles = filesDBManager.getAllReadyFilesForEmployee(String.
-                valueOf(settingsManager.getAccount().getId()));
+                valueOf(settingsManager.getAccount().getUserName()));
 
         if(localFiles != null)
         {
@@ -153,7 +153,7 @@ public class LocalSyncFilesFragment extends Fragment implements FilesOnChangeLis
                         SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
                         List<RestfulFile> localFiles = filesDBManager.getAllReadyFilesForEmployee(String.
-                                valueOf(settingsManager.getAccount().getId()));
+                                valueOf(settingsManager.getAccount().getUserName()));
 
                         if(localFiles == null)
                             localFiles = new ArrayList<RestfulFile>();

@@ -167,7 +167,7 @@ public class AlfahresMain extends ActionBarActivity {
                                .getFilesDBManager();
 
                        boolean bresult = dbManager.updateAllFilesFor(
-                               String.valueOf(systemSettingsManager.getAccount().getId()),
+                               String.valueOf(systemSettingsManager.getAccount().getUserName()),
                                result.getContents()
                        );
 

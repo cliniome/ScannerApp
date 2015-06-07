@@ -73,6 +73,18 @@ public class RestfulFile implements Serializable {
     }
 
 
+    public boolean isReadyForSync()
+    {
+        if(this.getState() != null && this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
+            return true;
+        else
+        {
+            return(this.getEmp() != null && this.getEmp().getUserName() != null
+                    &&
+                    this.getTemporaryCabinetId() != null && this.getTemporaryCabinetId().length() > 0);
+        }
+    }
+
 
     public String getFileNumber() {
         return fileNumber;
