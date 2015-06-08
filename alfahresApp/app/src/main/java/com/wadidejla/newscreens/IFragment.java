@@ -10,4 +10,6 @@ public interface IFragment {
     void chainUpdate();
 
     void refresh();
+
+    void handleScanResults(String barcode);
 }

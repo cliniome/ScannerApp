@@ -297,6 +297,11 @@ public class NewRequestsFragment extends Fragment implements IFragment {
         }
     }
 
+    @Override
+    public void handleScanResults(String barcode) {
+
+    }
+
     public NewRequestsAdapter getRequestsAdapter() {
         return requestsAdapter;
     }

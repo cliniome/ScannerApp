@@ -88,7 +88,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                 public void onClick(View view) {
 
 
-                    //Scan
+                    //Scan for temporary container
                     String fileBarcode = ScannerUtils.ScanBarcode(getActivity());
 
                     if(fileBarcode != null)
@@ -207,6 +207,11 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
         if(this.getAdapter() != null)
             this.getAdapter().notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void handleScanResults(String barcode) {
 
     }
 

@@ -222,4 +222,9 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
         this.chainUpdate();
 
     }
+
+    @Override
+    public void handleScanResults(String barcode) {
+
+    }
 }
