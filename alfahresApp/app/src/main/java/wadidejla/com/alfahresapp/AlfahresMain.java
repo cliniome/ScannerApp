@@ -252,7 +252,7 @@ public class AlfahresMain extends ActionBarActivity {
               }
            }else if(currentFragment instanceof ScanAndReceiveFragment)
            {
-               final AlertDialog dialog = new AlertDialog.Builder(this)
+              /* final AlertDialog dialog = new AlertDialog.Builder(this)
                        .setTitle(R.string.main_files_alertDlg_Title)
                        .setMessage(R.string.main_loading_title)
                        .setCancelable(false).create();
@@ -265,7 +265,7 @@ public class AlfahresMain extends ActionBarActivity {
 
                Thread scanThread = new Thread(scanTask);
 
-               scanThread.start();
+               scanThread.start();*/
 
            }
 

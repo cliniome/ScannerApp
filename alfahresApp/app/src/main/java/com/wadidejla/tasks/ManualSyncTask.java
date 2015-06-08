@@ -2,6 +2,7 @@ package com.wadidejla.tasks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -15,7 +16,9 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.SoundUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,10 @@ public class ManualSyncTask implements Runnable {
 
     private AlfahresConnection connection;
     private Context context;
+
+    private ProgressDialog progressDialog;
+
+    private IFragment currentFragment;
 
     public ManualSyncTask(Context context)
     {
@@ -63,6 +70,7 @@ public class ManualSyncTask implements Runnable {
                     {
                         //begin the synchronization process in here
                         this.beginSynchronization();
+                        SoundUtils.playSound(context);
 
                     }catch (Exception s)
                     {
@@ -99,6 +107,17 @@ public class ManualSyncTask implements Runnable {
                 Log.w(CLASS_NAME,s.getMessage());
             }
         }
+
+        //finally dismiss the progress dialog
+
+        ((Activity)context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                progressDialog.dismiss();
+                currentFragment.refresh();
+            }
+        });
 
     }
 
@@ -216,4 +235,19 @@ public class ManualSyncTask implements Runnable {
     }
 
 
+    public ProgressDialog getProgressDialog() {
+        return progressDialog;
+    }
+
+    public void setProgressDialog(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
+    }
+
+    public IFragment getCurrentFragment() {
+        return currentFragment;
+    }
+
+    public void setCurrentFragment(IFragment currentFragment) {
+        this.currentFragment = currentFragment;
+    }
 }

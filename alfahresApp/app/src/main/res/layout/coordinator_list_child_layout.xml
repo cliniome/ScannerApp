@@ -5,13 +5,13 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:src="@drawable/file1"
-        android:scaleType="fitCenter"
+        android:layout_width="96dp"
+        android:src="@drawable/patientfile"
+
         android:layout_weight="1"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="8dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="96dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

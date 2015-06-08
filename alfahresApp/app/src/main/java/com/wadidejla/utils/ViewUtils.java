@@ -1,6 +1,8 @@
 package com.wadidejla.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import wadidejla.com.alfahresapp.R;
 public class ViewUtils {
 
     private static final String CLASS_NAME = "ViewUtils";
+    private static boolean choice = false;
 
 
 

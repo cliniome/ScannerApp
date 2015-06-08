@@ -73,6 +73,13 @@ public class RestfulFile implements Serializable {
     }
 
 
+    public String getColumnId()
+    {
+        //TODO :Don't forget to implement that to return the column id based on parsing the file Number.
+        return "";
+    }
+
+
     public boolean isReadyForSync()
     {
         if(this.getState() != null && this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))

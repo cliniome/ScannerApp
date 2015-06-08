@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/mainFilesList"
+        android:background="?android:activatedBackgroundIndicator"
+        android:soundEffectsEnabled="true"
+        android:drawSelectorOnTop="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_height="match_parent">
+    </ListView>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#80000000"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/refresh"
+            android:textAlignment="center"
+            android:id="@+id/new_outgoing_layout_refresh_btn"
+            android:text="Refresh"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/new_outgoing_sync_btn"
+            android:layout_width="wrap_content"
+            android:text="Sync Now"
+            android:drawableLeft="@drawable/sync"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="Do"
+            android:drawableLeft="@drawable/action"
+            android:id="@+id/new_outgoing_actions_btn"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

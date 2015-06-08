@@ -2,20 +2,18 @@ package com.wadidejla.tasks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 
 import com.degla.restful.models.BooleanResult;
-import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
-import com.wadidejla.screens.GenericFilesAdapter;
-import com.wadidejla.screens.ScanAndReceiveFragment;
-import com.wadidejla.screens.ScreenRouter;
+import com.wadidejla.newscreens.IFragment;
+import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.settings.SystemSettingsManager;
-import com.wadidejla.utils.AlFahresFilesManager;
 
 /**
  * Created by snouto on 29/05/15.
@@ -26,11 +24,11 @@ public class ScanAndReceiveTask implements Runnable {
     private Context context;
     private String barcode;
     private int operationType;
-    private ScanAndReceiveFragment fragment;
-    private AlertDialog dialog;
+    private IFragment fragment;
+    private ProgressDialog dialog;
 
     public ScanAndReceiveTask(Context cont,String barcode
-            ,ScanAndReceiveFragment fragment)
+            ,IFragment fragment)
     {
         this.setBarcode(barcode);
         this.setContext(cont);
@@ -87,14 +85,9 @@ public class ScanAndReceiveTask implements Runnable {
                                 adapter.notifyDataSetChanged();*/
                                if(batch != null && batch.getFiles() != null)
                                {
-                                   settingsManager.setReceivedFiles(batch.getFiles());
-
-                                   //Create the Keeper Listener
-                                   GenericFilesAdapter adapter = ScreenRouter.getGenericKeeperArrayAdapter(context
-                                           ,settingsManager.getReceivedFiles());
-
-                                   fragment.getListView().setAdapter(adapter);
-                                   adapter.notifyDataSetChanged();
+                                   DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+                                   storageUtils.setReceivedFiles(batch.getFiles());
+                                  ScanAndReceiveTask.this.getFragment().refresh();
                                }
 
 
@@ -122,7 +115,7 @@ public class ScanAndReceiveTask implements Runnable {
                                             }
                                         }).create();
 
-                                dialog.dismiss();
+                                getDialog().dismiss();
 
                                 alertDialog.show();
                             }
@@ -139,7 +132,7 @@ public class ScanAndReceiveTask implements Runnable {
 
         finally {
 
-            dialog.dismiss();
+            getDialog().dismiss();
         }
 
     }
@@ -160,21 +153,6 @@ public class ScanAndReceiveTask implements Runnable {
         this.barcode = barcode;
     }
 
-    public ScanAndReceiveFragment getFragment() {
-        return fragment;
-    }
-
-    public void setFragment(ScanAndReceiveFragment fragment) {
-        this.fragment = fragment;
-    }
-
-    public AlertDialog getDialog() {
-        return dialog;
-    }
-
-    public void setDialog(AlertDialog dialog) {
-        this.dialog = dialog;
-    }
 
     public int getOperationType() {
         return operationType;
@@ -182,5 +160,21 @@ public class ScanAndReceiveTask implements Runnable {
 
     public void setOperationType(int operationType) {
         this.operationType = operationType;
+    }
+
+    public IFragment getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(IFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public ProgressDialog getDialog() {
+        return dialog;
+    }
+
+    public void setDialog(ProgressDialog dialog) {
+        this.dialog = dialog;
     }
 }

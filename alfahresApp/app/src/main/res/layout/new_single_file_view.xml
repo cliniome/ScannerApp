@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/new_file_img"
+        android:src="@drawable/patient_file"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/new_file_FirstVerticalPane"
+        android:paddingLeft="8dp"
+        android:layout_toRightOf="@id/new_file_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- File Number  -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/new_txt_file_Number"
+                android:text="@string/file_fileNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_FileNumber"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <!-- Patient Name -->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_patientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_PatientName"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <!-- Patient Number -->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/file_patientNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_PatientNumber"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <!-- Batch Number -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_batchNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_BatchNumber"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <!-- Requesting Doc -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_docName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_RequestingDocName"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+        <!-- Requesting Clinic -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_clinicName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_RequestingClinic"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <!-- Cabin ID -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_view_cabinetId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_cabinetId"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+        <!-- Shelf ID -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_view_shelfId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_ShelfId"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+        <!-- Requesting Clinic -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_view_column"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_FileColumnId"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/new_file_status_img"
+        android:layout_toRightOf="@id/new_file_FirstVerticalPane"
+        android:layout_centerVertical="true"
+        android:src="@drawable/newrequests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

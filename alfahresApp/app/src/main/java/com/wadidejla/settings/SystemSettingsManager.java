@@ -11,7 +11,6 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.FilesManager;
-import com.wadidejla.utils.FilesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,7 @@ public class SystemSettingsManager {
     private List<RestfulFile> newRequests;
     private List<RestfulFile> receivedFiles;
     private AlFahresFilesManager filesManager;
+    private List<RestfulFile> temporaryFiles;
 
     private boolean collectingBegun =false;
 
@@ -57,11 +57,18 @@ public class SystemSettingsManager {
 
         AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null
                 ,AlfahresDBHelper.DATABASE_VERSION);
-        filesManager = new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES);
-        filesManager.setFiles(this.getNewRequests());
+        setFilesManager(new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES));
+        getFilesManager().setFiles(this.getNewRequests());
         this.setCollectingBegun(false);
 
 
+    }
+
+    public boolean isEmptyRequests()
+    {
+        if (this.newRequests == null || this.newRequests.size() <=0)
+            return true;
+        else return false;
     }
 
     public void logOut()
@@ -69,8 +76,6 @@ public class SystemSettingsManager {
         this.setNewRequests(null);
         this.setReceivedFiles(null);
         this.setCollectingBegun(false);
-
-
     }
 
 
@@ -83,7 +88,7 @@ public class SystemSettingsManager {
 
     public synchronized  FilesManager getSyncFilesManager()
     {
-        return this.filesManager;
+        return this.getFilesManager();
     }
 
     public synchronized  FilesManager getReceivedSyncFilesManager()
@@ -183,7 +188,26 @@ public class SystemSettingsManager {
 
 
     public List<RestfulFile> getNewRequests() {
+        if(newRequests == null) newRequests = new ArrayList<RestfulFile>();
         return newRequests;
+    }
+
+    public void addToNewRequests(List<RestfulFile> newRequests)
+    {
+        if(newRequests != null)
+        {
+            //set the files to the filesManager
+            for(RestfulFile file : newRequests)
+            {
+                file.setEmp(getAccount());
+
+                if(this.newRequests.contains(file))continue;
+                else this.newRequests.add(file);
+            }
+
+        }else newRequests = new ArrayList<RestfulFile>();
+
+
     }
 
     public void setNewRequests(List<RestfulFile> newRequests) {
@@ -191,13 +215,16 @@ public class SystemSettingsManager {
         if(newRequests != null)
         {
             //set the files to the filesManager
-            filesManager.setFiles(newRequests);
             for(RestfulFile file : newRequests)
             {
                 file.setEmp(getAccount());
             }
-        }
+
+        }else newRequests = new ArrayList<RestfulFile>();
+
         this.newRequests = newRequests;
+
+        getFilesManager().setFiles(this.newRequests);
     }
 
     public RestfulEmployee getAccount() {
@@ -224,7 +251,8 @@ public class SystemSettingsManager {
             for(RestfulFile file : this.receivedFiles)
             {
                 file.setEmp(getAccount());
-                file.setState(EmployeeUtils.getStatesForFiles(getAccount(),EmployeeUtils.RECEIVE_FILES));
+                //file.setState(EmployeeUtils.getStatesForFiles(getAccount(),EmployeeUtils.RECEIVE_FILES));
+                file.setReadyFile(RestfulFile.NOT_READY_FILE);
             }
         }
     }
@@ -235,5 +263,21 @@ public class SystemSettingsManager {
 
     public void setCollectingBegun(boolean collectingBegun) {
         this.collectingBegun = collectingBegun;
+    }
+
+    public List<RestfulFile> getTemporaryFiles() {
+        return temporaryFiles;
+    }
+
+    public void setTemporaryFiles(List<RestfulFile> temporaryFiles) {
+        this.temporaryFiles = temporaryFiles;
+    }
+
+    public AlFahresFilesManager getFilesManager() {
+        return filesManager;
+    }
+
+    public void setFilesManager(AlFahresFilesManager filesManager) {
+        this.filesManager = filesManager;
     }
 }

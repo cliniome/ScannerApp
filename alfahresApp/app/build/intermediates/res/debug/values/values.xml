@@ -197,6 +197,7 @@
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
+    <string name="Fragment_NewRequests_Title">New Requests</string>
     <string name="LOGIN_LBL_PASSWORD">Password</string>
     <string name="LOGIN_LBL_USERNAME">User Name</string>
     <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>
@@ -217,6 +218,11 @@
     <string name="SYSTEM_IP">192.168.1.9</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="ScreenUtils_Collect_Files">Collect Files</string>
+    <string name="ScreenUtils_Distribute_Files">Distribute Files</string>
+    <string name="ScreenUtils_NewRequests">New Requests</string>
+    <string name="ScreenUtils_Ongoing_Files">Outgoing Files</string>
+    <string name="ScreenUtils_Receive_Files">Receive Files</string>
     <string name="TITLE_LOGIN">Al Fahres System</string>
     <string name="TXT_FORCE_SYNC">Force Sync</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/res/values/values.xml -->

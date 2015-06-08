@@ -49,5 +49,12 @@
     <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <string name="SYNC_DIALOG_MESSAGE">Operation has been Scheduled when connectivity becomes available.</string>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
+    <string name="ScreenUtils_NewRequests">New Requests</string>
+    <string name="ScreenUtils_Ongoing_Files">Outgoing Files</string>
+    <string name="ScreenUtils_Receive_Files">Receive Files</string>
+    <string name="ScreenUtils_Distribute_Files">Distribute Files</string>
+    <string name="ScreenUtils_Collect_Files">Collect Files</string>
+    <string name="Fragment_NewRequests_Title">New Requests</string>
+
 
 </resources>
