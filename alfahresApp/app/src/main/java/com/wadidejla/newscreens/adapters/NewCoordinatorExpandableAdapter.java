@@ -94,7 +94,19 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                 for(RestfulClinic clinic : batch.getClinics())
                                 {
                                     if(clinic.getFiles() != null)
-                                        allFiles.addAll(clinic.getFiles());
+                                    {
+                                        for(RestfulFile tempFile : clinic.getFiles())
+                                        {
+
+                                            boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                                    .getFileByEmployeeAndNumber(storageUtils.getSettingsManager().getAccount().getUserName(),
+                                                            tempFile.getFileNumber()) != null;
+
+                                            if(!containsFile)
+                                                allFiles.add(tempFile);
+
+                                        }
+                                    }
                                 }
                             }
 
@@ -340,7 +352,28 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                 }else
                                 {
                                     //That means Collect that file manually.
-                                    
+                                    try {
+                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+                                        file.setTemporaryCabinetId("");
+
+                                        storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
+                                                RestfulFile.READY_FILE);
+
+                                        //Play the sound
+                                        SoundUtils.playSound(getContext());
+                                        //Now refresh the adapter
+                                        NewCoordinatorExpandableAdapter
+                                                .this.notifyDataSetChanged();
+
+                                    } catch (Exception s) {
+                                        Log.w("FilesArrayAdapter", s.getMessage());
+
+                                    } finally {
+
+                                        dialogInterface.dismiss();
+                                    }
+
                                 }
 
                             }

@@ -85,7 +85,7 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
 
                     //Scan for temporary container
                     ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA
-                            , NewDistributeFilesFragment.this);
+                            , NewDistributeFilesFragment.this,false,null);
 
 
 

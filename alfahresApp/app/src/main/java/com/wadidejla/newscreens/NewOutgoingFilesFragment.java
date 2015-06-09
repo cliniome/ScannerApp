@@ -158,7 +158,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
                                     //Get the trolley barcode
                                    ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA
-                                           , NewOutgoingFilesFragment.this);
+                                           , NewOutgoingFilesFragment.this,false,null);
 
 
 

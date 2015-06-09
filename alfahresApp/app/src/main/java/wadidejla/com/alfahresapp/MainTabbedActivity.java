@@ -14,9 +14,12 @@ import android.view.MenuItem;
 
 import com.wadidejla.barcode.IntentIntegrator;
 import com.wadidejla.barcode.IntentResult;
+import com.wadidejla.newscreens.Archiver;
 import com.wadidejla.newscreens.FragmentRollerAdapter;
 import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.ScreenUtils;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
+import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.newscreens.utils.TabDetails;
 import com.wadidejla.settings.SystemSettingsManager;
 
@@ -30,6 +33,8 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
     private ViewPager viewPager;
     private FragmentRollerAdapter adapter;
     private List<TabDetails> tabs;
+
+    public static String SCANNED_ARCHIVER_FILE;
 
 
     @Override
@@ -106,13 +111,39 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
 
         final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(this.getViewPager() != null)
-        {
-            IFragment currentFragment = (IFragment)this.getAdapter().getItem(this.getViewPager().getCurrentItem());
 
-            if(currentFragment != null)
-                currentFragment.handleScanResults(result.getContents());
+        BarcodeUtils barcodeUtils = new BarcodeUtils(result.getContents());
+
+        if(barcodeUtils.isShelf())
+        {
+            //That means the current Task is archiving task
+            if(this.getViewPager() != null)
+            {
+                Archiver currentFragment = (Archiver)
+                        this.getAdapter().getItem(this.getViewPager().getCurrentItem());
+
+                if(currentFragment != null && SCANNED_ARCHIVER_FILE != null)
+                {
+                    /*Object fileNumber = data.getExtras().get(ScannerUtils.ARCHIVER_FILE_NUMBER);*/
+                    if(SCANNED_ARCHIVER_FILE == null) return;
+                    currentFragment.handleShelfBarcode(SCANNED_ARCHIVER_FILE,result.getContents());
+                }
+
+            }
+
+
+        }else
+        {
+            if(this.getViewPager() != null)
+            {
+                IFragment currentFragment = (IFragment)this.getAdapter().getItem(this.getViewPager().getCurrentItem());
+
+                if(currentFragment != null)
+                    currentFragment.handleScanResults(result.getContents());
+            }
+
         }
+
 
 
 

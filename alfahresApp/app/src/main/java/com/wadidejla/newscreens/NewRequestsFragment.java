@@ -155,7 +155,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
                     //Scan
                     ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA
-                            ,NewRequestsFragment.this);
+                            ,NewRequestsFragment.this,false,null);
 
 
 

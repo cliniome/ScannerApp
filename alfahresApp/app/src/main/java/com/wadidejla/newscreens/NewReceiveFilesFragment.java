@@ -92,7 +92,8 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
 
                     //Scan for temporary container
-                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA,NewReceiveFilesFragment.this);
+                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA,NewReceiveFilesFragment.this
+                            ,false,null);
 
 
 

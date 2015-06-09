@@ -198,6 +198,7 @@
     <eat-comment/>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
+    <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
     <string name="LOGIN_LBL_PASSWORD">Password</string>
     <string name="LOGIN_LBL_USERNAME">User Name</string>
     <string name="LOGIN_LOGGING_IN_TITLE">Logging In...</string>

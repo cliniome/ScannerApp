@@ -55,6 +55,7 @@
     <string name="ScreenUtils_Distribute_Files">Distribute Files</string>
     <string name="ScreenUtils_Collect_Files">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
+    <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
 
 
 </resources>

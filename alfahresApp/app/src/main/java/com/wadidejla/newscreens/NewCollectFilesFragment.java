@@ -85,7 +85,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
                 public void onClick(View view) {
                     //Scan for temporary container
                     ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA,
-                            NewCollectFilesFragment.this);
+                            NewCollectFilesFragment.this,false,null);
                 }
             });
 

@@ -45,8 +45,9 @@ public class ScreenUtils {
 
                     TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
                             R.drawable.ongoing);
-                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Receive_Files),
-                            R.drawable.receive);
+                    TabDetails receiveFiles = new TabDetails(con.getResources()
+                            .getString(R.string.KEEPER_ARCHIVE_TITLE),
+                            R.drawable.checkin);
                     availableTabs.add(newRequests);
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
@@ -81,7 +82,8 @@ public class ScreenUtils {
                     TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
                             R.drawable.ongoing);
 
-                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Receive_Files),
+                    TabDetails receiveFiles = new TabDetails(con.getResources()
+                            .getString(R.string.ScreenUtils_Receive_Files),
                             R.drawable.receive);
 
                     availableTabs.add(ongoingFiles);
@@ -113,7 +115,7 @@ public class ScreenUtils {
                 //that is the keeper
                 fragments.add(new NewRequestsFragment());
                 fragments.add(new NewOutgoingFilesFragment());
-                fragments.add(new NewReceiveFilesFragment());
+                fragments.add(new NewArchiveFilesFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
