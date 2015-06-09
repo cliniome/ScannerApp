@@ -20,9 +20,12 @@ import com.wadidejla.newscreens.adapters.NewReceiveFilesAdapter;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
+import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.tasks.ScanAndReceiveTask;
+import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
-
+import static com.wadidejla.newscreens.utils.ScannerUtils.*;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -89,27 +92,9 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
 
                     //Scan for temporary container
-                    String fileBarcode = ScannerUtils.ScanBarcode(getActivity());
+                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA,NewReceiveFilesFragment.this);
 
-                    if(fileBarcode != null)
-                    {
-                       //TODO : Retrieve all files from the server through the trolley barcode
-                        ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
-                                fileBarcode,NewReceiveFilesFragment.this);
-                        ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                        dialog.show();
-                        scanTask.setDialog(dialog);
-                        scanTask.setFragment(NewReceiveFilesFragment.this);
 
-                        //Start the scanning process
-                        Thread scanningThread = new Thread(scanTask);
-                        scanningThread.start();
-
-                    }else
-                    {
-                        Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
-                                .show();
-                    }
 
                 }
             });
@@ -124,6 +109,15 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
                     PopupMenu menu = new PopupMenu(getActivity(),view);
                     menu.inflate(R.menu.new_receive_pop_menu);
+
+                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+
+                    if(settingsManager.getAccount().isKeeper() ||
+                            settingsManager.getAccount().isReceptionist())
+                    {
+                        menu.getMenu().getItem(R.id.pop_mark_all_received).setVisible(false);
+                    }
+
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
@@ -170,6 +164,21 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
                                     dialog.show();
                                 }
+                                break;
+
+                                case R.id.pop_mark_all_received: {
+                                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+                                    dialog.show();
+
+                                    //start The marking Task in the background
+                                    MarkingTask markingTask = new MarkingTask(getActivity(), EmployeeUtils.RECEIVE_FILES);
+                                    markingTask.setDialog(dialog);
+                                    markingTask.setFragment(NewReceiveFilesFragment.this);
+
+                                    //now encapsulate the task into a thread
+                                    Thread markingThread = new Thread(markingTask);
+                                    markingThread.start();
+                                }
 
                                 break;
                             }
@@ -211,8 +220,27 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
     }
 
     @Override
-    public void handleScanResults(String barcode) {
+    public void handleScanResults(String fileBarcode) {
 
+        if(fileBarcode != null)
+        {
+            //TODO : Retrieve all files from the server through the trolley barcode
+            ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
+                    fileBarcode,NewReceiveFilesFragment.this);
+            ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+            dialog.show();
+            scanTask.setDialog(dialog);
+            scanTask.setFragment(NewReceiveFilesFragment.this);
+
+            //Start the scanning process
+            Thread scanningThread = new Thread(scanTask);
+            scanningThread.start();
+
+        }else
+        {
+            Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
 

@@ -24,6 +24,20 @@ public class RestfulClinic implements Serializable {
         this.setFiles(new ArrayList<RestfulFile>());
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+
+
+        if(o instanceof  RestfulClinic)
+        {
+            if(((RestfulClinic)o).getClinicCode().equalsIgnoreCase(this.getClinicCode()))
+                return true;
+            else return false;
+
+        }else return false;
+    }
+
     public String getClinicName() {
         return clinicName;
     }

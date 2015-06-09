@@ -1,7 +1,10 @@
 package com.wadidejla.newscreens.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.utils.SoundUtils;
 
 import java.util.List;
 
@@ -30,6 +35,14 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
         super(context, resource);
         this.availableFiles = files;
         this.resourceId = resource;
+    }
+
+
+    @Override
+    public void notifyDataSetChanged() {
+        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+        this.availableFiles = storageUtils.getReceivedFiles();
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -106,6 +119,53 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
             imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
         }
 
+
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+                final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
+                        .setItems(new String[]{"Mark File as Missing..."}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                if (i == 0) // that means mark file as missing
+                                {
+                                    //access the files Manager from the settings
+                                    try {
+                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+                                        storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
+                                                RestfulFile.READY_FILE);
+
+
+                                        //Now refresh the adapter
+                                        NewReceiveFilesAdapter.this.notifyDataSetChanged();
+                                        //Play the sound
+                                        SoundUtils.playSound(getContext());
+
+                                    } catch (Exception s) {
+                                        Log.w("FilesArrayAdapter", s.getMessage());
+
+                                    } finally {
+
+                                        dialogInterface.dismiss();
+                                    }
+
+
+                                }
+
+                            }
+                        }).create();
+
+                choiceDlg.show();
+
+                return true;
+            }
+        });
 
 
         return convertView;

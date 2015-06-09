@@ -629,6 +629,24 @@ public class FilesDBManager {
         }
     }
 
+    public synchronized RestfulFile getFileByEmployeeAndNumber(String userName , String fileNumber)
+    {
+        StringBuffer whereClause = new StringBuffer();
+        whereClause.append(AlfahresDBHelper.EMP_ID).append("=")
+                .append("'").append(userName).append("'")
+                .append(" AND ").append(AlfahresDBHelper.KEY_ID).append("=")
+                .append("'").append(fileNumber).append("'");
+
+        List<RestfulFile> existingFiles = getFilesWhere(whereClause.toString());
+
+        if(existingFiles != null && existingFiles.size() > 0)
+        {
+            return existingFiles.get(0); // get the first one in the results.
+
+        }else return null;
+
+    }
+
 
     public synchronized RestfulFile getFileByNumber(String fileNumber)
     {

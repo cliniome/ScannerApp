@@ -2,6 +2,7 @@ package com.wadidejla.utils;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulEmployee;
+import com.degla.restful.models.RestfulFile;
 
 /**
  * Created by snouto on 30/05/15.
@@ -14,7 +15,7 @@ public class EmployeeUtils {
     public static final int SEND_FILES = 1;
 
 
-    public static String getStatesForFiles(RestfulEmployee account,int operationType)
+    public static String getStatesForFiles(RestfulFile file,RestfulEmployee account,int operationType)
     {
         String role = account.getRole();
 
@@ -23,9 +24,9 @@ public class EmployeeUtils {
             case RECEIVE_FILES:
             {
                 if(role.equalsIgnoreCase(RoleTypes.KEEPER.toString()))
-                    return FileModelStates.CHECKED_IN.toString();
+                    return file.getState();
                 else if (role.equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
-                    return FileModelStates.RECEPTIONIST_IN.toString();
+                    return file.getState();
                 else if (role.equalsIgnoreCase(RoleTypes.COORDINATOR.toString()))
                     return FileModelStates.COORDINATOR_IN.toString();
                 else return "";
@@ -38,7 +39,7 @@ public class EmployeeUtils {
                 if(role.equalsIgnoreCase(RoleTypes.KEEPER.toString()))
                     return FileModelStates.CHECKED_OUT.toString();
                 else if (role.equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
-                    return FileModelStates.RECEPTIONIST_OUT.toString();
+                    return file.getState();
                 else if (role.equalsIgnoreCase(RoleTypes.COORDINATOR.toString()))
                     return FileModelStates.COORDINATOR_OUT.toString();
                 else return "";

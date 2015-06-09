@@ -17,11 +17,13 @@ import com.degla.restful.models.http.HttpResponse;
 import com.google.gson.reflect.TypeToken;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.NewRequestsAdapter;
+import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.utils.FilesUtils;
 import com.wadidejla.utils.SoundUtils;
+import static com.wadidejla.newscreens.utils.ScannerUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,36 +154,10 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
 
                     //Scan
-                    String fileBarcode = ScannerUtils.ScanBarcode(getActivity());
+                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA
+                            ,NewRequestsFragment.this);
 
-                    if(fileBarcode != null)
-                    {
-                        //Get the Restful file
-                        DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-                        //Get the restful File
-                        RestfulFile foundFile = storageUtils.getRestfulRequestByBarcode(fileBarcode);
 
-                        if(foundFile != null)
-                        {
-                            //Now check_OUT the current file
-                            storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString(), RestfulFile.READY_FILE);
-
-                            //Now refresh the current fragment
-                            NewRequestsFragment.this.refresh();
-                            //Play the sound
-                            SoundUtils.playSound(getActivity());
-                        }else
-                        {
-                            Toast.makeText(getActivity(),"File Not Found , Please Scan Again !",Toast.LENGTH_SHORT)
-                                    .show();
-
-                        }
-
-                    }else
-                    {
-                        Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
-                                .show();
-                    }
 
                 }
             });
@@ -211,15 +187,17 @@ public class NewRequestsFragment extends Fragment implements IFragment {
     public void refresh() {
         try
         {
-            final ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-            //show dialog
-            dialog.show();
+            if(ConnectivityUtils.isConnected(getActivity()))
+            {
+                final ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+                //show dialog
+                dialog.show();
 
-            final Thread newRequestsThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
+                final Thread newRequestsThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    final DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                        final DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
 
                         AlfahresConnection conn = storageUtils.getSettingsManager().getConnection();
@@ -251,7 +229,9 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                                 file.setEmp(storageUtils.getSettingsManager().getAccount());
 
                                 if(storageUtils.getSettingsManager().getSyncFilesManager()
-                                        .getFilesDBManager().getFileByNumber(file.getFileNumber()) == null)
+                                        .getFilesDBManager().getFileByEmployeeAndNumber(storageUtils
+                                                .getSettingsManager().getAccount().getUserName()
+                                                ,file.getFileNumber()) == null)
                                 {
                                     tempList.add(file);
                                 }
@@ -262,34 +242,35 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
 
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            try
-                            {
-                                //bind the newRequests to the listView
-                                NewRequestsAdapter adapter = new NewRequestsAdapter(getActivity()
-                                        ,R.layout.new_single_file_view,
-                                        storageUtils.getNewRequests());
-                                getRequestsListView().setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
+                                try
+                                {
+                                    //bind the newRequests to the listView
+                                    NewRequestsAdapter adapter = new NewRequestsAdapter(getActivity()
+                                            ,R.layout.new_single_file_view,
+                                            storageUtils.getNewRequests());
+                                    getRequestsListView().setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
 
-                                dialog.dismiss();
+                                    dialog.dismiss();
 
-                            }catch (Exception s)
-                            {
-                                s.printStackTrace();
+                                }catch (Exception s)
+                                {
+                                    s.printStackTrace();
+                                }
                             }
-                        }
-                    });
+                        });
 
 
 
-                }
-            });
+                    }
+                });
 
-            newRequestsThread.start();
+                newRequestsThread.start();
+            }
 
         }catch (Exception s)
         {
@@ -298,7 +279,36 @@ public class NewRequestsFragment extends Fragment implements IFragment {
     }
 
     @Override
-    public void handleScanResults(String barcode) {
+    public void handleScanResults(String fileBarcode) {
+
+        if(fileBarcode != null)
+        {
+            //Get the Restful file
+            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+            //Get the restful File
+            RestfulFile foundFile = storageUtils.getRestfulRequestByBarcode(fileBarcode);
+
+            if(foundFile != null)
+            {
+                //Now check_OUT the current file
+                storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString(), RestfulFile.READY_FILE);
+
+                //Now refresh the current fragment
+                NewRequestsFragment.this.refresh();
+                //Play the sound
+                SoundUtils.playSound(getActivity());
+            }else
+            {
+                Toast.makeText(getActivity(),"File Not Found , Please Scan Again !",Toast.LENGTH_SHORT)
+                        .show();
+
+            }
+
+        }else
+        {
+            Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
+                    .show();
+        }
 
     }
 

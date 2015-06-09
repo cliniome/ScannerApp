@@ -37,6 +37,8 @@ public class SyncBatch extends BooleanResult implements Serializable {
     {
         boolean result = false;
 
+        if(this.getFiles() == null || this.getFiles().size() <=0) return result;
+
         for(RestfulFile currentFile : this.getFiles())
         {
             if(currentFile.getFileNumber().equals(file.getFileNumber()))

@@ -33,6 +33,27 @@ public class DBStorageUtils {
 
     }
 
+
+    public void saveDistributedFiles(List<RestfulFile> distributeFiles)
+    {
+        if(distributeFiles != null)
+        {
+            for(RestfulFile file : distributeFiles)
+            {
+                file.setEmp(settingsManager.getAccount());
+                //now save it
+                FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+                if(filesDBManager.getFileByEmployeeAndNumber(settingsManager.getAccount().getUserName(),
+                        file.getFileNumber()) == null)
+                {
+                    //so insert it
+                    filesDBManager.insertFile(file);
+                }
+                //otherwise the file already exists, don't get it again.
+            }
+        }
+    }
+
     public void insertOrUpdateFile(RestfulFile file)
     {
         settingsManager.getFilesManager().getFilesDBManager()
@@ -143,9 +164,77 @@ public class DBStorageUtils {
         {
             //now remove it from the requests
             settingsManager.getNewRequests().remove(file);
+            settingsManager.getReceivedFiles().remove(file);
         }
 
 
+    }
+
+
+
+    public List<RestfulFile> getFilesReadyForCollection()
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'");
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
+        }
+    }
+    public List<RestfulFile> getFilesReadyForDistribution()
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.COORDINATOR_IN.toString())
+                    .append("'");
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
+        }
     }
 
 

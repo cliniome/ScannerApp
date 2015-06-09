@@ -37,6 +37,72 @@ public class CollectionBatch implements Serializable {
         return mainClinics;
     }
 
+    public boolean addAllRestfulFiles(List<RestfulFile> files)
+    {
+        if(files != null && files.size() > 0)
+        {
+            for(RestfulFile file : files)
+            {
+                this.addRestFulFile(file);
+            }
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+
+    public boolean addRestFulFile(RestfulFile file)
+    {
+        RestfulClinic current = containsClinic(file.getClinicCode());
+
+        if(current == null)
+        {
+            //create a new Restful Clinic
+            RestfulClinic newClinic = new RestfulClinic();
+            newClinic.setClinicName(file.getClinicName());
+            newClinic.setClinicCode(file.getClinicCode());
+            newClinic.setFiles(new ArrayList<RestfulFile>());
+            newClinic.getFiles().add(file);
+
+            this.getClinics().add(newClinic);
+        }else
+        {
+            if(current.getFiles() != null)
+                current.getFiles().add(file);
+            else
+            {
+                current.setFiles(new ArrayList<RestfulFile>());
+                current.getFiles().add(file);
+            }
+        }
+
+        return true;
+    }
+
+
+    public RestfulClinic containsClinic(String clinicCode)
+    {
+        if(clinics == null || clinics.size() <=0) return null;
+        else
+        {
+            RestfulClinic currentClinic = null;
+
+            for(RestfulClinic clinic : getClinics())
+            {
+                if(clinic.getClinicCode().equalsIgnoreCase(clinicCode))
+                {
+                    currentClinic = clinic;
+                    break;
+                }
+            }
+
+            return currentClinic;
+        }
+    }
+
 
     public HashMap<String,List<RestfulFile>> getCategorizedData()
     {

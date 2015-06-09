@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/pop_mark_all_missing"
+        android:title="Mark All as Missing"
+        android:icon="@drawable/missing"/>
+
+    <item android:id="@+id/pop_mark_all_distribute"
+        android:title="Distribute All Files"
+        android:icon="@drawable/distribute"/>
+
+</menu>

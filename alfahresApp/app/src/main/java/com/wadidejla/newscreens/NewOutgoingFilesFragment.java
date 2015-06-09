@@ -21,7 +21,7 @@ import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.tasks.ManualSyncTask;
 import com.wadidejla.utils.SoundUtils;
-
+import static com.wadidejla.newscreens.utils.ScannerUtils.*;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -157,32 +157,10 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
                                     //TODO : Scan for Temporary containers here
 
                                     //Get the trolley barcode
-                                    String trolleyBarcode = ScannerUtils.ScanBarcode(getActivity());
+                                   ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA
+                                           , NewOutgoingFilesFragment.this);
 
-                                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
 
-                                    dialog.show();
-                                    //update all available files , setting temporary cabinetID
-
-                                    DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-
-                                    List<RestfulFile> availableFiles = storageUtils.getAllReadyFilesForCurrentEmployee();
-
-                                    if(availableFiles != null && availableFiles.size() > 0)
-                                    {
-                                        for(RestfulFile file : availableFiles)
-                                        {
-                                            file.setTemporaryCabinetId(trolleyBarcode);
-                                            //update the current file
-                                            storageUtils.insertOrUpdateFile(file);
-
-                                        }
-                                    }
-
-                                    //Now refresh all the files
-                                    NewOutgoingFilesFragment.this.refresh();
-                                    dialog.dismiss();
-                                    SoundUtils.playSound(getActivity());
 
 
                                 }
@@ -224,7 +202,32 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
     }
 
     @Override
-    public void handleScanResults(String barcode) {
+    public void handleScanResults(String trolleyBarcode) {
+
+        ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+
+        dialog.show();
+        //update all available files , setting temporary cabinetID
+
+        DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+
+        List<RestfulFile> availableFiles = storageUtils.getAllReadyFilesForCurrentEmployee();
+
+        if(availableFiles != null && availableFiles.size() > 0)
+        {
+            for(RestfulFile file : availableFiles)
+            {
+                file.setTemporaryCabinetId(trolleyBarcode);
+                //update the current file
+                storageUtils.insertOrUpdateFile(file);
+
+            }
+        }
+
+        //Now refresh all the files
+        NewOutgoingFilesFragment.this.refresh();
+        dialog.dismiss();
+        SoundUtils.playSound(getActivity());
 
     }
 }

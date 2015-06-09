@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.wadidejla.barcode.IntentIntegrator;
+import com.wadidejla.barcode.IntentResult;
 import com.wadidejla.newscreens.FragmentRollerAdapter;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.ScreenUtils;
 import com.wadidejla.newscreens.utils.TabDetails;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -27,6 +30,7 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
     private ViewPager viewPager;
     private FragmentRollerAdapter adapter;
     private List<TabDetails> tabs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,26 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
             s.printStackTrace();
 
         }
+
+    }
+
+    //Handle on activity result
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(this.getViewPager() != null)
+        {
+            IFragment currentFragment = (IFragment)this.getAdapter().getItem(this.getViewPager().getCurrentItem());
+
+            if(currentFragment != null)
+                currentFragment.handleScanResults(result.getContents());
+        }
+
+
 
     }
 

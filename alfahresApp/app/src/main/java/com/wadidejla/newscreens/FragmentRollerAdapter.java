@@ -5,9 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.wadidejla.screens.ScreenRouter;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,16 +18,24 @@ public class FragmentRollerAdapter extends FragmentStatePagerAdapter {
 
     public FragmentRollerAdapter(FragmentManager fm,Context context) {
         super(fm);
-        availableFragments = ScreenUtils.getFragments(context);
+        setAvailableFragments(ScreenUtils.getFragments(context));
     }
 
     @Override
     public Fragment getItem(int position) {
-        return availableFragments.get(position);
+        return getAvailableFragments().get(position);
     }
 
     @Override
     public int getCount() {
-        return availableFragments.size();
+        return getAvailableFragments().size();
+    }
+
+    public List<Fragment> getAvailableFragments() {
+        return availableFragments;
+    }
+
+    public void setAvailableFragments(List<Fragment> availableFragments) {
+        this.availableFragments = availableFragments;
     }
 }

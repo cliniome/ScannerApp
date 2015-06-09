@@ -67,14 +67,13 @@ public class ScreenUtils {
                     availableTabs.add(receiveFiles);
 
                     TabDetails distributeFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Distribute_Files),
-                            R.drawable.distribute);
+                            R.drawable.delivery);
                     availableTabs.add(distributeFiles);
 
                     TabDetails collectFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Collect_Files),
                             R.drawable.collects);
 
                     availableTabs.add(collectFiles);
-
 
                 }else if(settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
                 {
@@ -119,9 +118,11 @@ public class ScreenUtils {
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
                 //that is the receptionist
-                fragments.add(new CoordinatorCollectionFragment());
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewReceiveFilesFragment());
+                fragments.add(new NewDistributeFilesFragment());
+                fragments.add(new NewCollectFilesFragment());
+
 
             }else
             {

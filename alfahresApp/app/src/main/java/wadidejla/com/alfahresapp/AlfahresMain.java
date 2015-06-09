@@ -408,12 +408,12 @@ public class AlfahresMain extends ActionBarActivity {
                     .setMessage("Please Wait...")
                     .setCancelable(false).create();
 
-            waitDialog.show();
+            /*waitDialog.show();
             MarkingTask currentMarkingTask = new MarkingTask(this,EmployeeUtils.RECEIVE_FILES);
-            currentMarkingTask.setDialog(waitDialog);
-
+            currentMarkingTask.setDialog(waitDialog);*/
+/*
             Thread markingThread = new Thread(currentMarkingTask);
-            markingThread.start();
+            markingThread.start();*/
 
 
 

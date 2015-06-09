@@ -1,6 +1,7 @@
 package com.degla.restful.models;
 
 import com.google.gson.annotations.Expose;
+import com.wadidejla.utils.RoleTypes;
 
 import java.io.Serializable;
 
@@ -22,6 +23,27 @@ public class RestfulEmployee implements Serializable {
     private String role;
     @Expose
     private int id;
+
+    public boolean isKeeper()
+    {
+        if(this.role != null && this.getRole().equalsIgnoreCase(RoleTypes.KEEPER.toString()))
+            return true;
+        else return false;
+    }
+
+    public boolean isReceptionist()
+    {
+        if(this.role != null && this.getRole().equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
+            return true;
+        else return false;
+    }
+
+    public boolean isA(String role)
+    {
+        if(this.role != null && this.getRole().equalsIgnoreCase(role))
+            return true;
+        else return false;
+    }
 
     public String getFirstName() {
         return firstName;

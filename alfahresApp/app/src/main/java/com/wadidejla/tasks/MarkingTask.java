@@ -1,13 +1,15 @@
 package com.wadidejla.tasks;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.EmployeeUtils;
+import com.wadidejla.utils.SoundUtils;
 
 import java.util.List;
 
@@ -19,7 +21,8 @@ public class MarkingTask implements Runnable {
 
     private Context context;
     private int operationType;
-    private AlertDialog dialog;
+    private ProgressDialog dialog;
+    private IFragment fragment;
 
     public MarkingTask(Context context,int operationType)
     {
@@ -40,11 +43,12 @@ public class MarkingTask implements Runnable {
 
             if(receivedFiles != null && receivedFiles.size() > 0)
             {
-                String state = EmployeeUtils.getStatesForFiles(settingsManager.getAccount(),
-                        this.getOperationType());
+
 
                 for(RestfulFile file : receivedFiles)
                 {
+                    String state = EmployeeUtils.getStatesForFiles(file,settingsManager.getAccount(),
+                            this.getOperationType());
                     file.setState(state);
                 }
 
@@ -72,13 +76,20 @@ public class MarkingTask implements Runnable {
         }
         finally {
 
+
+
+            SoundUtils.playSound(getContext());
+
             Activity currentActivity = (Activity)getContext();
 
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
-                    dialog.dismiss();
+                    if(MarkingTask.this.getFragment() != null)
+                        MarkingTask.this.getFragment().refresh();
+
+                    getDialog().dismiss();
                 }
             });
         }
@@ -101,11 +112,20 @@ public class MarkingTask implements Runnable {
         this.operationType = operationType;
     }
 
-    public AlertDialog getDialog() {
+
+    public ProgressDialog getDialog() {
         return dialog;
     }
 
-    public void setDialog(AlertDialog dialog) {
+    public void setDialog(ProgressDialog dialog) {
         this.dialog = dialog;
+    }
+
+    public IFragment getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(IFragment fragment) {
+        this.fragment = fragment;
     }
 }
