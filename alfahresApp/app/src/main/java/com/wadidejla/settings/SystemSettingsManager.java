@@ -39,7 +39,8 @@ public class SystemSettingsManager {
     private List<RestfulFile> receivedFiles;
     private AlFahresFilesManager filesManager;
     private List<RestfulFile> temporaryFiles;
-
+    private List<RestfulFile> shippingFiles;
+    private List<RestfulFile> transferrableFiles;
     private boolean collectingBegun =false;
 
 
@@ -48,9 +49,31 @@ public class SystemSettingsManager {
         this.context = con;
         this.newRequests = new ArrayList<RestfulFile>();
         this.receivedFiles = new ArrayList<RestfulFile>();
+        this.shippingFiles = new ArrayList<RestfulFile>();
         this.initSettings();
         this.initManager();
 
+    }
+
+    public boolean removeTransferrableFile(RestfulFile file)
+    {
+        RestfulFile foundFile = null;
+
+        if(this.getTransferrableFiles() != null && this.getTransferrableFiles().size() > 0)
+        {
+            for(RestfulFile currentfile : this.getTransferrableFiles())
+            {
+                if(currentfile.getFileNumber().equals(file.getFileNumber()))
+                {
+                    foundFile = currentfile;
+                    break;
+                }
+            }
+        }
+
+        if(foundFile == null) return false;
+
+        else return this.getTransferrableFiles().remove(foundFile);
     }
 
     private void initManager(){
@@ -279,5 +302,21 @@ public class SystemSettingsManager {
 
     public void setFilesManager(AlFahresFilesManager filesManager) {
         this.filesManager = filesManager;
+    }
+
+    public List<RestfulFile> getShippingFiles() {
+        return shippingFiles;
+    }
+
+    public void setShippingFiles(List<RestfulFile> shippingFiles) {
+        this.shippingFiles = shippingFiles;
+    }
+
+    public List<RestfulFile> getTransferrableFiles() {
+        return transferrableFiles;
+    }
+
+    public void setTransferrableFiles(List<RestfulFile> transferrableFiles) {
+        this.transferrableFiles = transferrableFiles;
     }
 }

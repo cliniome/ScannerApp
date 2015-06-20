@@ -63,6 +63,9 @@ public class RestfulFile implements Serializable {
     private int readyFile;
 
     @Expose
+    private boolean multipleClinics = false;
+
+    @Expose
     private  RestfulEmployee emp;
 
 
@@ -82,7 +85,8 @@ public class RestfulFile implements Serializable {
 
     public boolean isReadyForSync()
     {
-        if(this.getState() != null && this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
+        if(this.getState() != null && (this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()) ||
+        this.getState().equalsIgnoreCase(FileModelStates.OUT_OF_CABIN.toString())))
             return true;
         else
         {
@@ -294,5 +298,14 @@ public class RestfulFile implements Serializable {
 
     public void setReadyFile(int readyFile) {
         this.readyFile = readyFile;
+    }
+
+
+    public boolean isMultipleClinics() {
+        return multipleClinics;
+    }
+
+    public void setMultipleClinics(boolean multipleClinics) {
+        this.multipleClinics = multipleClinics;
     }
 }

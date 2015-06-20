@@ -8,6 +8,7 @@ import static com.wadidejla.db.AlfahresDBHelper.*;
 
 import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.network.AlfahresConnection;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,6 +118,9 @@ public class FilesDBManager {
 
                 file.setReadyFile(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
+
 
                 files.add(file);
 
@@ -217,6 +221,9 @@ public class FilesDBManager {
 
                 file.setReadyFile(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
+
 
                 files.add(file);
 
@@ -311,6 +318,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_READY_FILE);
                 file.setReadyFile(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
+
                 files.add(file);
 
             }
@@ -402,6 +412,9 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_READY_FILE);
                 file.setReadyFile(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
 
                 files.add(file);
 
@@ -495,6 +508,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_READY_FILE);
                 file.setReadyFile(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
+
                 files.add(file);
 
             }
@@ -586,6 +602,8 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_READY_FILE);
                 file.setReadyFile(cursor.getInt(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
 
                 files.add(file);
 
@@ -778,6 +796,7 @@ public class FilesDBManager {
             values.put(COL_CLINIC_CODE,file.getClinicCode());
             values.put(COL_CLINIC_DOC_CODE,file.getClinicDocCode());
             values.put(COL_READY_FILE,file.getReadyFile());
+            values.put(COL_TRANSFERRABLE_FIELD,file.isMultipleClinics() == true ? 1 : 0);
 
 
             //now insert the current row into the database

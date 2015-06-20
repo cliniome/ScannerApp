@@ -119,14 +119,21 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
             //That means the current Task is archiving task
             if(this.getViewPager() != null)
             {
-                Archiver currentFragment = (Archiver)
-                        this.getAdapter().getItem(this.getViewPager().getCurrentItem());
-
-                if(currentFragment != null && SCANNED_ARCHIVER_FILE != null)
+                try
                 {
+                    Archiver currentFragment = (Archiver)
+                            this.getAdapter().getItem(this.getViewPager().getCurrentItem());
+
+                    if(currentFragment != null && SCANNED_ARCHIVER_FILE != null)
+                    {
                     /*Object fileNumber = data.getExtras().get(ScannerUtils.ARCHIVER_FILE_NUMBER);*/
-                    if(SCANNED_ARCHIVER_FILE == null) return;
-                    currentFragment.handleShelfBarcode(SCANNED_ARCHIVER_FILE,result.getContents());
+                        if(SCANNED_ARCHIVER_FILE == null) return;
+                        currentFragment.handleShelfBarcode(SCANNED_ARCHIVER_FILE,result.getContents());
+                    }
+
+                }catch (Exception s)
+                {
+                    s.printStackTrace();
                 }
 
             }
@@ -134,12 +141,19 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
 
         }else
         {
-            if(this.getViewPager() != null)
+            try
             {
-                IFragment currentFragment = (IFragment)this.getAdapter().getItem(this.getViewPager().getCurrentItem());
+                if(this.getViewPager() != null)
+                {
+                    IFragment currentFragment = (IFragment)this.getAdapter().getItem(this.getViewPager().getCurrentItem());
 
-                if(currentFragment != null)
-                    currentFragment.handleScanResults(result.getContents());
+                    if(currentFragment != null)
+                        currentFragment.handleScanResults(result.getContents());
+                }
+
+            }catch (Exception s)
+            {
+                s.printStackTrace();
             }
 
         }

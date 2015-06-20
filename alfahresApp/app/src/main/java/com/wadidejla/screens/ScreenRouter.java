@@ -14,6 +14,7 @@ import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.wadidejla.listeners.KeeperOnClickListener;
+import com.wadidejla.newscreens.SortingShippingScreen;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.ActionItem;
 import com.wadidejla.utils.Actionable;
@@ -54,6 +55,7 @@ public class ScreenRouter {
                 fragments.add(new MainFilesScreenFragment());
                 fragments.add(new LocalSyncFilesFragment());
                 fragments.add(new ScanAndReceiveFragment());
+                fragments.add(new SortingShippingScreen());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {

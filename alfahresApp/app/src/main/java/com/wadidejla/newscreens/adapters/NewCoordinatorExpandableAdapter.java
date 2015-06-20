@@ -3,6 +3,7 @@ package com.wadidejla.newscreens.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -249,6 +250,15 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
         convertView.setTag(file);
 
+        if(file.isMultipleClinics())
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.transferrable);
+            convertView.setBackgroundColor(Color.MAGENTA);
+        }
+
+
+
         //File Number
         TextView fileNumberView = (TextView)convertView.findViewById(R.id.new_file_FileNumber);
         fileNumberView.setText(file.getFileNumber());
@@ -273,6 +283,10 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         //Clinic Name
         TextView clinicNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingClinic);
         clinicNameView.setText(file.getClinicName());
+
+        //Clinic Code
+        TextView clinicCodeView = (TextView)convertView.findViewById(R.id.new_file_RequestingClinicCode);
+        clinicCodeView.setText(file.getClinicCode());
 
 
         //Cabin Number

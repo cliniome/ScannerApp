@@ -144,7 +144,6 @@ public class ManualSyncTask implements Runnable {
             {
                 if(file.isReadyForSync())
                  readyFiles.add(file);
-
             }
 
             //now add all these files to a syncBatch

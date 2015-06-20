@@ -56,6 +56,8 @@
     <string name="ScreenUtils_Collect_Files">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
+    <string name="SHIPPING_SCREEN_TITLE">Sorting Files</string>
+    <string name="TRANSFER_FILES_SCREEN_TITLE">Transfer Files</string>
 
 
 </resources>

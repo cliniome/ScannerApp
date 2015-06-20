@@ -84,6 +84,10 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
             TextView clinicNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingClinic);
             clinicNameView.setText(file.getClinicName());
 
+            //Clinic Code
+            TextView clinicCodeView = (TextView)convertView.findViewById(R.id.new_file_RequestingClinicCode);
+            clinicCodeView.setText(file.getClinicCode());
+
 
             //Cabin Number
             TextView cabinetIdView = (TextView)convertView.findViewById(R.id.new_file_cabinetId);

@@ -113,7 +113,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
                     PopupMenu menu = new PopupMenu(getActivity(),view);
                     menu.inflate(R.menu.keeper_archive_pop_menu);
-                    
+
 
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

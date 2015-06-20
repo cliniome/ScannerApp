@@ -33,7 +33,7 @@ public class BarcodeUtils {
 
     public boolean isShelf()
     {
-        return this.isA(SHELF_OBJECTID);
+        return this.isA(SHELF_OBJECTID) && this.barcode.length() >=9;
     }
 
     public boolean isMedicalFile()

@@ -291,7 +291,8 @@ public class NewRequestsFragment extends Fragment implements IFragment {
             if(foundFile != null)
             {
                 //Now check_OUT the current file
-                storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString(), RestfulFile.READY_FILE);
+                storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
+                        , RestfulFile.READY_FILE);
 
                 //Now refresh the current fragment
                 NewRequestsFragment.this.refresh();

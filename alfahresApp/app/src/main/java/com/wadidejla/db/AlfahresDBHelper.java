@@ -27,6 +27,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_CLINIC_DOC_NAME="clinicDocName";
     public static final String COL_BATCH_REQUEST_NUMBER ="batchRequestNumber";
     public static final String COL_EMP_USERNAME = "EmpUserName";
+    public static final String COL_TRANSFERRABLE_FIELD="multipleClinics";
 
     //New Fields
     public static final String COL_APPOINTMENT_TYPE="AppointmentType";
@@ -59,6 +60,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_FILES_CREATE = "create table "
             + DATABASE_TABLE_FILES +" ( " + KEY_ID + " text primary key, " +
             COL_READY_FILE + " int null," +
+            COL_TRANSFERRABLE_FIELD + " int null," +
             COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
             COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
@@ -75,6 +77,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_SYNC_FILES_CREATE ="create table "
             + DATABASE_TABLE_SYNC_FILES +" ( " + KEY_ID + " text primary key, " +
             COL_READY_FILE + " int null," +
+            COL_TRANSFERRABLE_FIELD + " int null," +
             COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
             COL_CABINETID +" text null," + COL_DESCRIPTION +" text null," +
             COL_APPOINTMENT_DATE +" text null , " + COL_APPOINTMENT_DATE_H + " text null, " +
@@ -95,7 +98,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
            {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
            COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME,
            COL_APPOINTMENT_TYPE,COL_APPOINTMENT_MADE_BY,COL_APPOINTMENT_TIME,COL_APPOINTMENT_DATE_H,
-           COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME,COL_CLINIC_CODE,COL_CLINIC_DOC_CODE
+           COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME,COL_CLINIC_CODE,COL_CLINIC_DOC_CODE,COL_TRANSFERRABLE_FIELD
                    ,COL_READY_FILE};
 
     }

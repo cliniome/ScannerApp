@@ -152,6 +152,29 @@
 
         </LinearLayout>
 
+        <!-- Requesting Clinic Code -->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:text="@string/file_clinicCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark" />
+            <TextView
+                android:id="@+id/new_file_RequestingClinicCode"
+                android:text="xxxxxxxx"
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
         <!-- Cabin ID -->
         <LinearLayout
             android:orientation="horizontal"

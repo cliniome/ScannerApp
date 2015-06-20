@@ -38,16 +38,19 @@ public class NewViewUtils {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        okFunc.run();
                         dialogInterface.dismiss();
+                        okFunc.run();
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        noFunc.run();
                         dialogInterface.dismiss();
+                        if(noFunc != null)
+                            noFunc.run();
+
                     }
                 }).setCancelable(false)
                 .create();

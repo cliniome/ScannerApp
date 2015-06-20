@@ -17,6 +17,8 @@ public class SyncBatch extends BooleanResult implements Serializable {
 
 
 
+
+
     public SyncBatch(){}
 
     public SyncBatch(List<RestfulFile> files)
@@ -69,4 +71,6 @@ public class SyncBatch extends BooleanResult implements Serializable {
     public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
+
+
 }

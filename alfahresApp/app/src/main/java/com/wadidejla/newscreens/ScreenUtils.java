@@ -48,9 +48,15 @@ public class ScreenUtils {
                     TabDetails receiveFiles = new TabDetails(con.getResources()
                             .getString(R.string.KEEPER_ARCHIVE_TITLE),
                             R.drawable.checkin);
+
+                    TabDetails sortingShippingFiles = new TabDetails(con.getResources()
+                            .getString(R.string.SHIPPING_SCREEN_TITLE),
+                            R.drawable.shipping);
+
                     availableTabs.add(newRequests);
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(sortingShippingFiles);
 
 
 
@@ -116,6 +122,7 @@ public class ScreenUtils {
                 fragments.add(new NewRequestsFragment());
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewArchiveFilesFragment());
+                fragments.add(new SortingShippingScreen());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
