@@ -26,6 +26,25 @@ public class NewViewUtils {
         return dialog;
     }
 
+    public static AlertDialog getAlertDialog(Context context, String title, String message)
+    {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Ok !", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+
+
+                    }
+                })
+                .setCancelable(false)
+                .create();
+
+        return dialog;
+    }
+
 
 
     public static AlertDialog getChoiceDialog(Context context,
@@ -39,7 +58,8 @@ public class NewViewUtils {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        okFunc.run();
+                        if(okFunc != null)
+                            okFunc.run();
 
                     }
                 })
