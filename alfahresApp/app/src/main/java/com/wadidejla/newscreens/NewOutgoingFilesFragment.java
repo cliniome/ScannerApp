@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.adapters.NewOutgoingFilesAdapter;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
@@ -203,6 +205,18 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
     @Override
     public void handleScanResults(String trolleyBarcode) {
+
+
+        BarcodeUtils barcodeUtils = new BarcodeUtils(trolleyBarcode);
+
+
+        if(!barcodeUtils.isTrolley())
+        {
+            Toast.makeText(getActivity(),"Not a Trolley Barcode.",Toast.LENGTH_LONG)
+                    .show();
+
+            return;
+        }
 
         ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
 

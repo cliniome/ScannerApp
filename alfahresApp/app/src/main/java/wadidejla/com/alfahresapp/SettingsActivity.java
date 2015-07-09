@@ -77,7 +77,7 @@ public class SettingsActivity extends PreferenceActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            
+
             // that hierarchy.
             NavUtils.navigateUpFromSameTask(this);
             return true;
