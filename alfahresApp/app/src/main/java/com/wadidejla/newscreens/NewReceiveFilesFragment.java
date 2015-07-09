@@ -88,7 +88,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                 }
             });
 
-            final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
+           /* final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
 
             scanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +102,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
 
                 }
-            });
+            });*/
 
 
             //Do action
@@ -115,13 +115,13 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                     PopupMenu menu = new PopupMenu(getActivity(),view);
                     menu.inflate(R.menu.new_receive_pop_menu);
 
-                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+                  /*  SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
                     if(settingsManager.getAccount().isKeeper() ||
                             settingsManager.getAccount().isReceptionist())
                     {
                         menu.getMenu().getItem(R.id.pop_mark_all_received).setVisible(false);
-                    }
+                    }*/
 
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

@@ -26,6 +26,18 @@ public class NewViewUtils {
         return dialog;
     }
 
+    public static  ProgressDialog getDeterminateDialog(Context context)
+    {
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setTitle(R.string.main_files_alertDlg_Title);
+        //dialog.setMessage(context.getResources().getString(R.string.main_loading_title));
+        dialog.setCancelable(false);
+        dialog.setIndeterminate(false);
+
+        return dialog;
+    }
+
     public static AlertDialog getAlertDialog(Context context, String title, String message)
     {
         AlertDialog dialog = new AlertDialog.Builder(context)

@@ -34,10 +34,10 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/scan"
+            android:drawableLeft="@drawable/refresh"
             android:textAlignment="center"
             android:id="@+id/new_files_layout_scan_btn"
-            android:text="Scan Now"
+            android:text="Download Requests"
             android:layout_height="wrap_content" />
 
 

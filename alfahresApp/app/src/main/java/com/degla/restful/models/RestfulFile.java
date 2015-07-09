@@ -1,6 +1,7 @@
 package com.degla.restful.models;
 
 import com.google.gson.annotations.Expose;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -62,6 +63,8 @@ public class RestfulFile implements Serializable {
 
     private int readyFile;
 
+    private int selected;
+
     @Expose
     private boolean multipleClinics = false;
 
@@ -78,8 +81,8 @@ public class RestfulFile implements Serializable {
 
     public String getColumnId()
     {
-        //TODO :Don't forget to implement that to return the column id based on parsing the file Number.
-        return "";
+        BarcodeUtils barcodeUtils  = new BarcodeUtils(this.getFileNumber());
+        return barcodeUtils.getColumnNo();
     }
 
 
@@ -157,10 +160,12 @@ public class RestfulFile implements Serializable {
     {
         if(this.getFileNumber() != null && this.getFileNumber().length() > 0)
         {
-            String cabinId = this.getFileNumber().substring(0,3);
-            String shelfId = this.getFileNumber().substring(3,6);
+            BarcodeUtils barcodeUtils  = new BarcodeUtils(this.getFileNumber());
+
+            String cabinId = barcodeUtils.getCabinID();
+            String columnId = barcodeUtils.getColumnNo();
             this.setCabinetId(cabinId);
-            this.setShelfId(shelfId.substring(shelfId.length() - 1));
+            this.setShelfId(this.getShelfId());
         }
     }
 
@@ -309,5 +314,14 @@ public class RestfulFile implements Serializable {
 
     public void setMultipleClinics(boolean multipleClinics) {
         this.multipleClinics = multipleClinics;
+    }
+
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

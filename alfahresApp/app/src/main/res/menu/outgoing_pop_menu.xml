@@ -5,9 +5,9 @@
         android:title="Mark All as Missing"
         android:icon="@drawable/missing"/>
 
-
+<!--
     <item android:id="@+id/pop_add_all_container"
         android:title="Assign A Trolley"
-        android:icon="@drawable/scan"/>
+        android:icon="@drawable/scan"/>-->
 
 </menu>

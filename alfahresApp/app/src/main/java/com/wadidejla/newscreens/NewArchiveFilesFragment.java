@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.adapters.KeeperCheckInAdapter;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
@@ -88,9 +89,9 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
             });
 
 
-            //Bind the scan button
+           /* //Bind the scan button
             final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
-           /* scanButton.setVisibility(View.GONE);*/
+           *//* scanButton.setVisibility(View.GONE);*//*
 
             scanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +103,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
                             NewArchiveFilesFragment.this,false,null);
 
                 }
-            });
+            });*/
 
             //Bind do actions button
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
@@ -206,17 +207,99 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
         if(barcode != null)
         {
-            //TODO : Retrieve all files from the server through the trolley barcode
-            ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
-                    barcode,NewArchiveFilesFragment.this);
-            ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-            dialog.show();
-            scanTask.setDialog(dialog);
-            scanTask.setFragment(NewArchiveFilesFragment.this);
+            BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
 
-            //Start the scanning process
-            Thread scanningThread = new Thread(scanTask);
-            scanningThread.start();
+            if(barcodeUtils.isTrolley())
+            {
+                //TODO : Retrieve all files from the server through the trolley barcode
+                ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
+                        barcode,NewArchiveFilesFragment.this);
+                ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+                dialog.show();
+                scanTask.setDialog(dialog);
+                scanTask.setFragment(NewArchiveFilesFragment.this);
+
+                //Start the scanning process
+                Thread scanningThread = new Thread(scanTask);
+                scanningThread.start();
+
+
+            }else if (barcodeUtils.isMedicalFile())
+            {
+                //Mark the current received file as active
+
+                //Get all received Files from the database
+                DBStorageUtils storageUtils  = new DBStorageUtils(getActivity());
+
+                List<RestfulFile> receivedFiles = storageUtils.getReceivedFiles();
+
+                RestfulFile foundFile = null;
+
+                if(receivedFiles != null)
+                {
+                    for(RestfulFile file : receivedFiles)
+                    {
+                        if(file.getFileNumber().equals(barcode))
+                        {
+                            foundFile = file;
+                            break;
+                        }
+                    }
+
+                    //now check if the current found file is not null
+                    if(foundFile != null)
+                    {
+                        //Mark the file as toggle the file selection state
+                        if(foundFile.getSelected() > 0)
+                            foundFile.setSelected(0);
+                        else foundFile.setSelected(1);
+
+                        //Then save it
+                        storageUtils.insertOrUpdateFile(foundFile);
+                        //Refresh the current screen
+                        this.refresh();
+                    }
+                }
+
+            }else if (barcodeUtils.isShelf())
+            {
+                //Get the selected file only from the received files and update its shelf
+                List<RestfulFile> receivedFiles = new DBStorageUtils(getActivity()).getReceivedFiles();
+
+                if(receivedFiles != null)
+                {
+                    RestfulFile targetFile = null;
+
+                    for(RestfulFile foundFile : receivedFiles)
+                    {
+                        if(foundFile.getSelected() > 0 ) //that means it is selected already
+                        {
+                            targetFile = foundFile;
+                            break;
+                        }
+                    }
+
+                    //assign the shelf to it
+                    if(targetFile != null)
+                    {
+                        targetFile.setShelfId(barcode);
+                        targetFile.setState(FileModelStates.CHECKED_IN.toString());
+                        targetFile.setReadyFile(RestfulFile.READY_FILE);
+
+                        //operate on that file
+                        new DBStorageUtils(getActivity())
+                                .operateOnFile(targetFile,FileModelStates.CHECKED_IN.toString(),
+                                        RestfulFile.READY_FILE);
+                        SoundUtils.playSound(getActivity());
+                        this.refresh();
+                    }else
+                    {
+                        Toast.makeText(getActivity(),"There is no file selected",Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            }
+
 
         }else
         {

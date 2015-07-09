@@ -79,7 +79,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
             });
 
 
-            //Bind the scan now button
+           /* //Bind the scan now button
             Button scanBtn = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
             scanBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,7 +91,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
                 }
             });
-
+*/
 
 
 

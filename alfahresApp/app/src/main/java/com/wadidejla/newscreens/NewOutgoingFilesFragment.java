@@ -152,7 +152,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
                                     dialog.show();
                                 }
-                                case R.id.pop_add_all_container:
+                                /*case R.id.pop_add_all_container:
                                 {
                                     //TODO : Scan for Temporary containers here
 
@@ -163,7 +163,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
 
 
-                                }
+                                }*/
                                 break;
                             }
 

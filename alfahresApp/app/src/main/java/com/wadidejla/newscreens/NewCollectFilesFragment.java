@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,10 @@ import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import wadidejla.com.alfahresapp.R;
 
@@ -78,7 +82,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
                 }
             });
 
-            //Bind the scan Button
+           /* //Bind the scan Button
             final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
             scanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,7 +92,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
                             NewCollectFilesFragment.this,false,null);
                 }
             });
-
+*/
             //Bind Do Actions Menu Button
 
             //Do action
@@ -228,6 +232,75 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
     @Override
     public void handleScanResults(String barcode) {
+
+        try {
+
+            if(barcode != null && !barcode.isEmpty())
+            {
+                if(this.adapter != null)
+                {
+                    NewCoordinatorExpandableAdapter adapter = (NewCoordinatorExpandableAdapter)this.adapter;
+
+                    if(adapter != null)
+                    {
+
+                        Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
+
+                        RestfulFile foundFile = null;
+
+                        Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
+
+                        if(collectedFiles != null && !collectedFiles.isEmpty())
+                        {
+                            Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
+
+                            while(iterator.hasNext())
+                            {
+                                List<RestfulFile> oneBatchFiles = iterator.next();
+
+                                if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
+                                {
+                                    for(RestfulFile file : oneBatchFiles)
+                                    {
+                                        if(file.getFileNumber().equals(barcode))
+                                        {
+                                            foundFile = file;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                        //check if the found file is not null
+                        if(foundFile != null)
+                        {
+                            //mark it as collected
+                            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+
+                            foundFile.setTemporaryCabinetId("");
+
+                            storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
+                                    RestfulFile.READY_FILE);
+
+                            //Then play the sound
+                            SoundUtils.playSound(getActivity());
+
+                            //Update the screen
+                            this.refresh();
+                        }
+
+                    }
+
+
+                }throw new Exception("NewCoordinator adaptor is null");
+            }
+
+        }catch (Exception s)
+        {
+            Log.e("error",s.getMessage());
+        }
 
     }
 }

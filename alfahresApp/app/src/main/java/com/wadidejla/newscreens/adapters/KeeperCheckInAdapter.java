@@ -3,6 +3,7 @@ package com.wadidejla.newscreens.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,6 +126,25 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
         //Column Id
         TextView columnIdView = (TextView)convertView.findViewById(R.id.new_file_FileColumnId);
         columnIdView.setText(file.getColumnId());
+
+        if(file.getSelected() > 0)
+        {
+            //that means the file is currently selected
+            ImageView fileImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            if(fileImgView != null)
+                fileImgView.setImageResource(R.drawable.complete);
+
+            //Change the background color into orange
+            convertView.setBackgroundColor(Color.CYAN);
+        }else
+        {
+            ImageView fileImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            if(fileImgView != null)
+                fileImgView.setImageResource(R.drawable.patient_file);
+
+            //Change the background color into orange
+            convertView.setBackgroundColor(Color.WHITE);
+        }
 
         //Img View
         ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_status_img);

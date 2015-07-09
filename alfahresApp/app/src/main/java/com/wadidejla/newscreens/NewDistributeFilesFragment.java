@@ -75,7 +75,7 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
                 }
             });
 
-            //Bind the actions buttons
+            /*//Bind the actions buttons
             final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
 
             scanButton.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +90,7 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
 
 
                 }
-            });
+            });*/
 
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
 

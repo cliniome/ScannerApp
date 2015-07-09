@@ -1,6 +1,7 @@
 package com.wadidejla.newscreens.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
@@ -31,6 +32,26 @@ public class DBStorageUtils {
     {
         getSettingsManager().setNewRequests(files);
 
+    }
+
+    public void saveNewRequests(List<RestfulFile> requests)
+    {
+        try
+        {
+
+            if(requests != null && requests.size() > 0)
+            {
+                for(RestfulFile file : requests)
+                {
+                    file.setEmp(settingsManager.getAccount());
+                    this.insertOrUpdateFile(file);
+                }
+            }
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+        }
     }
 
 

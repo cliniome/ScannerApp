@@ -1,6 +1,9 @@
 package wadidejla.com.alfahresapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +14,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.wadidejla.barcode.IntentIntegrator;
 import com.wadidejla.barcode.IntentResult;
@@ -29,6 +33,11 @@ import java.util.List;
  * Created by snouto on 08/06/15.
  */
 public class MainTabbedActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+
+    private static final String BARCODE_ACTION = "com.barcode.sendBroadcast";
+    private static final String BARCODE_PARAM = "BARCODE";
+
 
     private ViewPager viewPager;
     private FragmentRollerAdapter adapter;
@@ -103,9 +112,63 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
 
     }
 
+
+    /////////////////////////////////////////Barcode Scanning Section//////////////////////////////
+
+
+    @Override
+    protected void onResume() {
+        IntentFilter intentFilter = new IntentFilter(BARCODE_ACTION);
+        registerReceiver(barcodeBroadcastReceiver, intentFilter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(barcodeBroadcastReceiver);
+        super.onDestroy();
+    }
+
+    private BroadcastReceiver barcodeBroadcastReceiver = new BroadcastReceiver() {
+
+
+        MainTabbedActivity tabbedActivity = MainTabbedActivity.this;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            String action = intent.getAction();
+            if(BARCODE_ACTION.equals(action)){
+                String barcode = intent.getStringExtra(BARCODE_PARAM);
+
+                barcode = barcode.trim();
+
+
+                if(tabbedActivity != null)
+                {
+                    IFragment activeFragment = (IFragment)tabbedActivity.getAdapter().getItem(tabbedActivity
+                            .getViewPager().getCurrentItem());
+
+                    if(activeFragment != null)
+                        activeFragment.handleScanResults(barcode);
+
+                }else
+                {
+                    //Notify the user with a toast
+                    Toast.makeText(tabbedActivity,"There was a problem reading the barcode",
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
+
+
+
+            }
+        }
+    };
+
+    ///////////////////////////////////////End of Barcode Scanning Section///////////////////////
+
     //Handle on activity result
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

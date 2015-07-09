@@ -217,7 +217,7 @@
     <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
-    <string name="SYSTEM_IP">192.168.1.8</string>
+    <string name="SYSTEM_IP">192.168.1.4</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ScreenUtils_Collect_Files">Collect Files</string>

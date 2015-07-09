@@ -65,7 +65,7 @@ public class NewTransferFilesFragment extends Fragment implements IFragment {
 
             //Now bind the buttons
 
-            //Bind the refresh Button
+           /* //Bind the refresh Button
             Button refreshButton = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
 
             refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class NewTransferFilesFragment extends Fragment implements IFragment {
 
                     NewTransferFilesFragment.this.refresh();
                 }
-            });
+            });*/
 
             //Bind the Scan button
             Button scanBtn = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
