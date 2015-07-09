@@ -128,7 +128,7 @@ class SyncFilesArrayAdapter extends ArrayAdapter<RestfulFile> {
 
                                 } else {
                                     //show details of the selected file
-                                    //TODO : add show details window in here to show the details of the selected file.
+
                                 }
 
                             }

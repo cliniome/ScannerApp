@@ -25,7 +25,7 @@ public class ScannerUtils {
     public static void ScanBarcode(Context context,int scannerType,IFragment fragment,boolean archiver,
                                    String fileNumber)
     {
-        //TODO : Implement the actual barcode scanning process in here
+
         switch (scannerType)
         {
             case SCANNER_TYPE_CAMERA:

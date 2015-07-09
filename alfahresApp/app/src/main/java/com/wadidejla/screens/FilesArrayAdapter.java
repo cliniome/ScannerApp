@@ -123,8 +123,6 @@ public class FilesArrayAdapter extends ArrayAdapter<RestfulFile> {
 
                                 } else {
                                     //show details of the selected file
-                                    //TODO : add show details window in here to show the details of the selected file.
-
                                     final AlertDialog detailsDialog = new AlertDialog.Builder(getContext())
                                             .setCustomTitle(ViewUtils.getDetailsTitleViewFor(file, getContext()))
                                             .setView(ViewUtils.getDetailsViewFor(file, getContext()))

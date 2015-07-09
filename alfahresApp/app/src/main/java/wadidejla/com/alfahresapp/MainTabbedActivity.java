@@ -136,7 +136,7 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
+
             String action = intent.getAction();
             if(BARCODE_ACTION.equals(action)){
                 String barcode = intent.getStringExtra(BARCODE_PARAM);

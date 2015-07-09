@@ -547,7 +547,7 @@ public class AlfahresMain extends ActionBarActivity {
 
                     break;
                 case TEMPORARY_FRAGMENT:
-                    //TODO : Implement the temporary fragment in here
+
                     break;
             }
 

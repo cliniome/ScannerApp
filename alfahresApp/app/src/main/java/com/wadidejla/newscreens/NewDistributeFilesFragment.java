@@ -113,7 +113,7 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
 
                                 {
                                     //Do the missing actions on all the available Files
-                                    //TODO : mark all current files as missing
+
                                     //Ask the user if he is going to mark all as missing
                                     AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(),
                                             "Mark all Files as Missing", "Are you sure to mark all files as missing?",

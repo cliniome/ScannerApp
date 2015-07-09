@@ -126,7 +126,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
                                 {
                                     //Do the missing actions on all the available Files
-                                    //TODO : mark all current files as missing
+
                                     //Ask the user if he is going to mark all as missing
                                     AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(),
                                             "Mark all Files as Missing", "Are you sure to mark all files as missing?",
@@ -211,7 +211,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
             if(barcodeUtils.isTrolley())
             {
-                //TODO : Retrieve all files from the server through the trolley barcode
+
                 ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
                         barcode,NewArchiveFilesFragment.this);
                 ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
