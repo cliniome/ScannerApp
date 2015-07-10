@@ -1,6 +1,8 @@
 package com.wadidejla.newscreens.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -23,8 +25,12 @@ import com.wadidejla.listeners.KeeperOnClickListener;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NewViewUtils;
+import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.RestfulTransferInfo;
 import com.wadidejla.utils.SoundUtils;
 
+import java.net.HttpRetryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -332,68 +338,228 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
             public boolean onLongClick(View view) {
 
 
-                final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                        .setItems(new String[]{"Mark File as Missing...","Collect That File..."},
-                                new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if(!file.isMultipleClinics())
+                {
+                    final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
+                            .setItems(new String[]{"Mark File as Missing...","Collect That File..."},
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if (i == 0) // that means mark file as missing
-                                {
-                                    //access the files Manager from the settings
-                                    try {
-                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+                                            if (i == 0) // that means mark file as missing
+                                            {
+                                                //access the files Manager from the settings
+                                                try {
+                                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
-                                        storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
-                                                RestfulFile.READY_FILE);
+                                                    storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
+                                                            RestfulFile.READY_FILE);
 
-                                        //Play the sound
-                                        SoundUtils.playSound(getContext());
-                                        //Now refresh the adapter
-                                        NewCoordinatorExpandableAdapter
-                                                .this.notifyDataSetChanged();
+                                                    //Play the sound
+                                                    SoundUtils.playSound(getContext());
+                                                    //Now refresh the adapter
+                                                    NewCoordinatorExpandableAdapter
+                                                            .this.notifyDataSetChanged();
 
-                                    } catch (Exception s) {
-                                        Log.w("FilesArrayAdapter", s.getMessage());
+                                                } catch (Exception s) {
+                                                    Log.w("FilesArrayAdapter", s.getMessage());
 
-                                    } finally {
+                                                } finally {
 
-                                        dialogInterface.dismiss();
-                                    }
+                                                    dialogInterface.dismiss();
+                                                }
 
 
-                                }else
-                                {
-                                    //That means Collect that file manually.
-                                    try {
-                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+                                            }else
+                                            {
+                                                //That means Collect that file manually.
+                                                try {
+                                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
-                                        file.setTemporaryCabinetId("");
+                                                    file.setTemporaryCabinetId("");
 
-                                        storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
-                                                RestfulFile.READY_FILE);
+                                                    storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
+                                                            RestfulFile.READY_FILE);
 
-                                        //Play the sound
-                                        SoundUtils.playSound(getContext());
-                                        //Now refresh the adapter
-                                        NewCoordinatorExpandableAdapter
-                                                .this.notifyDataSetChanged();
+                                                    //Play the sound
+                                                    SoundUtils.playSound(getContext());
+                                                    //Now refresh the adapter
+                                                    NewCoordinatorExpandableAdapter
+                                                            .this.notifyDataSetChanged();
 
-                                    } catch (Exception s) {
-                                        Log.w("FilesArrayAdapter", s.getMessage());
+                                                } catch (Exception s) {
+                                                    Log.w("FilesArrayAdapter", s.getMessage());
 
-                                    } finally {
+                                                } finally {
 
-                                        dialogInterface.dismiss();
-                                    }
+                                                    dialogInterface.dismiss();
+                                                }
 
-                                }
+                                            }
 
-                            }
-                        }).create();
+                                        }
+                                    }).create();
 
-                choiceDlg.show();
+                    choiceDlg.show();
+
+                }else // that means the file has a transfer, so view the file
+                {
+                    final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
+                            .setItems(new String[]{"Mark File as Missing...","Collect That File...",
+                                    "View Transfer Info..."},
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            if (i == 0) // that means mark file as missing
+                                            {
+                                                //access the files Manager from the settings
+                                                try {
+                                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+                                                    storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
+                                                            RestfulFile.READY_FILE);
+
+                                                    //Play the sound
+                                                    SoundUtils.playSound(getContext());
+                                                    //Now refresh the adapter
+                                                    NewCoordinatorExpandableAdapter
+                                                            .this.notifyDataSetChanged();
+
+                                                } catch (Exception s) {
+                                                    Log.w("FilesArrayAdapter", s.getMessage());
+
+                                                } finally {
+
+                                                    dialogInterface.dismiss();
+                                                }
+
+
+                                            }else if(i==1)
+                                            {
+                                                //That means Collect that file manually.
+                                                try {
+                                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+                                                    file.setTemporaryCabinetId("");
+
+                                                    storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
+                                                            RestfulFile.READY_FILE);
+
+                                                    //Play the sound
+                                                    SoundUtils.playSound(getContext());
+                                                    //Now refresh the adapter
+                                                    NewCoordinatorExpandableAdapter
+                                                            .this.notifyDataSetChanged();
+
+                                                } catch (Exception s) {
+                                                    Log.w("FilesArrayAdapter", s.getMessage());
+
+                                                } finally {
+
+                                                    dialogInterface.dismiss();
+                                                }
+
+                                            }else
+                                            {
+                                                //dismiss the dialog
+                                                dialogInterface.dismiss();
+
+                                                final ProgressDialog trWaitingDialog = NewViewUtils.getWaitingDialog(getContext());
+                                                trWaitingDialog.setTitle("Please Wait...");
+                                                trWaitingDialog.setMessage("Contacting Server....");
+                                                trWaitingDialog.show();
+
+                                                Runnable getting_Transfer_Details = new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        try
+                                                        {
+                                                            SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getContext());
+
+                                                            AlfahresConnection connection = settingsManager.getConnection();
+                                                            HttpResponse response = connection.setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                                                    .setAuthorization(settingsManager.getAccount())
+                                                                    .path(String.format("files/transferInfo?fileNumber=%s",
+                                                                            file.getFileNumber()))
+                                                                    .call(RestfulTransferInfo.class);
+
+                                                            if(response != null &&
+                                                                    response.getResponseCode().equals(String.valueOf(HttpResponse.OK_HTTP_CODE)))
+                                                            {
+
+                                                                //That means the connection was successful
+                                                                RestfulTransferInfo transferInfo = (RestfulTransferInfo) response
+                                                                        .getPayload();
+
+                                                                //Get the view
+                                                                final View transferView = NewViewUtils.getTransferView(file,transferInfo,getContext());
+
+                                                                if(transferView != null)
+                                                                {
+                                                                    //dismiss the dialog first
+                                                                    trWaitingDialog.dismiss();
+
+                                                                    Activity currentActivity = (Activity)getContext();
+
+                                                                    if(currentActivity != null)
+                                                                    {
+                                                                        currentActivity.runOnUiThread(new Runnable() {
+                                                                            @Override
+                                                                            public void run() {
+
+                                                                                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                                                                        .setView(transferView)
+                                                                                        .setTitle("Transfer Info")
+                                                                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                                                            @Override
+                                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                                                dialogInterface.dismiss();
+                                                                                            }
+                                                                                        }).create();
+
+                                                                                dialog.show();
+
+
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }
+
+                                                            }
+
+
+                                                        }catch (Exception s)
+                                                        {
+                                                            Log.e("Error",s.getMessage());
+                                                        }
+                                                        finally {
+
+                                                            if(trWaitingDialog.isShowing())
+                                                                trWaitingDialog.dismiss();
+                                                        }
+
+
+                                                    }
+                                                };
+
+                                                Thread transferThread = new Thread(getting_Transfer_Details);
+                                                transferThread.start();
+
+
+
+
+                                            }
+
+                                        }
+                                    }).create();
+
+                    choiceDlg.show();
+                }
 
                 return true;
             }

@@ -41,7 +41,6 @@
         </LinearLayout>
 
         <!-- Patient Name -->
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -153,7 +152,6 @@
         </LinearLayout>
 
         <!-- Requesting Clinic Code -->
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"

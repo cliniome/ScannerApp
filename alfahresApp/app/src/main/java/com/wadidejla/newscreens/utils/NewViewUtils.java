@@ -4,6 +4,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import com.degla.restful.models.RestfulFile;
+import com.wadidejla.utils.RestfulTransferInfo;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -24,6 +33,47 @@ public class NewViewUtils {
         dialog.setMessage(context.getResources().getString(R.string.main_loading_title));
         dialog.setCancelable(false);
         return dialog;
+    }
+
+
+    public static View getTransferView(RestfulFile file,RestfulTransferInfo info,Context context)
+    {
+        try
+        {
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View transferView = inflater.inflate(R.layout.new_single_transfer_view,null,false);
+
+            if(transferView == null) return null;
+
+            //Coordinator Name
+            TextView txtCoordinatorName = (TextView)transferView.findViewById(R.id.new_file_coordinatorName);
+            txtCoordinatorName.setText(info.getCoordinatorName());
+
+            //File Number
+            TextView txtFileNumber = (TextView) transferView.findViewById(R.id.new_file_FileNumber);
+            txtFileNumber.setText(file.getFileNumber());
+            //Requesting Doc Name
+            TextView txtDocName = (TextView)transferView.findViewById(R.id.new_file_RequestingDocName);
+            txtDocName.setText(info.getClinicDocName());
+
+            //Requesting Clinic Name
+            TextView txtClinicName = (TextView)transferView.findViewById(R.id.new_file_RequestingClinic);
+            txtClinicName.setText(info.getClinicName());
+
+            //Requesting Clinic Code
+            TextView txtClinicCode = (TextView)transferView.findViewById(R.id.new_file_RequestingClinicCode);
+            txtClinicCode.setText(info.getClinicCode());
+
+            return transferView;
+
+
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+            return null;
+        }
     }
 
     public static  ProgressDialog getDeterminateDialog(Context context)

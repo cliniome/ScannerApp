@@ -282,7 +282,10 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
                                    //now save it into the database
                                    settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
-                                   settingsManager.getReceivedFiles().add(individualFile);
+                                   settingsManager.addToReceivedFiles(individualFile);
+
+
+
                                }else
                                {
                                    NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
@@ -312,6 +315,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                            NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
                                @Override
                                public void run() {
+                                   NewReceiveFilesFragment.this.refresh();
                                    SoundUtils.playSound(getActivity());
                                   try
                                   {

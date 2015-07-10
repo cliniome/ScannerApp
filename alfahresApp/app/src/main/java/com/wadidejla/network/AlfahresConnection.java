@@ -1,14 +1,14 @@
 package com.wadidejla.network;
 
+
 import android.util.Base64;
 import android.util.Log;
-
+import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.http.HttpResponse;
 import com.degla.restful.models.http.Parameter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wadidejla.utils.AlfahresJsonBuilder;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -126,6 +126,14 @@ public class AlfahresConnection {
 
         this.addHeader(param);
 
+        return this;
+    }
+
+    public AlfahresConnection setAuthorization(RestfulEmployee account)
+    {
+        Parameter param = new Parameter("Authorization",setAuth(account.getUserName()
+        ,account.getPassword()));
+        this.addHeader(param);
         return this;
     }
 

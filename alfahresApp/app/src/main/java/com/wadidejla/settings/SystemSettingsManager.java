@@ -266,6 +266,33 @@ public class SystemSettingsManager {
         return receivedFiles;
     }
 
+    public void addToReceivedFiles(RestfulFile file)
+    {
+        if(this.receivedFiles == null)
+            this.receivedFiles = new ArrayList<RestfulFile>();
+
+        if(!fileExists(file,this.receivedFiles))
+            this.getReceivedFiles().add(file);
+
+    }
+
+    private boolean fileExists(RestfulFile file,List<RestfulFile> collection)
+    {
+        if(collection == null || collection.isEmpty()) return false;
+        else
+        {
+            boolean exists = false;
+
+            for(RestfulFile found : collection)
+            {
+                if(found.getFileNumber().equals(file.getFileNumber()))
+                    exists = true;
+            }
+
+            return exists;
+        }
+    }
+
     public void setReceivedFiles(List<RestfulFile> receivedFiles) {
         this.receivedFiles = receivedFiles;
 

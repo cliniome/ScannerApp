@@ -36,6 +36,7 @@
     <string name="file_fileNumber">File No.</string>
     <string name="file_patientNumber">Patient No.</string>
     <string name="file_patientName">Pat. Name</string>
+    <string name="file_coordinatorName">Coordinator Name</string>
     <string name="file_batchNumber">Batch No.</string>
     <string name="file_appointment_date">Appt. Date</string>
     <string name="file_appointment_time">Appt. Time</string>
