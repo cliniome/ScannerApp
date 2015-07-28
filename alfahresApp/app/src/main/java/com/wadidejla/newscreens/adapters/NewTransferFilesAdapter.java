@@ -174,13 +174,9 @@ public class NewTransferFilesAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int parent, int child, boolean lastChild, View convertView, ViewGroup viewGroup) {
 
-        if(convertView == null)
-        {
-            LayoutInflater inflater = LayoutInflater.from(this.getContext());
+        LayoutInflater inflater = LayoutInflater.from(this.getContext());
 
-            convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
-        }
-
+        convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
         //get the child object which is a restful File
         final RestfulFile file = (RestfulFile) getChild(parent,child);
 
@@ -190,6 +186,14 @@ public class NewTransferFilesAdapter extends BaseExpandableListAdapter {
         {
             convertView.setBackgroundColor(Color.MAGENTA);
         }
+
+        if(file.isInpatient())
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.inpatient);
+            convertView.setBackgroundColor(Color.MAGENTA);
+        }
+
 
         //File Number
         TextView fileNumberView = (TextView)convertView.findViewById(R.id.new_file_FileNumber);
@@ -255,6 +259,7 @@ public class NewTransferFilesAdapter extends BaseExpandableListAdapter {
             //it means the file is not ready at all , so display the preview icon
             imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
         }
+
 
         //finally return the convert View
 

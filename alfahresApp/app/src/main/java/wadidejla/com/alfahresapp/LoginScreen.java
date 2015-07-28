@@ -199,7 +199,7 @@ public class LoginScreen extends ActionBarActivity {
                                                             loadingdlg.dismiss();
                                                             LoginScreen.this.finish();
                                                             //Start the main activity
-                                                            Intent mainIntent = new Intent(LoginScreen.this,MainTabbedActivity.class);
+                                                            Intent mainIntent = new Intent(LoginScreen.this,MainDrawerActivity.class);
                                                             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                             startActivity(mainIntent);
 

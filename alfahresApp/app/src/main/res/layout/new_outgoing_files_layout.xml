@@ -41,7 +41,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:text="Do"
+            android:text="Options"
             android:drawableLeft="@drawable/action"
             android:id="@+id/new_outgoing_actions_btn"
             android:layout_height="wrap_content" />

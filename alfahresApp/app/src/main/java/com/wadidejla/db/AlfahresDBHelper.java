@@ -41,6 +41,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_CLINIC_DOC_CODE = "clinicDocCode";
     public static final String COL_READY_FILE = "readyFile";
     public static final String COL_SELECTED_FILE="selected";
+    public static final String COL_INPATIENT_FILE = "inpatient";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -61,6 +62,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_FILES_CREATE = "create table "
             + DATABASE_TABLE_FILES +" ( " + KEY_ID + " text primary key, " +
             COL_READY_FILE + " int null," +
+            COL_INPATIENT_FILE + " int null , " +
             COL_SELECTED_FILE + " int null ,"+
             COL_TRANSFERRABLE_FIELD + " int null," +
             COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
@@ -79,6 +81,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_SYNC_FILES_CREATE ="create table "
             + DATABASE_TABLE_SYNC_FILES +" ( " + KEY_ID + " text primary key, " +
             COL_READY_FILE + " int null," +
+            COL_INPATIENT_FILE + " int null , " +
             COL_SELECTED_FILE + " int null ," +
             COL_TRANSFERRABLE_FIELD + " int null," +
             COL_CLINIC_DOC_CODE + " text null," + COL_CLINIC_CODE + " text null,"+
@@ -102,7 +105,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
            COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME,
            COL_APPOINTMENT_TYPE,COL_APPOINTMENT_MADE_BY,COL_APPOINTMENT_TIME,COL_APPOINTMENT_DATE_H,
            COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME,COL_CLINIC_CODE,COL_CLINIC_DOC_CODE,COL_TRANSFERRABLE_FIELD
-                   ,COL_READY_FILE,COL_SELECTED_FILE};
+                   ,COL_READY_FILE,COL_SELECTED_FILE,COL_INPATIENT_FILE};
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.wadidejla.newscreens.utils.TabDetails;
+import com.wadidejla.newscreens.utils.TabTypes;
 import com.wadidejla.screens.CoordinatorCollectionFragment;
 import com.wadidejla.screens.LocalSyncFilesFragment;
 import com.wadidejla.screens.MainFilesScreenFragment;
@@ -41,22 +42,27 @@ public class ScreenUtils {
                 {
                     //that is the keeper role
                     TabDetails newRequests = new TabDetails(con.getResources()
-                            .getString(R.string.ScreenUtils_NewRequests),R.drawable.newrequests);
+                            .getString(R.string.ScreenUtils_NewRequests),R.drawable.newrequests,
+                            TabTypes.NEW_REQUESTS);
 
                     TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
-                            R.drawable.ongoing);
+                            R.drawable.ongoing,TabTypes.OUTGOING);
                     TabDetails receiveFiles = new TabDetails(con.getResources()
                             .getString(R.string.KEEPER_ARCHIVE_TITLE),
-                            R.drawable.checkin);
+                            R.drawable.checkin,TabTypes.CHECKIN);
 
                     TabDetails sortingShippingFiles = new TabDetails(con.getResources()
                             .getString(R.string.SHIPPING_SCREEN_TITLE),
-                            R.drawable.shipping);
+                            R.drawable.shipping,TabTypes.SORTING);
+
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
 
                     availableTabs.add(newRequests);
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
                     availableTabs.add(sortingShippingFiles);
+                    availableTabs.add(checkFileStatus);
 
 
 
@@ -64,21 +70,21 @@ public class ScreenUtils {
                 {
                     //that is the coordinator role
                     TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
-                            R.drawable.ongoing);
+                            R.drawable.ongoing,TabTypes.OUTGOING);
 
                     availableTabs.add(ongoingFiles);
 
                     TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Receive_Files),
-                            R.drawable.receive);
+                            R.drawable.receive,TabTypes.RECEIVED);
 
                     availableTabs.add(receiveFiles);
 
                     TabDetails distributeFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Distribute_Files),
-                            R.drawable.delivery);
+                            R.drawable.delivery,TabTypes.DISTRIBUTE);
                     availableTabs.add(distributeFiles);
 
                     TabDetails collectFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Collect_Files),
-                            R.drawable.collects);
+                            R.drawable.collects,TabTypes.COLLECT);
 
                     availableTabs.add(collectFiles);
 
@@ -86,14 +92,18 @@ public class ScreenUtils {
                 {
                     //that is the receptionist role
                     TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
-                            R.drawable.ongoing);
+                            R.drawable.ongoing,TabTypes.OUTGOING);
 
                     TabDetails receiveFiles = new TabDetails(con.getResources()
                             .getString(R.string.ScreenUtils_Receive_Files),
-                            R.drawable.receive);
+                            R.drawable.receive,TabTypes.RECEIVED);
+
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
 
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(checkFileStatus);
                 }
 
             }
@@ -123,6 +133,7 @@ public class ScreenUtils {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewArchiveFilesFragment());
                 fragments.add(new SortingShippingScreen());
+                fragments.add(new CheckFileStatusFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
@@ -133,10 +144,11 @@ public class ScreenUtils {
                 fragments.add(new NewCollectFilesFragment());
 
 
-            }else
+            }else // that means he is a receptionist
             {
                 fragments.add(new NewOutgoingFilesFragment());
-                fragments.add(new NewReceiveFilesFragment());
+                fragments.add(new NewReceptionistReceiveFragment());
+                fragments.add(new CheckFileStatusFragment());
             }
 
         }

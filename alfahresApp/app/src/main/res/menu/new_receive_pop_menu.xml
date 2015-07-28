@@ -9,4 +9,8 @@
         android:title="Receive All Files"
         android:icon="@drawable/accepted"/>
 
+    <item android:id="@+id/pop_mark_all_clear"
+        android:title="Clear All Files"
+        android:icon="@drawable/clear"/>
+
 </menu>

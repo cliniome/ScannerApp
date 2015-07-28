@@ -196,6 +196,7 @@
     <integer name="abc_max_action_buttons">2</integer>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="CHECK_FILE_STATUS_TITLE">Check Files Status</string>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
@@ -217,7 +218,7 @@
     <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
-    <string name="SYSTEM_IP">213.219.38.152</string>
+    <string name="SYSTEM_IP">10.10.30.95</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ScreenUtils_Collect_Files">Collect Files</string>
@@ -255,6 +256,8 @@
     <string name="btn_login_clear">Clear</string>
     <string name="btn_login_login">Login Now</string>
     <string name="btn_logout_main">Logout</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="drawer_open">Open Drawer</string>
     <string name="file_appointment_HijriDate">Appt. Hijri</string>
     <string name="file_appointment_date">Appt. Date</string>
     <string name="file_appointment_time">Appt. Time</string>
@@ -268,12 +271,14 @@
     <string name="file_fileNumber">File No.</string>
     <string name="file_patientName">Pat. Name</string>
     <string name="file_patientNumber">Patient No.</string>
+    <string name="file_status_lbl">File Status</string>
     <string name="file_view_cabinetId">Cabin No :</string>
     <string name="file_view_column">Col. No :</string>
     <string name="file_view_fileNo">File No :</string>
     <string name="file_view_patientNo">Patient No :</string>
     <string name="file_view_shelfId">Shelf No :</string>
     <string name="hello_world">Hello world!</string>
+    <string name="last_seen_by">Emp. Name</string>
     <string name="main_files_alertDlg_Title">Loading Files</string>
     <string name="main_loading_title">Loading Please Wait.....</string>
     <string name="menu_stamp">Mark Files</string>
@@ -292,6 +297,11 @@
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string name="pref_title_system_sync_settings">System sync settings</string>
+    <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="title_activity_main_drawer">MainDrawerActivity</string>
+    <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
+    <eat-comment/>
     <string name="title_activity_settings">Settings</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
@@ -1542,6 +1552,12 @@
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="RtlOverlay.Widget.AppCompat.Toolbar.Button.Navigation"/>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/styles.xml -->
     <eat-comment/>
+    <style name="fileDetailInfo">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:layout_marginLeft">47dp</item>
+    </style>
     <style name="fileNumberStyle">
 
     </style>

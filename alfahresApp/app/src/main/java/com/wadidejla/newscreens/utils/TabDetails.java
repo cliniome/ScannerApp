@@ -8,18 +8,21 @@ public class TabDetails {
     private String title;
     private int icon;
     private String description;
+    private TabTypes type;
 
-    public TabDetails(String title , int icon , String description)
+    public TabDetails(String title , int icon , String description , TabTypes type)
     {
         this.setTitle(title);
         this.setIcon(icon);
         this.setDescription(description);
+        this.setType(type);
     }
 
-    public TabDetails(String title , int icon)
+    public TabDetails(String title , int icon,TabTypes type)
     {
         this.setTitle(title);
         this.setIcon(icon);
+        this.setType(type);
     }
 
     //Empty Constructor
@@ -47,5 +50,13 @@ public class TabDetails {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TabTypes getType() {
+        return type;
+    }
+
+    public void setType(TabTypes type) {
+        this.type = type;
     }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.degla.restful.models.BooleanResult;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
@@ -22,6 +23,7 @@ import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.tasks.ManualSyncTask;
+import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +157,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                                        .getConnection();
                                HttpResponse response= connection.setAuthorization(settingsManager.getAccount().getUserName(), settingsManager.getAccount().getPassword())
                                        .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                       .path(String.format("files/oneFile?fileNumber=%s",barcode))
+                                       .path(String.format("files/sortFile?fileNumber=%s",barcode))
                                        .call(SyncBatch.class);
 
 
@@ -163,28 +165,62 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                                        HttpResponse.OK_HTTP_CODE)
                                {
                                    //get the sync Batch
-                                   SyncBatch batch = (SyncBatch)response.getPayload();
+                                   BooleanResult boolResult = (BooleanResult)response.getPayload();
 
-                                   if(batch != null)
+                                   if(!boolResult.isState())
                                    {
-                                       //get the file
-                                       List<RestfulFile> foundFiles = batch.getFiles();
+                                       //get the message
+                                       final String msg = boolResult.getMessage();
 
-                                       //get the first file
-                                       if(foundFiles != null && foundFiles.size() > 0)
+                                       getActivity().runOnUiThread(new Runnable() {
+                                           @Override
+                                           public void run() {
+
+                                               AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
+                                               ,msg);
+
+                                               dialog.show();
+                                           }
+                                       });
+
+                                   }else
+                                   {
+                                       SyncBatch batch = (SyncBatch)response.getPayload();
+
+                                       if(batch != null)
                                        {
-                                           RestfulFile foundFile = foundFiles.get(0);
-                                           settingsManager.getShippingFiles().add(foundFile);
+                                           //get the file
+                                           List<RestfulFile> foundFiles = batch.getFiles();
 
-                                         getActivity().runOnUiThread(new Runnable() {
-                                             @Override
-                                             public void run() {
+                                           //get the first file
+                                           if(foundFiles != null && foundFiles.size() > 0)
+                                           {
+                                               RestfulFile foundFile = foundFiles.get(0);
+                                               settingsManager.getShippingFiles().add(foundFile);
 
-                                                 SortingShippingScreen.this.refresh();
-                                             }
-                                         });
+                                               getActivity().runOnUiThread(new Runnable() {
+                                                   @Override
+                                                   public void run() {
+
+                                                       SortingShippingScreen.this.refresh();
+                                                   }
+                                               });
+                                           }
                                        }
                                    }
+                               }else
+                               {
+                                   getActivity().runOnUiThread(new Runnable() {
+                                       @Override
+                                       public void run() {
+
+                                           AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
+                                                   ,"The Patient File does not exist or you are not authorized to scan " +
+                                                   "that file");
+
+                                           dialog.show();
+                                       }
+                                   });
                                }
 
                            }catch (Exception s)

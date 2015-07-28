@@ -61,6 +61,9 @@ public class RestfulFile implements Serializable {
     @Expose
     private String appointmentMadeBy;
 
+    @Expose
+    private boolean inpatient;
+
     private int readyFile;
 
     private int selected;
@@ -91,6 +94,7 @@ public class RestfulFile implements Serializable {
         if(this.getState() != null && (this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.OUT_OF_CABIN.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.COORDINATOR_IN.toString()) ||
+                this.isInpatient() ||
         this.getState().equalsIgnoreCase(FileModelStates.DISTRIBUTED.toString())))
             return true;
         else
@@ -323,5 +327,13 @@ public class RestfulFile implements Serializable {
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public boolean isInpatient() {
+        return inpatient;
+    }
+
+    public void setInpatient(boolean inpatient) {
+        this.inpatient = inpatient;
     }
 }

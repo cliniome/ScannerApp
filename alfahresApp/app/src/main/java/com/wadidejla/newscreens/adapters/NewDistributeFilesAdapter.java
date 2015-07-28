@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
+import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.List;
@@ -50,14 +52,18 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
     public View getView(int position, View convertView, ViewGroup parent) {
         try
         {
-            if(convertView == null)
-            {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(this.resourceId,parent,false);
-            }
-
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(this.resourceId,parent,false);
             //begin assigning data to the current view based on the current Restful File
             final  RestfulFile file = availableFiles.get(position);
+
+
+            if(file.isInpatient())
+            {
+                ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+                imgView.setImageResource(R.drawable.inpatient);
+                convertView.setBackgroundColor(Color.MAGENTA);
+            }
 
             //File Number
             TextView fileNumberView = (TextView)convertView.findViewById(R.id.new_file_FileNumber);
@@ -123,6 +129,8 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
                 //it means the file is not ready at all , so display the preview icon
                 imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
             }
+
+
 
 
 
@@ -205,6 +213,7 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
 
     @Override
     public int getCount() {
+
 
         return availableFiles.size();
 

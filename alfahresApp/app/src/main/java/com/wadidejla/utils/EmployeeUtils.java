@@ -26,7 +26,7 @@ public class EmployeeUtils {
                 if(role.equalsIgnoreCase(RoleTypes.KEEPER.toString()))
                     return file.getState();
                 else if (role.equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
-                    return file.getState();
+                    return FileModelStates.RECEPTIONIST_IN.toString();
                 else if (role.equalsIgnoreCase(RoleTypes.COORDINATOR.toString()))
                     return FileModelStates.COORDINATOR_IN.toString();
                 else return "";
@@ -39,7 +39,7 @@ public class EmployeeUtils {
                 if(role.equalsIgnoreCase(RoleTypes.KEEPER.toString()))
                     return FileModelStates.CHECKED_OUT.toString();
                 else if (role.equalsIgnoreCase(RoleTypes.RECEPTIONIST.toString()))
-                    return file.getState();
+                    return FileModelStates.RECEPTIONIST_OUT.toString();
                 else if (role.equalsIgnoreCase(RoleTypes.COORDINATOR.toString()))
                     return FileModelStates.COORDINATOR_OUT.toString();
                 else return "";

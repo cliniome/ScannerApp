@@ -127,6 +127,13 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                     //now save the current file into the database
                                     storageUtils.operateOnFile(file,FileModelStates.DISTRIBUTED.toString(),RestfulFile.NOT_READY_FILE);
                                 }
+
+                                CollectionBatch mybatch = new CollectionBatch();
+                                //get all local files ready to be collected if any
+                                List<RestfulFile> localFiles = storageUtils.getFilesReadyForCollection();
+                                mybatch.addAllRestfulFiles(localFiles);
+                                NewCoordinatorExpandableAdapter.this.setMainCategories(mybatch.getCategories());
+                                NewCoordinatorExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
                             }
                         }
 
@@ -193,6 +200,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int parent) {
+
         return categorizedData.get(mainCategories.get(parent)).size();
     }
 
@@ -244,22 +252,28 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int parent, int child, boolean lastChild, View convertView, ViewGroup viewGroup) {
 
-        if(convertView == null)
-        {
-            LayoutInflater inflater = LayoutInflater.from(this.getContext());
+        LayoutInflater inflater = LayoutInflater.from(this.getContext());
 
-            convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
-        }
+        convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
 
         //get the child object which is a restful File
-        final RestfulFile file = (RestfulFile) getChild(parent,child);
+        final RestfulFile file = (RestfulFile) getChild(parent, child);
 
         convertView.setTag(file);
+
+
 
         if(file.isMultipleClinics())
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.transferrable);
+            convertView.setBackgroundColor(Color.MAGENTA);
+        }
+
+        if(file.isInpatient())
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.inpatient);
             convertView.setBackgroundColor(Color.MAGENTA);
         }
 
@@ -310,6 +324,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         //Img View
         ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_status_img);
 
+
+
         if (file.getState() != null && file.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()))
         {
             //that means the file is missing so set the imageview to missing drawable from the resources folder
@@ -329,6 +345,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
             //it means the file is not ready at all , so display the preview icon
             imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
         }
+
+
 
         //finally return the convert View
 

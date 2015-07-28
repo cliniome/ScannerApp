@@ -122,6 +122,9 @@ public class FilesDBManager {
 
                 file.setSelected(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
                 file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
 
@@ -234,6 +237,9 @@ public class FilesDBManager {
 
                 file.setSelected(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
 
                 files.add(file);
 
@@ -335,6 +341,9 @@ public class FilesDBManager {
 
                 file.setSelected(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
                 files.add(file);
 
             }
@@ -433,6 +442,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SELECTED_FILE);
 
                 file.setSelected(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
 
                 files.add(file);
 
@@ -533,6 +545,9 @@ public class FilesDBManager {
 
                 file.setSelected(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
                 files.add(file);
 
             }
@@ -630,6 +645,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SELECTED_FILE);
 
                 file.setSelected(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
 
                 files.add(file);
 
@@ -824,6 +842,7 @@ public class FilesDBManager {
             values.put(COL_READY_FILE,file.getReadyFile());
             values.put(COL_TRANSFERRABLE_FIELD,file.isMultipleClinics() == true ? 1 : 0);
             values.put(COL_SELECTED_FILE,file.getSelected());
+            values.put(COL_INPATIENT_FILE,(file.isInpatient() == true) ? 1 : 0);
 
 
             //now insert the current row into the database

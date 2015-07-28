@@ -186,6 +186,32 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                                 }
 
                                 break;
+
+                                case R.id.pop_mark_all_clear:
+                                {
+                                    List<RestfulFile> receivedFiles = SystemSettingsManager.createInstance(getActivity())
+                                            .getReceivedFiles();
+
+                                    if(receivedFiles!= null && receivedFiles.size() > 0)
+                                    {
+                                        for(RestfulFile file : receivedFiles)
+                                        {
+                                            //delete that file
+                                            SystemSettingsManager.createInstance(getActivity())
+                                                    .getFilesManager().getFilesDBManager()
+                                                    .deleteFile(file.getFileNumber());
+                                        }
+
+                                        //clear all
+                                        receivedFiles.clear();
+                                    }
+
+                                    //then refresh
+                                    NewReceiveFilesFragment.this.refresh();
+                                    SoundUtils.playSound(getActivity());
+                                }
+
+                                break;
                             }
 
                             return true;
@@ -261,7 +287,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                            HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
                                    settingsManager.getAccount().getPassword())
                                    .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                   .path(String.format("files/scanOneFile?fileNumber=%s",fileBarcode))
+                                   .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
                                    .call(SyncBatch.class);
 
                            if(response != null && Integer.parseInt(response.getResponseCode())

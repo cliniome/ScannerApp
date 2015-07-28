@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.degla.restful.models.SyncBatch;
+import com.degla.restful.models.http.HttpResponse;
+import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.KeeperCheckInAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
@@ -201,7 +204,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
     }
 
     @Override
-    public void handleScanResults(String barcode) {
+    public void handleScanResults(final String barcode) {
 
         //That means it is normal querying for trolley to retrieve contained files
 
@@ -226,40 +229,129 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
             }else if (barcodeUtils.isMedicalFile())
             {
+                final SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+
+                final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
+                waitingDialog.show();
+                //that means it is an individual file
+                Runnable individualFileTask = new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try
+                        {
+                            AlfahresConnection connection = settingsManager.getConnection();
+                            HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
+                                    settingsManager.getAccount().getPassword())
+                                    .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                    .path(String.format("files/oneFile?fileNumber=%s",barcode))
+                                    .call(SyncBatch.class);
+
+                            if(response != null && Integer.parseInt(response.getResponseCode())
+                                    == HttpResponse.OK_HTTP_CODE)
+                            {
+                                //get that file
+                                SyncBatch batch = (SyncBatch)response.getPayload();
+
+                                if(batch.getFiles() != null && batch.getFiles().size() > 0)
+                                {
+                                    //get that individual file
+                                    RestfulFile individualFile = batch.getFiles().get(0);
+
+                                    //mark that file as coordinator_in (Received) and make it ready
+                                   /* individualFile.setState(FileModelStates.COORDINATOR_IN.toString());*/
+                                    individualFile.setEmp(settingsManager.getAccount());
+                                    individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
+
+                                    //now save it into the database
+                                    settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
+                                    settingsManager.addToReceivedFiles(individualFile);
+
+
+
+                                }else
+                                {
+                                    NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            //dismiss the current waitingDialog
+                                            waitingDialog.dismiss();
+
+                                            final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                    "Scan Results", "There are no files for the moment !");
+
+                                            choiceDialog.show();
+
+
+                                        }
+                                    });
+                                }
+                            }
+
+                        }catch (Exception s)
+                        {
+                            s.printStackTrace();
+                        }
+                        finally {
+
+                            NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NewArchiveFilesFragment.this.refresh();
+                                    SoundUtils.playSound(getActivity());
+                                    try
+                                    {
+                                        waitingDialog.dismiss();
+
+                                        DBStorageUtils storageUtils  = new DBStorageUtils(getActivity());
+
+                                        List<RestfulFile> receivedFiles = storageUtils.getReceivedFiles();
+
+                                        RestfulFile foundFile = null;
+
+                                        if(receivedFiles != null)
+                                        {
+                                            for(RestfulFile file : receivedFiles)
+                                            {
+                                                if(file.getFileNumber().equals(barcode))
+                                                {
+                                                    foundFile = file;
+                                                    break;
+                                                }
+                                            }
+
+                                            //now check if the current found file is not null
+                                            if(foundFile != null)
+                                            {
+                                                //Mark the file as toggle the file selection state
+                                                if(foundFile.getSelected() > 0)
+                                                    foundFile.setSelected(0);
+                                                else foundFile.setSelected(1);
+
+                                                //Then save it
+                                                storageUtils.insertOrUpdateFile(foundFile);
+                                                //Refresh the current screen
+                                                NewArchiveFilesFragment.this.refresh();
+                                            }
+                                        }
+
+                                    }catch (Exception s)
+                                    {
+
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                };//the end of the individualFileTask
+
+                Thread scanThread = new Thread(individualFileTask);
+                scanThread.start();
                 //Mark the current received file as active
 
                 //Get all received Files from the database
-                DBStorageUtils storageUtils  = new DBStorageUtils(getActivity());
-
-                List<RestfulFile> receivedFiles = storageUtils.getReceivedFiles();
-
-                RestfulFile foundFile = null;
-
-                if(receivedFiles != null)
-                {
-                    for(RestfulFile file : receivedFiles)
-                    {
-                        if(file.getFileNumber().equals(barcode))
-                        {
-                            foundFile = file;
-                            break;
-                        }
-                    }
-
-                    //now check if the current found file is not null
-                    if(foundFile != null)
-                    {
-                        //Mark the file as toggle the file selection state
-                        if(foundFile.getSelected() > 0)
-                            foundFile.setSelected(0);
-                        else foundFile.setSelected(1);
-
-                        //Then save it
-                        storageUtils.insertOrUpdateFile(foundFile);
-                        //Refresh the current screen
-                        this.refresh();
-                    }
-                }
 
             }else if (barcodeUtils.isShelf())
             {

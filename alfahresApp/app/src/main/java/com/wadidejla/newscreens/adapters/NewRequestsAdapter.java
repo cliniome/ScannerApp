@@ -3,6 +3,7 @@ package com.wadidejla.newscreens.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.List;
@@ -39,14 +41,18 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
 
-        if(convertView == null)
-        {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(this.resourceId,parent,false);
-        }
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        convertView = inflater.inflate(this.resourceId,parent,false);
 
         //begin assigning data to the current view based on the current Restful File
        final  RestfulFile file = availableFiles.get(position);
+
+        if(file.isInpatient())
+        {
+            ImageView mainImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            mainImgView.setImageResource(R.drawable.inpatient);
+            convertView.setBackgroundColor(Color.MAGENTA);
+        }
 
         //File Number
         TextView fileNumberView = (TextView)convertView.findViewById(R.id.new_file_FileNumber);
@@ -122,15 +128,17 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
 
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                        .setItems(new String[]{"Mark File as Missing..."}, new DialogInterface.OnClickListener() {
+                        .setItems(new String[]{"Mark File as Missing...", "Clear That File..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
                                 if (i == 0) // that means mark file as missing
                                 {
                                     //access the files Manager from the settings
                                     try {
-                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
 
                                         storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
                                                 RestfulFile.READY_FILE);
@@ -149,6 +157,15 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
                                     }
 
 
+                                } else {
+                                    //That means clear that file
+                                    availableFiles.remove(file);
+                                    storageUtils.deleteReceivedFile(file);
+                                    storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                            .deleteFile(file.getFileNumber());
+
+                                    SoundUtils.playSound(getContext());
+                                    NewRequestsAdapter.this.notifyDataSetChanged();
                                 }
 
                             }
@@ -166,6 +183,7 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
 
     @Override
     public int getCount() {
+
         return availableFiles.size();
     }
 }

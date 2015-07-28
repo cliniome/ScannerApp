@@ -59,6 +59,12 @@
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
     <string name="SHIPPING_SCREEN_TITLE">Sorting Files</string>
     <string name="TRANSFER_FILES_SCREEN_TITLE">Transfer Files</string>
+    <string name="title_activity_main_drawer">MainDrawerActivity</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="CHECK_FILE_STATUS_TITLE">Check Files Status</string>
+    <string name="last_seen_by">Emp. Name</string>
+    <string name="file_status_lbl">File Status</string>
 
 
 </resources>

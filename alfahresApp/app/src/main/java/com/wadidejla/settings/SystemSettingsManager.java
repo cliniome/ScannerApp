@@ -8,6 +8,7 @@ import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.db.AlfahresDBHelper;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.adapters.TabDetailsArrayAdapter;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.FilesManager;
@@ -42,7 +43,9 @@ public class SystemSettingsManager {
     private List<RestfulFile> shippingFiles;
     private List<RestfulFile> transferrableFiles;
     private boolean collectingBegun =false;
+    private static TabDetailsArrayAdapter tabDetailsArrayAdapter;
 
+    private TabDetailsCounters counters;
 
     private SystemSettingsManager(Context con){
 
@@ -50,9 +53,24 @@ public class SystemSettingsManager {
         this.newRequests = new ArrayList<RestfulFile>();
         this.receivedFiles = new ArrayList<RestfulFile>();
         this.shippingFiles = new ArrayList<RestfulFile>();
+        counters = new TabDetailsCounters();
         this.initSettings();
         this.initManager();
 
+    }
+
+    public void updateMasterView()
+    {
+        if(tabDetailsArrayAdapter != null)
+            tabDetailsArrayAdapter.notifyDataSetChanged();
+    }
+
+    public static TabDetailsArrayAdapter getTabDetailsArrayAdapter() {
+        return tabDetailsArrayAdapter;
+    }
+
+    public static void setTabDetailsArrayAdapter(TabDetailsArrayAdapter tabDetailsArrayAdapter) {
+        SystemSettingsManager.tabDetailsArrayAdapter = tabDetailsArrayAdapter;
     }
 
     public boolean removeTransferrableFile(RestfulFile file)
@@ -80,7 +98,7 @@ public class SystemSettingsManager {
 
         AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null
                 ,AlfahresDBHelper.DATABASE_VERSION);
-        setFilesManager(new AlFahresFilesManager(helper,AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES));
+        setFilesManager(new AlFahresFilesManager(helper, AlfahresDBHelper.DATABASE_TABLE_SYNC_FILES));
         getFilesManager().setFiles(this.getNewRequests());
         this.setCollectingBegun(false);
 
@@ -345,5 +363,14 @@ public class SystemSettingsManager {
 
     public void setTransferrableFiles(List<RestfulFile> transferrableFiles) {
         this.transferrableFiles = transferrableFiles;
+    }
+
+
+    public TabDetailsCounters getCounters() {
+        return counters;
+    }
+
+    public void setCounters(TabDetailsCounters counters) {
+        this.counters = counters;
     }
 }

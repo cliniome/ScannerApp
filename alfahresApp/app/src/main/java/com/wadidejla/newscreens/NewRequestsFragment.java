@@ -42,7 +42,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.new_main_files_layout,container,false);
+        View rootView = inflater.inflate(R.layout.new_main_files_layout, container, false);
 
         this.initView(rootView);
 
@@ -220,7 +220,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
         }catch (Exception s)
         {
-            Log.e("Error",s.getMessage());
+            Log.e("Error", s.getMessage());
         }
     }
 
@@ -348,17 +348,26 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
             if(foundFile != null)
             {
-                //Now check_OUT the current file
-                storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
-                        , RestfulFile.READY_FILE);
+                if(foundFile.isInpatient())
+                {
+                    //Now check_OUT the current file
+                    storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString()
+                            , RestfulFile.READY_FILE);
+
+                }else
+                {
+                    //Now check_OUT the current file
+                    storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
+                            , RestfulFile.READY_FILE);
+                }
 
                 //Now refresh the current fragment
                 NewRequestsFragment.this.refreshLocal();
-                //Play the sound
-                SoundUtils.playSound(getActivity());
+
             }else
             {
-                Toast.makeText(getActivity(),fileBarcode,Toast.LENGTH_SHORT)
+                Toast.makeText(getActivity(),String.format("File %s is not found ",fileBarcode)
+                        ,Toast.LENGTH_SHORT)
                         .show();
 
             }

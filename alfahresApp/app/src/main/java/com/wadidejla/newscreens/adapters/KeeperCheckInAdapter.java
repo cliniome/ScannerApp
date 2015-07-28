@@ -19,6 +19,7 @@ import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.NewArchiveFilesFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
+import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.List;
@@ -140,7 +141,18 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
         {
             ImageView fileImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             if(fileImgView != null)
-                fileImgView.setImageResource(R.drawable.patient_file);
+            {
+                if(file.isInpatient())
+                {
+                    fileImgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.inpatient));
+
+                }else
+                {
+                    fileImgView.setImageResource(R.drawable.patient_file);
+                }
+
+            }
+
 
             //Change the background color into orange
             convertView.setBackgroundColor(Color.WHITE);
@@ -178,8 +190,7 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
 
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                        .setItems(new String[]{"Mark File as Missing...",
-                        "Scan Shelf for This File"}, new DialogInterface.OnClickListener() {
+                        .setItems(new String[]{"Mark File as Missing..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -204,12 +215,6 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
 
                                         dialogInterface.dismiss();
                                     }
-
-                                }else
-                                {
-                                    //that means scan shelf for that file
-                                    ScannerUtils.ScanBarcode(getContext(), SCANNER_TYPE_CAMERA,
-                                            getParentFragment(),true,file.getFileNumber());
 
                                 }
 
