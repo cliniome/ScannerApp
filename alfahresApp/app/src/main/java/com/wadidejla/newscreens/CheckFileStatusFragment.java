@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.degla.restful.models.FileBatchDetails;
 import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
@@ -98,22 +99,24 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
     }
 
 
-    public void addFiles(List<RestfulFile> files)
+    public void addFiles(RestfulFile file,List<RestfulFile> collection)
     {
-        if(this.getAvailableFiles()  == null)
-            this.setAvailableFiles(files);
+        if(this.getAvailableFiles()  == null || this.getAvailableFiles().isEmpty()) {
+            this.setAvailableFiles(new ArrayList<RestfulFile>());
+            this.getAvailableFiles().add(file);
+        }
         else
         {
-            if(files != null && files.size() > 0)
+            if(file != null)
             {
-                for(RestfulFile currentFile : files)
-                {
-                    if(!this.getAvailableFiles().contains(currentFile))
-                        this.getAvailableFiles().add(currentFile);
-                }
+                if(!collection.contains(file))
+                    collection.add(file);
             }
         }
     }
+
+
+
 
     @Override
     public void refresh() {
@@ -154,27 +157,28 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                             AlfahresConnection connection = settingsManager.getConnection();
                             HttpResponse response = connection.setAuthorization(settingsManager.getAccount())
                                     .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                    .path(String.format("files/oneFile?fileNumber=%s",barcode))
-                                    .call(SyncBatch.class);
+                                    .path(String.format("files/fileDetails?fileNumber=%s",barcode))
+                                    .call(FileBatchDetails.class);
 
                             if(response != null && Integer.parseInt(response.getResponseCode()) ==
                                     HttpResponse.OK_HTTP_CODE)
                             {
                                 //That means everything is ok
                                 //get the syncBatch
-                                SyncBatch batch = (SyncBatch)response.getPayload();
+                                FileBatchDetails batch = (FileBatchDetails)response.getPayload();
 
                                 if(batch != null)
                                 {
                                     //get the files
-                                    final List<RestfulFile> files = batch.getFiles();
-
+                                    final RestfulFile file = batch.getFile();
+                                    file.setLastEmployeeName(batch.getEmployeeName());
                                     //set the files
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
 
-                                            CheckFileStatusFragment.this.addFiles(files);
+                                            CheckFileStatusFragment.this.addFiles(file,
+                                                    CheckFileStatusFragment.this.getAvailableFiles());
                                             //refresh them
                                             CheckFileStatusFragment.this.refresh();
                                         }

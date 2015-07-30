@@ -68,6 +68,10 @@ public class RestfulFile implements Serializable {
 
     private int selected;
 
+    //This property is used only in CheckFile Status Screen to show the last Employee
+    //has seen that file
+    private String lastEmployeeName;
+
     @Expose
     private boolean multipleClinics = false;
 
@@ -335,5 +339,13 @@ public class RestfulFile implements Serializable {
 
     public void setInpatient(boolean inpatient) {
         this.inpatient = inpatient;
+    }
+
+    public String getLastEmployeeName() {
+        return lastEmployeeName;
+    }
+
+    public void setLastEmployeeName(String lastEmployeeName) {
+        this.lastEmployeeName = lastEmployeeName;
     }
 }

@@ -58,6 +58,10 @@ public class CheckFileStatusArrayAdapter extends ArrayAdapter<RestfulFile> {
 
             txtFileStatus.setText(stateUtils.getReadableState(file.getState()));
 
+            //Get the employee ID
+            TextView txtEmpName = (TextView)convertView.findViewById(R.id.file_emp_seen_txt);
+            txtEmpName.setText(file.getLastEmployeeName());
+
 
 
 
