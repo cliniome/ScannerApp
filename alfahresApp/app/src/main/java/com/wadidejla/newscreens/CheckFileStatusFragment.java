@@ -97,6 +97,24 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
 
     }
 
+
+    public void addFiles(List<RestfulFile> files)
+    {
+        if(this.getAvailableFiles()  == null)
+            this.setAvailableFiles(files);
+        else
+        {
+            if(files != null && files.size() > 0)
+            {
+                for(RestfulFile currentFile : files)
+                {
+                    if(!this.getAvailableFiles().contains(currentFile))
+                        this.getAvailableFiles().add(currentFile);
+                }
+            }
+        }
+    }
+
     @Override
     public void refresh() {
 
@@ -136,8 +154,8 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                             AlfahresConnection connection = settingsManager.getConnection();
                             HttpResponse response = connection.setAuthorization(settingsManager.getAccount())
                                     .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                    .path(String.format("files/oneFile?query=%s",barcode))
-                                    .call(HttpResponse.class);
+                                    .path(String.format("files/oneFile?fileNumber=%s",barcode))
+                                    .call(SyncBatch.class);
 
                             if(response != null && Integer.parseInt(response.getResponseCode()) ==
                                     HttpResponse.OK_HTTP_CODE)
@@ -156,7 +174,7 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                                         @Override
                                         public void run() {
 
-                                            CheckFileStatusFragment.this.setAvailableFiles(files);
+                                            CheckFileStatusFragment.this.addFiles(files);
                                             //refresh them
                                             CheckFileStatusFragment.this.refresh();
                                         }
