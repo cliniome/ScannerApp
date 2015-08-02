@@ -270,96 +270,137 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                 //Start the scanning process
                 Thread scanningThread = new Thread(scanTask);
                 scanningThread.start();
+
+
             }else if (utils.isMedicalFile())
             {
                 final SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-                final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
-                waitingDialog.show();
-                //that means it is an individual file
-                Runnable individualFileTask = new Runnable() {
-                    @Override
-                    public void run() {
+                if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
+                {
+                    RestfulFile foundFile = null;
 
-                       try
-                       {
-                           AlfahresConnection connection = settingsManager.getConnection();
-                           HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
-                                   settingsManager.getAccount().getPassword())
-                                   .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                   .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
-                                   .call(SyncBatch.class);
-
-                           if(response != null && Integer.parseInt(response.getResponseCode())
-                                   == HttpResponse.OK_HTTP_CODE)
-                           {
-                               //get that file
-                               SyncBatch batch = (SyncBatch)response.getPayload();
-
-                               if(batch.getFiles() != null && batch.getFiles().size() > 0)
-                               {
-                                   //get that individual file
-                                   RestfulFile individualFile = batch.getFiles().get(0);
-
-                                   //mark that file as coordinator_in (Received) and make it ready
-                                   individualFile.setState(FileModelStates.COORDINATOR_IN.toString());
-                                   individualFile.setEmp(settingsManager.getAccount());
-                                   individualFile.setReadyFile(RestfulFile.READY_FILE);
-
-                                   //now save it into the database
-                                   settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
-                                   settingsManager.addToReceivedFiles(individualFile);
-
-
-
-                               }else
-                               {
-                                   NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                       @Override
-                                       public void run() {
-
-                                           //dismiss the current waitingDialog
-                                           waitingDialog.dismiss();
-
-                                           final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
-                                                   "Scan Results", "There are no files for the moment !");
-
-                                           choiceDialog.show();
-
-
-                                       }
-                                   });
-                               }
-                           }
-
-                       }catch (Exception s)
-                       {
-                           s.printStackTrace();
-                       }
-                        finally {
-
-                           NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
-                               @Override
-                               public void run() {
-                                   NewReceiveFilesFragment.this.refresh();
-                                   SoundUtils.playSound(getActivity());
-                                  try
-                                  {
-                                      waitingDialog.dismiss();
-
-                                  }catch (Exception s)
-                                  {
-
-                                  }
-                               }
-                           });
-                       }
-
+                    for(RestfulFile file : settingsManager.getReceivedFiles())
+                    {
+                        if(file.getFileNumber().equals(fileBarcode))
+                        {
+                            foundFile = file;
+                            break;
+                        }
                     }
-                };//the end of the individualFileTask
 
-                Thread scanThread = new Thread(individualFileTask);
-                scanThread.start();
+                    if(foundFile == null)
+                    {
+                        Toast.makeText(getActivity(),String.format("%s not Found",fileBarcode),Toast.LENGTH_LONG)
+                                .show();
+                        return;
+                    }
+
+                    //Remove the restful file from the received Files
+                    settingsManager.getReceivedFiles().remove(foundFile);
+
+                    DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                    //Remove it from the database
+                    storageUtils.operateOnFile(foundFile, FileModelStates.COORDINATOR_IN.toString(),
+                            RestfulFile.READY_FILE);
+
+                    //Play the sound
+                    SoundUtils.playSound(getActivity());
+
+                    this.refresh();
+
+
+
+                }else
+                {
+                    final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
+                    waitingDialog.show();
+                    //that means it is an individual file
+                    Runnable individualFileTask = new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try
+                            {
+                                AlfahresConnection connection = settingsManager.getConnection();
+                                HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
+                                        settingsManager.getAccount().getPassword())
+                                        .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                        .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
+                                        .call(SyncBatch.class);
+
+                                if(response != null && Integer.parseInt(response.getResponseCode())
+                                        == HttpResponse.OK_HTTP_CODE)
+                                {
+                                    //get that file
+                                    SyncBatch batch = (SyncBatch)response.getPayload();
+
+                                    if(batch.getFiles() != null && batch.getFiles().size() > 0)
+                                    {
+                                        //get that individual file
+                                        RestfulFile individualFile = batch.getFiles().get(0);
+
+                                        //mark that file as coordinator_in (Received) and make it ready
+                                        individualFile.setState(FileModelStates.COORDINATOR_IN.toString());
+                                        individualFile.setEmp(settingsManager.getAccount());
+                                        individualFile.setReadyFile(RestfulFile.READY_FILE);
+
+                                        //now save it into the database
+                                        settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
+                                        settingsManager.addToReceivedFiles(individualFile);
+
+
+
+                                    }else
+                                    {
+                                        NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                //dismiss the current waitingDialog
+                                                waitingDialog.dismiss();
+
+                                                final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                        "Scan Results", "There are no files for the moment !");
+
+                                                choiceDialog.show();
+
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                            }catch (Exception s)
+                            {
+                                s.printStackTrace();
+                            }
+                            finally {
+
+                                NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NewReceiveFilesFragment.this.refresh();
+                                        SoundUtils.playSound(getActivity());
+                                        try
+                                        {
+                                            waitingDialog.dismiss();
+
+                                        }catch (Exception s)
+                                        {
+
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                    };//the end of the individualFileTask
+
+                    Thread scanThread = new Thread(individualFileTask);
+                    scanThread.start();
+                }
+
             }
 
         }else
