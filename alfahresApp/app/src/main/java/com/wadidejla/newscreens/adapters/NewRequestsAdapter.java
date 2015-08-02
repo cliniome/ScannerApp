@@ -126,8 +126,12 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
             public boolean onLongClick(View view) {
 
 
+
+
+
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
+
                         .setItems(new String[]{"Mark File as Missing...", "Clear That File..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
