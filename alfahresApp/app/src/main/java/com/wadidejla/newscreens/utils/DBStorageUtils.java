@@ -172,11 +172,12 @@ public class DBStorageUtils {
 
 
 
-    public void operateOnFile(RestfulFile file, String newState, int Ready_File)
+    public boolean operateOnFile(RestfulFile file, String newState, int Ready_File)
     {
         //now operate on the current file
         file.setState(newState);
         file.setReadyFile(Ready_File);
+        file.setEmp(settingsManager.getAccount());
         FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
 
         boolean result = filesDBManager.insertFile(file);
@@ -187,6 +188,8 @@ public class DBStorageUtils {
             settingsManager.getNewRequests().remove(file);
             settingsManager.getReceivedFiles().remove(file);
         }
+
+        return result;
 
 
     }

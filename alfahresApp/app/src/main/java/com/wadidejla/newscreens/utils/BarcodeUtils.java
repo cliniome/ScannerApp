@@ -76,7 +76,21 @@ public class BarcodeUtils {
 
             String fileNo = splitted[1];
 
-            return fileNo.substring(4,fileNo.length());
+            String cabinNo = fileNo.substring(6,fileNo.length());
+            if(cabinNo != null && cabinNo.length() > 0)
+            {
+                return  cabinNo;
+                /*String reverse = "";
+
+                for(int i = cabinNo.length()-1;i>=0;i--)
+                {
+                    reverse += cabinNo.charAt(i);
+                }
+
+                return reverse;*/
+
+            }else return "";
+//            return fileNo.substring(6,fileNo.length());
 
         }else return "";
     }

@@ -18,11 +18,13 @@ import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.NewRequestsAdapter;
+import com.wadidejla.newscreens.adapters.ShippingRequestsAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.tasks.ManualSyncTask;
+import com.wadidejla.utils.SoundUtils;
 import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
 
     private ListView listView;
-    private NewRequestsAdapter adapter;
+    private ShippingRequestsAdapter adapter;
 
 
 
@@ -60,7 +62,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
             //build the root View in here
             this.listView = (ListView)rootView.findViewById(R.id.mainFilesList);
-            this.adapter = new NewRequestsAdapter(getActivity(),R.layout.new_single_file_view,
+            this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,
                     settingsManager.getShippingFiles());
 
             this.listView.setAdapter(this.adapter);
@@ -121,7 +123,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
         if(this.adapter != null && this.listView != null)
         {
             SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
-            this.adapter = new NewRequestsAdapter(getActivity(),R.layout.new_single_file_view,settingsManager.getShippingFiles());
+            this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,settingsManager.getShippingFiles());
             this.listView.setAdapter(this.adapter);
             this.adapter.notifyDataSetChanged();
         }
@@ -196,12 +198,19 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                                            if(foundFiles != null && foundFiles.size() > 0)
                                            {
                                                RestfulFile foundFile = foundFiles.get(0);
-                                               settingsManager.getShippingFiles().add(foundFile);
+
+                                              final boolean exists = settingsManager.safelyAddToCollection(
+                                                       settingsManager.getShippingFiles(),
+                                                       foundFile
+                                               );
 
                                                getActivity().runOnUiThread(new Runnable() {
                                                    @Override
                                                    public void run() {
 
+
+                                                       //Play the sound
+                                                       SoundUtils.playSound(getActivity());
                                                        SortingShippingScreen.this.refresh();
                                                    }
                                                });
@@ -256,6 +265,12 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                         }
                         //now remove all shipping files
                         settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
+
+                        //Now play the sound
+                        SoundUtils.playSound(getActivity());
+
+                        //now update
+                        this.refresh();
                     }
 
 

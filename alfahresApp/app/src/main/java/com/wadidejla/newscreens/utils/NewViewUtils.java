@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.utils.RestfulTransferInfo;
 
@@ -37,6 +38,8 @@ public class NewViewUtils {
         dialog.setCancelable(false);
         return dialog;
     }
+
+
 
 
     public static View returnToDefault(View convertView,int defaultBackGroundColor,int resourceId)

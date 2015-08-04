@@ -3,18 +3,33 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
 
-    <ImageView
-        android:id="@+id/new_file_img"
-        android:src="@drawable/patient_file"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/file_imgs"
         android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/new_file_img"
+            android:src="@drawable/patient_file"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/new_file_status_img"
+            android:layout_centerVertical="true"
+            android:src="@drawable/newrequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/new_file_FirstVerticalPane"
         android:paddingLeft="8dp"
-        android:layout_toRightOf="@id/new_file_img"
+        android:layout_toRightOf="@id/file_imgs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -245,13 +260,7 @@
 
 
 
-    <ImageView
-        android:id="@+id/new_file_status_img"
-        android:layout_toRightOf="@id/new_file_FirstVerticalPane"
-        android:layout_centerVertical="true"
-        android:src="@drawable/newrequests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
 
 

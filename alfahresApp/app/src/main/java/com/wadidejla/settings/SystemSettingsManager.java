@@ -94,6 +94,47 @@ public class SystemSettingsManager {
         else return this.getTransferrableFiles().remove(foundFile);
     }
 
+    public boolean safelyAddToCollection(List<RestfulFile> collection , RestfulFile file)
+    {
+        if(collection == null)
+            collection = new ArrayList<RestfulFile>();
+
+        RestfulFile foundFile = this.checkFileExistsInCollection(collection,file);
+
+        if(foundFile == null)
+            collection.add(file);
+       else {
+            //delete the file
+            collection.remove(foundFile);
+
+            if(foundFile.getSelected() == 1)
+                foundFile.setSelected(0);
+
+            else foundFile.setSelected(1);
+
+            //now add it back to the collection
+            collection.add(foundFile);
+        }
+
+        return (foundFile == null ? true : false);
+    }
+
+    private RestfulFile checkFileExistsInCollection(List<RestfulFile> collection, RestfulFile file) {
+
+        RestfulFile exists = null;
+
+        for(RestfulFile found : collection)
+        {
+            if(found.getFileNumber().equals(file.getFileNumber()))
+            {
+                exists = found;
+                break;
+            }
+        }
+
+        return exists;
+    }
+
     private void initManager(){
 
         AlfahresDBHelper helper = new AlfahresDBHelper(this.context,AlfahresDBHelper.DATABASE_NAME,null

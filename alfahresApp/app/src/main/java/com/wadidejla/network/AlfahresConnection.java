@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wadidejla.utils.AlfahresJsonBuilder;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -226,7 +227,15 @@ public class AlfahresConnection {
             return response;
 
 
-        }catch (Exception s)
+        }
+        catch (IOException s)
+        {
+            response.setResponseCode("401");
+            response.setPayload("You are Not Authorized To access the system , Contact System Administrator");
+
+            return response;
+        }
+        catch (Exception s)
         {
             s.printStackTrace();
             return null;
