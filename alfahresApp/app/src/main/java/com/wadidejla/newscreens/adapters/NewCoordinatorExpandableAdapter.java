@@ -254,7 +254,12 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
         LayoutInflater inflater = LayoutInflater.from(this.getContext());
 
-        convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
+        if(convertView == null)
+        {
+            convertView = inflater.inflate(R.layout.new_single_file_view,viewGroup,false);
+        }else
+                NewViewUtils.returnToDefault(convertView,Color.WHITE,R.id.new_file_img);
+
 
         //get the child object which is a restful File
         final RestfulFile file = (RestfulFile) getChild(parent, child);

@@ -18,6 +18,7 @@ import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.NewArchiveFilesFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
@@ -83,7 +84,8 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
         {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.new_single_file_view,parent,false);
-        }
+        }else
+                NewViewUtils.returnToDefault(convertView,Color.WHITE,R.id.new_file_img);
 
         final RestfulFile file = checkInFiles.get(position);
         //File Number

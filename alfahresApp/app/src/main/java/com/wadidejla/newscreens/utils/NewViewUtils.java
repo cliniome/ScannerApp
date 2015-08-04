@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.degla.restful.models.RestfulFile;
@@ -33,6 +36,26 @@ public class NewViewUtils {
         dialog.setMessage(context.getResources().getString(R.string.main_loading_title));
         dialog.setCancelable(false);
         return dialog;
+    }
+
+
+    public static View returnToDefault(View convertView,int defaultBackGroundColor,int resourceId)
+    {
+        try
+        {
+            convertView.setBackgroundColor(defaultBackGroundColor);
+
+            ImageView img = (ImageView)convertView.findViewById(resourceId);
+
+            img.setImageResource(R.drawable.patient_file);
+
+            return convertView;
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+            return convertView;
+        }
     }
 
 

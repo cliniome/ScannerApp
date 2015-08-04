@@ -51,6 +51,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
     private void initView(View rootView) {
 
+
         final ProgressDialog dialog = NewViewUtils.getDeterminateDialog(getActivity());
         //show dialog
         dialog.show();
@@ -68,6 +69,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
                     if(storageUtils.getSettingsManager().isEmptyRequests())
                     {
+
                         AlfahresConnection conn = storageUtils.getSettingsManager().getConnection();
 
                         final HttpResponse response = conn.setAuthorization(storageUtils.getSettingsManager()

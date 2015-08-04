@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
@@ -31,6 +32,8 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
     private List<RestfulFile> availableFiles;
     private int resourceId;
 
+    private int defaultBackColor = Color.WHITE;
+
 
     public NewRequestsAdapter(Context context, int resource,List<RestfulFile> files) {
         super(context, resource);
@@ -42,7 +45,14 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
     public View getView(int position, View convertView, final ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        convertView = inflater.inflate(this.resourceId,parent,false);
+
+
+        if(convertView == null)
+        {
+            convertView = inflater.inflate(this.resourceId,parent,false);
+        }else
+            NewViewUtils.returnToDefault(convertView,Color.WHITE,R.id.new_file_img);
+
 
         //begin assigning data to the current view based on the current Restful File
        final  RestfulFile file = availableFiles.get(position);
@@ -52,6 +62,7 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
             ImageView mainImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             mainImgView.setImageResource(R.drawable.inpatient);
             convertView.setBackgroundColor(Color.MAGENTA);
+
         }
 
         //File Number
