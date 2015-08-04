@@ -1,6 +1,8 @@
 package com.wadidejla.newscreens.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -14,9 +16,12 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.degla.restful.models.http.HttpResponse;
+import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.RestfulTransferInfo;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.ArrayList;
@@ -27,14 +32,14 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 08/06/15.
  */
-public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
+public class NewOutgoingCoordinatorAdapter extends ArrayAdapter<RestfulFile> {
 
 
     private List<RestfulFile> availableFiles;
 
     private int resourceId;
 
-    public NewOutgoingFilesAdapter(Context context, int resource) {
+    public NewOutgoingCoordinatorAdapter(Context context, int resource) {
         super(context, resource);
         this.resourceId = resource;
         this.checkForData();
@@ -67,6 +72,13 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.inpatient);
+            convertView.setBackgroundColor(Color.MAGENTA);
+        }
+
+        if(file.isMultipleClinics())
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.transferrable);
             convertView.setBackgroundColor(Color.MAGENTA);
         }
 
@@ -129,7 +141,8 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
         {
             //show the complete drawable
             imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.complete));
-        }else
+        }
+        else
         {
             //it means the file is not ready at all , so display the preview icon
             imgView.setImageDrawable(getContext().getResources().getDrawable(R.drawable.preview));
@@ -137,11 +150,18 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
 
 
 
-       final List<String> items = new ArrayList<String>();
+        final List<String> items = new ArrayList<String>();
+
         if(!(file.getState().equals(FileModelStates.MISSING.toString())))
         {
             items.add("Mark File as Missing...");
         }
+
+        if(file.isMultipleClinics())
+        {
+            items.add("View Transfer Info...");
+        }
+
 
         //Assign here on Long Click Listener
         if(items.size() > 0)
@@ -171,7 +191,7 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
                                             //Play the sound
                                             SoundUtils.playSound(getContext());
                                             //Now refresh the adapter
-                                            NewOutgoingFilesAdapter.this.notifyDataSetChanged();
+                                            NewOutgoingCoordinatorAdapter.this.notifyDataSetChanged();
 
                                         } catch (Exception s) {
                                             Log.w("FilesArrayAdapter", s.getMessage());
@@ -180,6 +200,95 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
 
                                             dialogInterface.dismiss();
                                         }
+
+
+                                    }else if (i==1) // That means View Transfer Info
+                                    {
+                                        //dismiss the dialog
+                                        dialogInterface.dismiss();
+
+                                        final ProgressDialog trWaitingDialog = NewViewUtils.getWaitingDialog(getContext());
+                                        trWaitingDialog.setTitle("Please Wait...");
+                                        trWaitingDialog.setMessage("Contacting Server....");
+                                        trWaitingDialog.show();
+
+                                        Runnable getting_Transfer_Details = new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                try
+                                                {
+                                                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getContext());
+
+                                                    AlfahresConnection connection = settingsManager.getConnection();
+                                                    HttpResponse response = connection.setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                                            .setAuthorization(settingsManager.getAccount())
+                                                            .path(String.format("files/transferInfo?fileNumber=%s",
+                                                                    file.getFileNumber()))
+                                                            .call(RestfulTransferInfo.class);
+
+                                                    if(response != null &&
+                                                            response.getResponseCode().equals(String.valueOf(HttpResponse.OK_HTTP_CODE)))
+                                                    {
+
+                                                        //That means the connection was successful
+                                                        RestfulTransferInfo transferInfo = (RestfulTransferInfo) response
+                                                                .getPayload();
+
+                                                        //Get the view
+                                                        final View transferView = NewViewUtils.getTransferView(file,transferInfo,getContext());
+
+                                                        if(transferView != null)
+                                                        {
+                                                            //dismiss the dialog first
+                                                            trWaitingDialog.dismiss();
+
+                                                            Activity currentActivity = (Activity)getContext();
+
+                                                            if(currentActivity != null)
+                                                            {
+                                                                currentActivity.runOnUiThread(new Runnable() {
+                                                                    @Override
+                                                                    public void run() {
+
+                                                                        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                                                                .setView(transferView)
+                                                                                .setTitle("Transfer Info")
+                                                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                                        dialogInterface.dismiss();
+                                                                                    }
+                                                                                }).create();
+
+                                                                        dialog.show();
+
+
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                }catch (Exception s)
+                                                {
+                                                    Log.e("Error",s.getMessage());
+                                                }
+                                                finally {
+
+                                                    if(trWaitingDialog.isShowing())
+                                                        trWaitingDialog.dismiss();
+                                                }
+
+
+                                            }
+                                        };
+
+                                        Thread transferThread = new Thread(getting_Transfer_Details);
+                                        transferThread.start();
 
 
                                     }
@@ -192,9 +301,9 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
                     return true;
                 }
             });
+
+
         }
-
-
 
         return convertView;
     }

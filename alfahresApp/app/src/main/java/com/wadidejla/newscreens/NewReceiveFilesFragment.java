@@ -369,6 +369,24 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                                             }
                                         });
                                     }
+                                }else
+                                {
+                                    NewReceiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            //dismiss the current waitingDialog
+                                            waitingDialog.dismiss();
+
+                                            final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                    "Scan Results", "There are no files for the moment !,Or you don't have " +
+                                                            "Permissions to access that file");
+
+                                            choiceDialog.show();
+
+
+                                        }
+                                    });
                                 }
 
                             }catch (Exception s)

@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.wadidejla.newscreens.IFragment;
+import com.wadidejla.newscreens.NewOutgoingCoordinatorFragment;
 import com.wadidejla.newscreens.NewOutgoingFilesFragment;
 import com.wadidejla.newscreens.ScreenUtils;
 import com.wadidejla.newscreens.adapters.TabDetailsArrayAdapter;
@@ -134,7 +135,8 @@ public class MainDrawerActivity extends ActionBarActivity {
 
             for(int i = 0 ; i < fragments.size();i++)
             {
-                if(fragments.get(i) instanceof  NewOutgoingFilesFragment)
+                if(fragments.get(i) instanceof  NewOutgoingFilesFragment ||
+                        fragments.get(i) instanceof NewOutgoingCoordinatorFragment)
                 {
                     defaultIndex = i;
                     break;

@@ -201,6 +201,10 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
             });
 
 
+            //Do the refresh
+            this.refresh();
+
+
 
         }catch (Exception s)
         {
@@ -225,7 +229,12 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
     public void refresh() {
 
         if(this.adapter != null)
+        {
+
+            this.adapter.checkData();
             this.adapter.notifyDataSetChanged();
+        }
+
 
     }
 

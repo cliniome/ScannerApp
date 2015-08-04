@@ -98,6 +98,7 @@ public class RestfulFile implements Serializable {
         if(this.getState() != null && (this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.OUT_OF_CABIN.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.COORDINATOR_IN.toString()) ||
+                this.isMultipleClinics() ||
                 this.isInpatient() ||
         this.getState().equalsIgnoreCase(FileModelStates.DISTRIBUTED.toString())))
             return true;

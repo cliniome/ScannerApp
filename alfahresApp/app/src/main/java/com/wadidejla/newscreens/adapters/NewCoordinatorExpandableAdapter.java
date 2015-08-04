@@ -58,12 +58,12 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        this.loadData();
+        //this.loadData();
         super.notifyDataSetChanged();
 
     }
 
-    private void loadData() {
+    public void loadData() {
 
         try
         {

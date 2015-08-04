@@ -86,7 +86,13 @@ public class ScreenUtils {
                     TabDetails collectFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Collect_Files),
                             R.drawable.collects,TabTypes.COLLECT);
 
+
                     availableTabs.add(collectFiles);
+
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
+
+                    availableTabs.add(checkFileStatus);
 
                 }else if(settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE))
                 {
@@ -138,10 +144,11 @@ public class ScreenUtils {
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
             {
                 //that is the receptionist
-                fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new NewOutgoingCoordinatorFragment());
                 fragments.add(new NewReceiveFilesFragment());
                 fragments.add(new NewDistributeFilesFragment());
                 fragments.add(new NewCollectFilesFragment());
+                fragments.add(new CheckFileStatusFragment());
 
 
             }else // that means he is a receptionist

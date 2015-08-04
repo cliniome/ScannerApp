@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,7 +45,7 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
 
     @Override
     public void notifyDataSetChanged() {
-        this.checkData();
+       // this.checkData();
         super.notifyDataSetChanged();
     }
 
@@ -224,7 +225,7 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
 
     }
 
-    private void checkData() {
+    public void checkData() {
         try
         {
             //Get all files marked for distribution , a.k.a , having their state equals to coordinator_in
@@ -259,6 +260,14 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
 
                           NewDistributeFilesAdapter.this
                                   .availableFiles = storageUtils.getFilesReadyForDistribution();
+
+                          ((Activity)getContext()).runOnUiThread(new Runnable() {
+                              @Override
+                              public void run() {
+
+                                  NewDistributeFilesAdapter.this.notifyDataSetChanged();
+                              }
+                          });
 
                           dialog.dismiss();
                       }
