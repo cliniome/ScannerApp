@@ -245,96 +245,128 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
             if(barcode != null && !barcode.isEmpty())
             {
-                if(this.adapter != null)
-                {
-                    NewCoordinatorExpandableAdapter adapter = (NewCoordinatorExpandableAdapter)this.adapter;
+                BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
+                //mark it as collected
+                DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
-                    if(adapter != null)
-                    {
-
-                        Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
-
-                        RestfulFile foundFile = null;
-
-                        Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
-
-                        if(collectedFiles != null && !collectedFiles.isEmpty())
-                        {
-                            Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
-
-                            while(iterator.hasNext())
+                         if(barcodeUtils.isMedicalFile())
                             {
-                                List<RestfulFile> oneBatchFiles = iterator.next();
+                                NewCoordinatorExpandableAdapter adapter = (NewCoordinatorExpandableAdapter)this.adapter;
 
-                                if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
+                                if(adapter != null)
                                 {
-                                    for(RestfulFile file : oneBatchFiles)
+
+                                    Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
+
+                                    RestfulFile foundFile = null;
+
+                                    Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
+
+                                    if(collectedFiles != null && !collectedFiles.isEmpty())
                                     {
-                                        if(file.getFileNumber().equals(barcode))
+                                        Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
+
+                                        while(iterator.hasNext())
                                         {
-                                            foundFile = file;
-                                            break;
+                                            List<RestfulFile> oneBatchFiles = iterator.next();
+
+                                            if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
+                                            {
+                                                for(RestfulFile file : oneBatchFiles)
+                                                {
+                                                    if(file.getFileNumber().equals(barcode))
+                                                    {
+                                                        foundFile = file;
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
-                        }
 
 
-                        //check if the found file is not null
-                        if(foundFile != null)
-                        {
-                            BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
-                            //mark it as collected
-                            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-
-                            if(barcodeUtils.isMedicalFile())
-                            {
-
-
-                                foundFile.setTemporaryCabinetId("");
+                                    if(foundFile != null)
+                                    {
+                                        foundFile.setTemporaryCabinetId("");
 
                             /*storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
                                     RestfulFile.READY_FILE);
 */
-                                //Mark it as selected
-                                if(foundFile.getSelected() == 1)
-                                    foundFile.setSelected(0);
-                                else foundFile.setSelected(1);
+                                        //Mark it as selected
+                                        if(foundFile.getSelected() == 1)
+                                            foundFile.setSelected(0);
+                                        else foundFile.setSelected(1);
 
 
-                                this.getFilesReadyToBeCollected(foundFile);
+                                        this.getFilesReadyToBeCollected(foundFile);
 
-                                storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
-                            }else if (barcodeUtils.isTrolley())
-                            {
-                                //mark that file as coordinator out and mark it as ready file
-                                foundFile.setTemporaryCabinetId(barcode);
-
-                                foundFile.setSelected(0);
-
-                                storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
-                                        RestfulFile.READY_FILE);
+                                        storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
+                                    }
 
                             }
 
-                            //Then play the sound
-                            SoundUtils.playSound(getActivity());
 
-                            //Update the screen
-                            this.refresh();
-                        }
+                        }else if (barcodeUtils.isTrolley())
+                         {
+                             Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
+
+                             RestfulFile foundFile = null;
+
+                             Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
+
+                             if(collectedFiles != null && !collectedFiles.isEmpty())
+                             {
+                                 Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
+
+                                 while(iterator.hasNext())
+                                 {
+                                     List<RestfulFile> oneBatchFiles = iterator.next();
+
+                                     if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
+                                     {
+                                         for(RestfulFile file : oneBatchFiles)
+                                         {
+                                             if(file.getSelected() == 1) //grab the selected file
+                                             {
+                                                 foundFile = file;
+                                                 break;
+                                             }
+                                         }
+                                     }
+                                 }
+                             }
+
+                             if(foundFile != null)
+                             {
+                                 //mark that file as coordinator out and mark it as ready file
+                                 foundFile.setTemporaryCabinetId(barcode);
+
+                                 foundFile.setSelected(0);
+
+                                 storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
+                                         RestfulFile.READY_FILE);
+                             }
+
+                         }
 
 
-                    }
 
 
-                }throw new Exception("NewCoordinator adaptor is null");
+
+
             }
 
         }catch (Exception s)
         {
             Log.e("error",s.getMessage());
+        }
+
+        finally {
+            //Then play the sound
+            SoundUtils.playSound(getActivity());
+
+            //Update the screen
+            this.refresh();
         }
 
     }

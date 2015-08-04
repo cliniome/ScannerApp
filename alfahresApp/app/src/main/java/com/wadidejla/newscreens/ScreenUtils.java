@@ -146,7 +146,7 @@ public class ScreenUtils {
                 //that is the receptionist
                 fragments.add(new NewOutgoingCoordinatorFragment());
                 fragments.add(new NewReceiveFilesFragment());
-                fragments.add(new NewDistributeFilesFragment());
+                fragments.add(new NewCoordinatorDistributeFragment());
                 fragments.add(new NewCollectFilesFragment());
                 fragments.add(new CheckFileStatusFragment());
 

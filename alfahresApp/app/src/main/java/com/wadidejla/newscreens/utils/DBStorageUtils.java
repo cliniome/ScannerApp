@@ -194,6 +194,39 @@ public class DBStorageUtils {
 
     }
 
+    public List<RestfulFile> getFilesToBeDistributed()
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.COORDINATOR_IN.toString())
+                    .append("'");
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
+        }
+    }
+
 
 
     public List<RestfulFile> getFilesReadyForCollection()
