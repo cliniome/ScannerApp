@@ -17,6 +17,7 @@ import android.widget.PopupMenu;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.adapters.NewCoordinatorExpandableAdapter;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
@@ -283,13 +284,39 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
                         //check if the found file is not null
                         if(foundFile != null)
                         {
+                            BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
                             //mark it as collected
                             DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
-                            foundFile.setTemporaryCabinetId("");
+                            if(barcodeUtils.isMedicalFile())
+                            {
 
-                            storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
+
+                                foundFile.setTemporaryCabinetId("");
+
+                            /*storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
                                     RestfulFile.READY_FILE);
+*/
+                                //Mark it as selected
+                                if(foundFile.getSelected() == 1)
+                                    foundFile.setSelected(0);
+                                else foundFile.setSelected(1);
+
+
+                                this.getFilesReadyToBeCollected(foundFile);
+
+                                storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
+                            }else if (barcodeUtils.isTrolley())
+                            {
+                                //mark that file as coordinator out and mark it as ready file
+                                foundFile.setTemporaryCabinetId(barcode);
+
+                                foundFile.setSelected(0);
+
+                                storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
+                                        RestfulFile.READY_FILE);
+
+                            }
 
                             //Then play the sound
                             SoundUtils.playSound(getActivity());
@@ -297,6 +324,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
                             //Update the screen
                             this.refresh();
                         }
+
 
                     }
 
@@ -309,5 +337,35 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
             Log.e("error",s.getMessage());
         }
 
+    }
+
+    private void getFilesReadyToBeCollected(RestfulFile foundFile) {
+
+        try
+        {
+            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+
+            List<RestfulFile> foundFiles = storageUtils.getFilesReadyForCollection();
+
+            if(foundFiles != null && foundFiles.size() > 0)
+            {
+                for(RestfulFile current : foundFiles)
+                {
+                    if(current.getFileNumber().equals(foundFile.getFileNumber()))
+                        continue;
+                    else
+                    {
+                        current.setSelected(0); // unselect it
+
+                        //then update it
+                        storageUtils.operateOnFile(current,current.getState(),current.getReadyFile());
+                    }
+                }
+            }
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+        }
     }
 }
