@@ -152,10 +152,10 @@ public class NewOutgoingCoordinatorAdapter extends ArrayAdapter<RestfulFile> {
 
         final List<String> items = new ArrayList<String>();
 
-        if(!(file.getState().equals(FileModelStates.MISSING.toString())))
+        /*if(!(file.getState().equals(FileModelStates.MISSING.toString())))
         {
             items.add("Mark File as Missing...");
-        }
+        }*/
 
         if(file.isMultipleClinics())
         {
@@ -179,7 +179,7 @@ public class NewOutgoingCoordinatorAdapter extends ArrayAdapter<RestfulFile> {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    if (i == 0) // that means mark file as missing
+                                    if (i == 1) // that means mark file as missing
                                     {
                                         //access the files Manager from the settings
                                         try {
@@ -202,7 +202,7 @@ public class NewOutgoingCoordinatorAdapter extends ArrayAdapter<RestfulFile> {
                                         }
 
 
-                                    }else if (i==1) // That means View Transfer Info
+                                    }else if (i==0) // That means View Transfer Info
                                     {
                                         //dismiss the dialog
                                         dialogInterface.dismiss();

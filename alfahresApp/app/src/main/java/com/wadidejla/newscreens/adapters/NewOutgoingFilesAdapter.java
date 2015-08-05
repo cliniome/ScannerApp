@@ -138,10 +138,12 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
 
 
        final List<String> items = new ArrayList<String>();
-        if(!(file.getState().equals(FileModelStates.MISSING.toString())))
+
+        //Deactivating the menu items in the Outgoing screen
+       /* if(!(file.getState().equals(FileModelStates.MISSING.toString())))
         {
             items.add("Mark File as Missing...");
-        }
+        }*/
 
         //Assign here on Long Click Listener
         if(items.size() > 0)

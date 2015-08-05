@@ -28,6 +28,7 @@ import com.wadidejla.utils.SoundUtils;
 import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -252,19 +253,29 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
                     if(settingsManager.getShippingFiles() != null && settingsManager.getShippingFiles().size() > 0)
                     {
+                        List<RestfulFile> markedFiles = new ArrayList<RestfulFile>();
+
                         //assign that trolley to all existing files
                         for(RestfulFile shippingFile : settingsManager.getShippingFiles())
                         {
-                            shippingFile.setTemporaryCabinetId(trolleyId);
-                            shippingFile.setReadyFile(RestfulFile.READY_FILE); // convert it into ready files
-                            shippingFile.setEmp(settingsManager.getAccount());
-                            shippingFile.setState(FileModelStates.CHECKED_OUT.toString());
+                           if(shippingFile.getSelected() == 1)
+                           {
+                               shippingFile.setTemporaryCabinetId(trolleyId);
+                               shippingFile.setReadyFile(RestfulFile.READY_FILE); // convert it into ready files
+                               shippingFile.setEmp(settingsManager.getAccount());
+                               shippingFile.setState(FileModelStates.CHECKED_OUT.toString());
 
-                            //now operate on that file
-                            settingsManager.getFilesManager().getFilesDBManager().insertFile(shippingFile);
+                               //now operate on that file
+                               settingsManager.getFilesManager().getFilesDBManager().insertFile(shippingFile);
+                               markedFiles.add(shippingFile);
+                           }
                         }
                         //now remove all shipping files
-                        settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
+                        for(RestfulFile markedFile : markedFiles)
+                        {
+                            settingsManager.getShippingFiles().remove(markedFile);
+                        }
+                        //settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
 
                         //Now play the sound
                         SoundUtils.playSound(getActivity());

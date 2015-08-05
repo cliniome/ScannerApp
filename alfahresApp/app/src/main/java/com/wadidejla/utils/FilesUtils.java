@@ -25,8 +25,10 @@ public class FilesUtils {
             @Override
             public int compare(RestfulFile restfulFile, RestfulFile t1) {
 
-                char firstCabinId = restfulFile.getCabinetId().charAt(restfulFile.getCabinetId().length()-1);
-                char secondCabinId = t1.getCabinetId().charAt(t1.getCabinetId().length()-1);
+                //char firstCabinId = restfulFile.getCabinetId().charAt(restfulFile.getCabinetId().length()-1);
+                //char secondCabinId = t1.getCabinetId().charAt(t1.getCabinetId().length()-1);
+                int firstCabinId = Integer.parseInt(restfulFile.getCabinetId()+restfulFile.getColumnId());
+                int secondCabinId = Integer.parseInt(t1.getCabinetId()+t1.getColumnId());
 
                 if(firstCabinId > secondCabinId)
                     return 1;

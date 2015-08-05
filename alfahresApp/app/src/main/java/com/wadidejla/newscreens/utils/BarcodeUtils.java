@@ -60,7 +60,7 @@ public class BarcodeUtils {
 
             String fileNo = splitted[1];
 
-            return String.valueOf(fileNo.charAt(3));
+            return String.valueOf(fileNo.charAt(5));
 
         }else return "";
     }
@@ -74,6 +74,7 @@ public class BarcodeUtils {
 
             if(splitted.length < 2) return "";
 
+            //01-55555452
             String fileNo = splitted[1];
 
             String cabinNo = fileNo.substring(6,fileNo.length());
