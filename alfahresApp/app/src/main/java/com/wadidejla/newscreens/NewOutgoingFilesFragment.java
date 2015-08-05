@@ -100,7 +100,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
             });
 
 
-            //Do action
+            /*//Do action
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_outgoing_actions_btn);
 
             DoActionsBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +154,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
                                     dialog.show();
                                 }
-                                /*case R.id.pop_add_all_container:
+                                *//*case R.id.pop_add_all_container:
                                 {
                                     //TODO : Scan for Temporary containers here
 
@@ -165,7 +165,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
 
 
 
-                                }*/
+                                }*//*
                                 break;
                             }
 
@@ -175,7 +175,7 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment {
                     menu.show();
 
                 }
-            });
+            });*/
 
         }catch (Exception s)
         {

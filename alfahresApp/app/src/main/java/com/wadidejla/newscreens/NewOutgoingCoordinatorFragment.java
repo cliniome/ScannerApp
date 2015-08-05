@@ -100,7 +100,7 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
             });
 
 
-            //Do action
+            /*//Do action
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_outgoing_actions_btn);
 
             DoActionsBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +164,7 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
                     menu.show();
 
                 }
-            });
+            });*/
 
         }catch (Exception s)
         {
