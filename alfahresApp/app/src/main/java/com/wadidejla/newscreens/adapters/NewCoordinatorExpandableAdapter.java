@@ -136,6 +136,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                 mybatch.addAllRestfulFiles(localFiles);
                                 NewCoordinatorExpandableAdapter.this.setMainCategories(mybatch.getCategories());
                                 NewCoordinatorExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
+                                NewCoordinatorExpandableAdapter.this.notifyDataSetChanged();
                             }
                         }
 

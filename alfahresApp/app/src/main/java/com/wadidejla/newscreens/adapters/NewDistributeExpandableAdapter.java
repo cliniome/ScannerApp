@@ -55,7 +55,6 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        //this.loadData();
         super.notifyDataSetChanged();
 
     }
@@ -133,6 +132,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
                                 mybatch.addAllRestfulFiles(allFiles);
                                 NewDistributeExpandableAdapter.this.setMainCategories(mybatch.getCategories());
                                 NewDistributeExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
+                                NewDistributeExpandableAdapter.this.notifyDataSetChanged();
                             }
                         }
 
