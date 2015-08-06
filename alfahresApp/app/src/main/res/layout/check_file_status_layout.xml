@@ -25,7 +25,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/refresh"
+            android:drawableLeft="@drawable/clear"
             android:textAlignment="center"
             android:id="@+id/new_files_layout_refresh_btn"
             android:text="Clear Files"

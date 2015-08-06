@@ -509,6 +509,7 @@ int id image 0x7f0f0028
 int id imageView 0x7f0f006e
 int id lblUserName 0x7f0f006f
 int id lbl_password 0x7f0f0072
+int id lbl_requestingdocName 0x7f0f0087
 int id listMode 0x7f0f0009
 int id list_item 0x7f0f002a
 int id mainFilesList 0x7f0f0054
@@ -528,7 +529,6 @@ int id new_file_RequestingClinicCode 0x7f0f0083
 int id new_file_RequestingDocName 0x7f0f0081
 int id new_file_ShelfId 0x7f0f0085
 int id new_file_cabinetId 0x7f0f0084
-int id new_file_coordinatorName 0x7f0f0087
 int id new_file_img 0x7f0f0079
 int id new_file_status_img 0x7f0f007a
 int id new_files_layout_refresh_btn 0x7f0f0055
@@ -548,7 +548,6 @@ int id pop_mark_all_distribute 0x7f0f0096
 int id pop_mark_all_missing 0x7f0f008e
 int id pop_mark_all_received 0x7f0f0097
 int id pop_mark_all_transfer 0x7f0f0095
-int id pop_send_out_all 0x7f0f0099
 int id progress_circular 0x7f0f0005
 int id progress_horizontal 0x7f0f0006
 int id radio 0x7f0f003a

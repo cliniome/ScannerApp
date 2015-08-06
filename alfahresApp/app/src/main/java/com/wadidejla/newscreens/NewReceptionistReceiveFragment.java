@@ -128,44 +128,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
                             switch (menuItem.getItemId()) {
 
-                                case R.id.pop_send_out_all:
-                                {
-                                    //Ask the user if he is going to mark all as missing
-                                    AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(),
-                                            "Send Out All Files", "Are you sure to Send Out All The Files?",
-                                            new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    //Mark them
 
-                                                    DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-
-                                                    List<RestfulFile> availableFiles = storageUtils.getReceivedFiles();
-
-                                                    if (availableFiles != null) {
-                                                        for (RestfulFile file : availableFiles) {
-                                                            storageUtils.operateOnFile(file, FileModelStates.RECEPTIONIST_OUT.toString(),
-                                                                    RestfulFile.READY_FILE);
-                                                        }
-
-                                                        //Empty all files
-                                                        storageUtils.getReceivedFiles().clear();
-
-                                                        //now update
-                                                        SoundUtils.playSound(getActivity());
-                                                        NewReceptionistReceiveFragment.this.refresh();
-                                                    }
-                                                }
-                                            }, new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    //do nothing in here
-                                                }
-                                            });
-
-                                    dialog.show();
-                                }
-                                    break;
 
                                 case R.id.pop_mark_all_missing:
 
@@ -310,94 +273,156 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                 scanningThread.start();
             }else if (utils.isMedicalFile())
             {
+                /*
+                   1. Check to see if the file exists in the received files.
+                   2. If the file exists in the received files, mark it as selected and update it in the database.
+                   3. if the file already selected in the received files , do the receive action and remove it .
+                   4. if the file does not exists in the received files , download it and add it to the received files.
+                 */
                 final SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-                final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
-                waitingDialog.show();
-                //that means it is an individual file
-                Runnable individualFileTask = new Runnable() {
-                    @Override
-                    public void run() {
+                RestfulFile foundFile = this.checkFileExists(fileBarcode,settingsManager);
 
-                       try
-                       {
-                           AlfahresConnection connection = settingsManager.getConnection();
-                           HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
-                                   settingsManager.getAccount().getPassword())
-                                   .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                   .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
-                                   .call(SyncBatch.class);
-
-                           if(response != null && Integer.parseInt(response.getResponseCode())
-                                   == HttpResponse.OK_HTTP_CODE)
-                           {
-                               //get that file
-                               SyncBatch batch = (SyncBatch)response.getPayload();
-
-                               if(batch.getFiles() != null && batch.getFiles().size() > 0)
-                               {
-                                   //get that individual file
-                                   RestfulFile individualFile = batch.getFiles().get(0);
-
-                                   //mark that file as coordinator_in (Received) and make it ready
-                                   individualFile.setState(FileModelStates.COORDINATOR_IN.toString());
-                                   individualFile.setEmp(settingsManager.getAccount());
-                                   individualFile.setReadyFile(RestfulFile.READY_FILE);
-
-                                   //now save it into the database
-                                   settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
-                                   settingsManager.addToReceivedFiles(individualFile);
+                if(foundFile != null) //that means the file already found
+                {
+                    //check to see if the file currently selected
+                    if(foundFile.getSelected() > 0)
+                    {
+                        //that means it is already selected
+                        //so begin the receiving process
+                        DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                        storageUtils.operateOnFile(foundFile, FileModelStates.RECEPTIONIST_IN.toString(), RestfulFile.READY_FILE);
 
 
+                    }else
+                    {
+                        //toggle the selection state
+                        foundFile.toggleSelection();
 
-                               }else
-                               {
-                                   NewReceptionistReceiveFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                       @Override
-                                       public void run() {
+                        for(RestfulFile current : settingsManager.getReceivedFiles())
+                        {
+                            if(current.getFileNumber().equals(foundFile.getFileNumber()))
+                                continue;
+                            else {
+                                current.setSelected(0);
 
-                                           //dismiss the current waitingDialog
-                                           waitingDialog.dismiss();
-
-                                           final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
-                                                   "Scan Results", "There are no files for the moment !");
-
-                                           choiceDialog.show();
-
-
-                                       }
-                                   });
-                               }
-                           }
-
-                       }catch (Exception s)
-                       {
-                           s.printStackTrace();
-                       }
-                        finally {
-
-                           NewReceptionistReceiveFragment.this.getActivity().runOnUiThread(new Runnable() {
-                               @Override
-                               public void run() {
-                                   NewReceptionistReceiveFragment.this.refresh();
-                                   SoundUtils.playSound(getActivity());
-                                  try
-                                  {
-                                      waitingDialog.dismiss();
-
-                                  }catch (Exception s)
-                                  {
-
-                                  }
-                               }
-                           });
-                       }
-
+                            }
+                        }
+                        //then remove it from the received files
+                        settingsManager.getReceivedFiles().remove(foundFile);
+                        //then add it back again
+                        settingsManager.getReceivedFiles().add(foundFile);
                     }
-                };//the end of the individualFileTask
+                    //then notify the application to refresh in any case
+                    this.refresh();
+                }else
+                {
+                    //that means the file does not exist
+                    final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
+                    waitingDialog.show();
+                    //that means it is an individual file
+                    Runnable individualFileTask = new Runnable() {
+                        @Override
+                        public void run() {
 
-                Thread scanThread = new Thread(individualFileTask);
-                scanThread.start();
+                            try
+                            {
+                                AlfahresConnection connection = settingsManager.getConnection();
+                                HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
+                                        settingsManager.getAccount().getPassword())
+                                        .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                        .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
+                                        .call(SyncBatch.class);
+
+                                if(response != null && Integer.parseInt(response.getResponseCode())
+                                        == HttpResponse.OK_HTTP_CODE)
+                                {
+                                    //get that file
+                                    SyncBatch batch = (SyncBatch)response.getPayload();
+
+                                    if(batch.getFiles() != null && batch.getFiles().size() > 0)
+                                    {
+                                        //get that individual file
+                                        RestfulFile individualFile = batch.getFiles().get(0);
+
+                                        //toggle the selection
+                                        individualFile.toggleSelection();
+                                        settingsManager.getReceivedFiles().remove(individualFile);
+                                        settingsManager.addToReceivedFiles(individualFile);
+
+                                        //then notify the application to refresh
+                                        NewReceptionistReceiveFragment.this.refresh();
+
+
+
+                                    }else
+                                    {
+                                        NewReceptionistReceiveFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                //dismiss the current waitingDialog
+                                                waitingDialog.dismiss();
+
+                                                final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                        "Scan Results", "There are no files for the moment ! , Or you don't have permissions to receive that file yet !");
+
+                                                choiceDialog.show();
+
+
+                                            }
+                                        });
+                                    }
+                                }else
+                                {
+                                    NewReceptionistReceiveFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            //dismiss the current waitingDialog
+                                            waitingDialog.dismiss();
+
+                                            final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                    "Scan Results", "There are no files for the moment ! , Or you don't have permissions to receive that file yet !");
+
+                                            choiceDialog.show();
+
+
+                                        }
+                                    });
+                                }
+
+                            }catch (Exception s)
+                            {
+                                s.printStackTrace();
+                            }
+                            finally {
+
+                                NewReceptionistReceiveFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NewReceptionistReceiveFragment.this.refresh();
+                                        SoundUtils.playSound(getActivity());
+                                        try
+                                        {
+                                            waitingDialog.dismiss();
+
+                                        }catch (Exception s)
+                                        {
+
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                    };//the end of the individualFileTask
+
+                    Thread scanThread = new Thread(individualFileTask);
+                    scanThread.start();
+                }
+
+
             }
 
         }else
@@ -405,6 +430,26 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
             Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private RestfulFile checkFileExists(String fileBarcode, SystemSettingsManager settingsManager) {
+
+        RestfulFile foundFile = null;
+
+        if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
+        {
+            for(RestfulFile current : settingsManager.getReceivedFiles())
+            {
+                if(current.getFileNumber().equals(fileBarcode))
+                {
+                    foundFile = current;
+                    break;
+                }
+            }
+
+        }
+
+        return foundFile;
     }
 
 

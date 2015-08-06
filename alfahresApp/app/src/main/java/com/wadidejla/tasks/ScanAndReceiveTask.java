@@ -64,13 +64,7 @@ public class ScanAndReceiveTask implements Runnable {
                         //get the syncBatch
                         final SyncBatch batch = (SyncBatch)response.getPayload();
 
-                        /*if(batch.getFiles() != null)
-                        {
-                            for(RestfulFile file : batch.getFiles())
-                            {
-                                file.setTemporaryCabinetId(barcode);
-                            }
-                        }*/
+
                         //now bind that to the list view
                         Activity currentActivity = (Activity)context;
 
@@ -78,11 +72,7 @@ public class ScanAndReceiveTask implements Runnable {
                             @Override
                             public void run() {
 
-                                /*//create a files Array Adapter
-                                FilesArrayAdapter adapter = new FilesArrayAdapter(context, R.layout.single_file_view,batch.getFiles());
 
-                                fragment.getListView().setAdapter(adapter);
-                                adapter.notifyDataSetChanged();*/
                                if(batch != null && batch.getFiles() != null)
                                {
                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());

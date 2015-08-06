@@ -287,11 +287,19 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
                                     if(foundFile != null)
                                     {
-                                        foundFile.setTemporaryCabinetId("");
 
-                            /*storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
-                                    RestfulFile.READY_FILE);
-*/
+                                        if(foundFile.getSelected() > 0)// that means it is selected
+                                        {
+                                            if(foundFile.isMultipleClinics()) // that means it is transferrable
+                                            {
+                                                //operate on that file
+                                                storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+
+                                                return;
+                                            }
+                                        }
+
+                                        foundFile.setTemporaryCabinetId("");
                                         //Mark it as selected
                                         if(foundFile.getSelected() == 1)
                                             foundFile.setSelected(0);
@@ -358,6 +366,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
         }catch (Exception s)
         {
+
             Log.e("error",s.getMessage());
         }
 

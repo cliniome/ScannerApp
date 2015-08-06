@@ -92,6 +92,16 @@ public class RestfulFile implements Serializable {
         return barcodeUtils.getColumnNo();
     }
 
+    public void toggleSelection()
+    {
+        int selected = this.getSelected();
+
+        if(selected == 0)
+            this.setSelected(1);
+        else
+            this.setSelected(0);
+    }
+
 
     public boolean isReadyForSync()
     {

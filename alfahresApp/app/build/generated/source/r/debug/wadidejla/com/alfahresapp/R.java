@@ -1618,6 +1618,7 @@ containing a value of this type.
         public static final int imageView=0x7f0f006e;
         public static final int lblUserName=0x7f0f006f;
         public static final int lbl_password=0x7f0f0072;
+        public static final int lbl_requestingdocName=0x7f0f0087;
         public static final int listMode=0x7f0f0009;
         public static final int list_item=0x7f0f002a;
         public static final int mainFilesList=0x7f0f0054;
@@ -1637,7 +1638,6 @@ containing a value of this type.
         public static final int new_file_RequestingDocName=0x7f0f0081;
         public static final int new_file_ShelfId=0x7f0f0085;
         public static final int new_file_cabinetId=0x7f0f0084;
-        public static final int new_file_coordinatorName=0x7f0f0087;
         public static final int new_file_img=0x7f0f0079;
         public static final int new_file_status_img=0x7f0f007a;
         public static final int new_files_layout_refresh_btn=0x7f0f0055;
@@ -1657,7 +1657,6 @@ containing a value of this type.
         public static final int pop_mark_all_missing=0x7f0f008e;
         public static final int pop_mark_all_received=0x7f0f0097;
         public static final int pop_mark_all_transfer=0x7f0f0095;
-        public static final int pop_send_out_all=0x7f0f0099;
         public static final int progress_circular=0x7f0f0005;
         public static final int progress_horizontal=0x7f0f0006;
         public static final int radio=0x7f0f003a;

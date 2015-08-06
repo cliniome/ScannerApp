@@ -5,10 +5,6 @@
         android:title="Mark All as Missing"
         android:icon="@drawable/missing"/>
 
-    <item android:id="@+id/pop_send_out_all"
-        android:title="Send Out All Files"
-        android:icon="@drawable/accepted"/>
-
     <item android:id="@+id/pop_mark_all_received"
         android:title="Receive All Files"
         android:icon="@drawable/accepted"/>

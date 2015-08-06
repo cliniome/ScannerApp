@@ -136,7 +136,14 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                 mybatch.addAllRestfulFiles(localFiles);
                                 NewCoordinatorExpandableAdapter.this.setMainCategories(mybatch.getCategories());
                                 NewCoordinatorExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
-                                NewCoordinatorExpandableAdapter.this.notifyDataSetChanged();
+
+                                ((Activity)getContext()).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        NewCoordinatorExpandableAdapter.this.notifyDataSetChanged();
+                                    }
+                                });
                             }
                         }
 
@@ -282,14 +289,14 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.inpatient);
-            convertView.setBackgroundColor(Color.MAGENTA);
+            convertView.setBackgroundColor(Color.DKGRAY);
         }
 
         if(file.getSelected() == 1)
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.complete);
-            convertView.setBackgroundColor(Color.MAGENTA);
+            convertView.setBackgroundColor(Color.CYAN);
         }
 
 
@@ -546,6 +553,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
                                                                                 AlertDialog dialog = new AlertDialog.Builder(getContext())
                                                                                         .setView(transferView)
+                                                                                        .setIcon(R.drawable.transferrable)
                                                                                         .setTitle("Transfer Info")
                                                                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                                                             @Override

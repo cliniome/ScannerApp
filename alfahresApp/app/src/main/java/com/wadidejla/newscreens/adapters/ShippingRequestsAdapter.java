@@ -58,22 +58,24 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
         //begin assigning data to the current view based on the current Restful File
        final  RestfulFile file = availableFiles.get(position);
 
-        if(file.isInpatient())
+        if(file.isMultipleClinics())
         {
-            ImageView mainImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
-            mainImgView.setImageResource(R.drawable.inpatient);
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.transferrable);
             convertView.setBackgroundColor(Color.MAGENTA);
-
         }
 
-        if(file.getSelected() > 0)
+        if(file.isInpatient())
         {
-            //that means the file is currently selected
-            ImageView fileImgView = (ImageView)convertView.findViewById(R.id.new_file_img);
-            if(fileImgView != null)
-                fileImgView.setImageResource(R.drawable.complete);
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.inpatient);
+            convertView.setBackgroundColor(Color.DKGRAY);
+        }
 
-            //Change the background color into orange
+        if(file.getSelected() == 1)
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.complete);
             convertView.setBackgroundColor(Color.CYAN);
         }
 

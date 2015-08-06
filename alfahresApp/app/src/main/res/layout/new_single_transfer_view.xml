@@ -2,43 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/new_file_img"
-        android:src="@drawable/transferrable"
-        android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content" />
+
 
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/new_file_FirstVerticalPane"
         android:paddingLeft="8dp"
-        android:layout_toRightOf="@id/new_file_img"
-        android:layout_width="wrap_content"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
-        <!-- Patient Name -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-
-                android:text="@string/file_coordinatorName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark" />
-            <TextView
-                android:id="@+id/new_file_coordinatorName"
-                android:text="xxxxxxxx"
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
         <!-- File Number  -->
         <LinearLayout
             android:orientation="horizontal"
@@ -73,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:id="@+id/lbl_requestingdocName"
                 android:textColor="@android:color/holo_red_dark" />
             <TextView
                 android:id="@+id/new_file_RequestingDocName"

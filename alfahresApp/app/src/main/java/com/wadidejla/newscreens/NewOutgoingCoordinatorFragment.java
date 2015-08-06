@@ -196,7 +196,7 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
     public void handleScanResults(String trolleyBarcode) {
 
 
-        BarcodeUtils barcodeUtils = new BarcodeUtils(trolleyBarcode);
+      /*  BarcodeUtils barcodeUtils = new BarcodeUtils(trolleyBarcode);
 
 
         if(!barcodeUtils.isTrolley())
@@ -230,7 +230,7 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
         //Now refresh all the files
         NewOutgoingCoordinatorFragment.this.refresh();
         dialog.dismiss();
-        SoundUtils.playSound(getActivity());
+        SoundUtils.playSound(getActivity());*/
 
     }
 }

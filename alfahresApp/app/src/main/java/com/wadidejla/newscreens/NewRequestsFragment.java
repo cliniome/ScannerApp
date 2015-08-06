@@ -211,9 +211,13 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                 newRequests = new ArrayList<RestfulFile>();
 
 
+            //Arrange and sort them accordingly
+            FilesUtils.prepareFiles(newRequests);
+
             NewRequestsAdapter adapter = new NewRequestsAdapter(getActivity()
                     ,R.layout.new_single_file_view,
-                    storageUtils.getNewRequests());
+                    newRequests)
+                    ;
             getRequestsListView().setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
@@ -296,10 +300,15 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
                                     try
                                     {
+                                        List<RestfulFile> availableRequests = storageUtils.getNewRequests();
+
+                                        //Prepare them and sort them accordingly
+                                        FilesUtils.prepareFiles(availableRequests);
+
                                         //bind the newRequests to the listView
                                         NewRequestsAdapter adapter = new NewRequestsAdapter(getActivity()
                                                 ,R.layout.new_single_file_view,
-                                                storageUtils.getNewRequests());
+                                                availableRequests);
                                         getRequestsListView().setAdapter(adapter);
                                         adapter.notifyDataSetChanged();
 

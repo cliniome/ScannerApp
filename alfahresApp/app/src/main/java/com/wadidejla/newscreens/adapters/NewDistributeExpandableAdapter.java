@@ -132,7 +132,14 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
                                 mybatch.addAllRestfulFiles(allFiles);
                                 NewDistributeExpandableAdapter.this.setMainCategories(mybatch.getCategories());
                                 NewDistributeExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
-                                NewDistributeExpandableAdapter.this.notifyDataSetChanged();
+
+                                ((Activity)getContext()).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NewDistributeExpandableAdapter.this.notifyDataSetChanged();
+                                    }
+                                });
+
                             }
                         }
 
@@ -278,14 +285,14 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.inpatient);
-            convertView.setBackgroundColor(Color.MAGENTA);
+            convertView.setBackgroundColor(Color.DKGRAY);
         }
 
         if(file.getSelected() == 1)
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.complete);
-            convertView.setBackgroundColor(Color.MAGENTA);
+            convertView.setBackgroundColor(Color.CYAN);
         }
 
 
@@ -371,7 +378,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
                 {
                     final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                             .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                            .setItems(new String[]{"Mark File as Missing...","Collect That File..."},
+                            .setItems(new String[]{"Mark File as Missing...","Distribute That File..."},
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -408,7 +415,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
 
                                                     file.setTemporaryCabinetId("");
 
-                                                    storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
+                                                    storageUtils.operateOnFile(file, FileModelStates.DISTRIBUTED.toString(),
                                                             RestfulFile.READY_FILE);
 
                                                     //Play the sound
@@ -436,7 +443,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
                 {
                     final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                             .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                            .setItems(new String[]{"Mark File as Missing...","Collect That File...",
+                            .setItems(new String[]{"Mark File as Missing...","Distribute That File...",
                                     "View Transfer Info..."},
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -474,7 +481,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
 
                                                     file.setTemporaryCabinetId("");
 
-                                                    storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
+                                                    storageUtils.operateOnFile(file, FileModelStates.DISTRIBUTED.toString(),
                                                             RestfulFile.READY_FILE);
 
                                                     //Play the sound
@@ -542,6 +549,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
 
                                                                                 AlertDialog dialog = new AlertDialog.Builder(getContext())
                                                                                         .setView(transferView)
+                                                                                        .setIcon(R.drawable.transferrable)
                                                                                         .setTitle("Transfer Info")
                                                                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                                                             @Override

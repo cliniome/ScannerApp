@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,16 +73,30 @@ public class NewViewUtils {
 
             if(transferView == null) return null;
 
-            //Coordinator Name
-            TextView txtCoordinatorName = (TextView)transferView.findViewById(R.id.new_file_coordinatorName);
-            txtCoordinatorName.setText(info.getCoordinatorName());
-
             //File Number
             TextView txtFileNumber = (TextView) transferView.findViewById(R.id.new_file_FileNumber);
             txtFileNumber.setText(file.getFileNumber());
             //Requesting Doc Name
             TextView txtDocName = (TextView)transferView.findViewById(R.id.new_file_RequestingDocName);
-            txtDocName.setText(info.getClinicDocName());
+
+            if(info.getClinicDocName() == null || info.getClinicDocName().isEmpty())
+            {
+                TextView lblDocName = (TextView)transferView.findViewById(R.id.lbl_requestingdocName);
+
+                if(transferView instanceof ViewGroup)
+                {
+                    ((ViewGroup)transferView).removeView(lblDocName);
+                    ((ViewGroup)transferView).removeView(txtDocName);
+
+                    //then force layout
+                    transferView.forceLayout();
+                }
+                //lblDocName.setVisibility(View.INVISIBLE);
+                //txtDocName.setVisibility(View.INVISIBLE);
+            }else
+            {
+                txtDocName.setText(info.getClinicDocName());
+            }
 
             //Requesting Clinic Name
             TextView txtClinicName = (TextView)transferView.findViewById(R.id.new_file_RequestingClinic);

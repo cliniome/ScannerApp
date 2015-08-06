@@ -68,18 +68,25 @@ public class NewOutgoingCoordinatorAdapter extends ArrayAdapter<RestfulFile> {
         final  RestfulFile file = availableFiles.get(position);
 
 
-        if(file.isInpatient())
-        {
-            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
-            imgView.setImageResource(R.drawable.inpatient);
-            convertView.setBackgroundColor(Color.MAGENTA);
-        }
-
         if(file.isMultipleClinics())
         {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.transferrable);
             convertView.setBackgroundColor(Color.MAGENTA);
+        }
+
+        if(file.isInpatient())
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.inpatient);
+            convertView.setBackgroundColor(Color.DKGRAY);
+        }
+
+        if(file.getSelected() == 1)
+        {
+            ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
+            imgView.setImageResource(R.drawable.complete);
+            convertView.setBackgroundColor(Color.CYAN);
         }
 
         //File Number
