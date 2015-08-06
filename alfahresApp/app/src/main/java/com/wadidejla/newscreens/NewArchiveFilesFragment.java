@@ -263,6 +263,16 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
                                     individualFile.setEmp(settingsManager.getAccount());
                                     individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
 
+                                    individualFile.toggleSelection();
+
+                                    if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
+                                    {
+                                        for(RestfulFile current : settingsManager.getReceivedFiles())
+                                        {
+                                            current.setSelected(0);
+                                        }
+                                    }
+
                                     //now save it into the database
                                     settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
                                     settingsManager.addToReceivedFiles(individualFile);

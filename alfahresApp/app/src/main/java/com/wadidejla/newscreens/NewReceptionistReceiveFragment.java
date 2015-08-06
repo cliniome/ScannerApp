@@ -271,6 +271,8 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                 //Start the scanning process
                 Thread scanningThread = new Thread(scanTask);
                 scanningThread.start();
+
+
             }else if (utils.isMedicalFile())
             {
                 /*
@@ -331,7 +333,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                 HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
                                         settingsManager.getAccount().getPassword())
                                         .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                        .path(String.format("files/oneFile?fileNumber=%s",fileBarcode))
+                                        .path(String.format("files/receiveFile?fileNumber=%s",fileBarcode))
                                         .call(SyncBatch.class);
 
                                 if(response != null && Integer.parseInt(response.getResponseCode())
