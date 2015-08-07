@@ -20,6 +20,7 @@ import com.wadidejla.newscreens.adapters.NewCoordinatorExpandableAdapter;
 import com.wadidejla.newscreens.adapters.NewDistributeExpandableAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.tasks.CollectingTask;
@@ -36,11 +37,15 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewCoordinatorDistributeFragment extends Fragment implements IFragment
+public class NewCoordinatorDistributeFragment extends Fragment implements IFragment , IAdapterListener
 {
 
     private ExpandableListView expandableListView;
     private NewDistributeExpandableAdapter adapter;
+    private FragmentListener listener;
+
+    private int totalFiles = 0;
+
 
 
     @Nullable
@@ -211,7 +216,14 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
     @Override
     public String getTitle() {
-         return getResources().getString(R.string.ScreenUtils_Distribute_Files);
+         String title =  getResources().getString(R.string.ScreenUtils_Distribute_Files);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.getTotalFiles());
+        }
+
+        return title;
     }
 
     @Override
@@ -228,6 +240,8 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
             this.adapter.loadData();
             this.adapter.notifyDataSetChanged();
         }
+
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
 
     }
@@ -310,5 +324,27 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
     }
 
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
 
+        this.listener = listener;
+
+    }
+
+
+    @Override
+    public void doUpdateFragment() {
+
+
+        if(this.listener != null)
+            this.listener.invalidate();
+    }
+
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public void setTotalFiles(int totalFiles) {
+        this.totalFiles = totalFiles;
+    }
 }

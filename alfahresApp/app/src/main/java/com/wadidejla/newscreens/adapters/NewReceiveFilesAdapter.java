@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.Network;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
@@ -46,6 +48,8 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
         DBStorageUtils storageUtils = new DBStorageUtils(getContext());
         this.availableFiles = storageUtils.getReceivedFiles();
         super.notifyDataSetChanged();
+
+        NetworkUtils.ScheduleSynchronization(getContext());
     }
 
     @Override
@@ -102,9 +106,7 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
         patientNameView.setText(file.getPatientName());
 
 
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
+
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);

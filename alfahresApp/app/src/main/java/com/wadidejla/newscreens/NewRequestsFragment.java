@@ -1,5 +1,7 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,24 +23,31 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.NewRequestsAdapter;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
+import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesUtils;
 import com.wadidejla.utils.SoundUtils;
 import static com.wadidejla.newscreens.utils.ScannerUtils.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import wadidejla.com.alfahresapp.R;
 
 /**
  * Created by snouto on 08/06/15.
  */
-public class NewRequestsFragment extends Fragment implements IFragment {
+public class NewRequestsFragment extends Fragment implements IFragment , DatePickerDialog.OnDateSetListener , IAdapterListener {
 
 
     private NewRequestsAdapter requestsAdapter;
     private ListView requestsListView;
+
+    private FragmentListener listener;
 
     @Nullable
     @Override
@@ -46,19 +56,85 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
         this.initView(rootView);
 
+        this.refreshLocal();
+
         return rootView;
     }
 
     private void initView(View rootView) {
 
 
+
+        this.setRequestsListView((ListView) rootView.findViewById(R.id.mainFilesList));
+
+
+        //Bind the date Object in here
+        Button dateBtn = (Button)rootView.findViewById(R.id.pick_choose_date);
+
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Choose Date in here
+
+                NewRequestsFragment.this.onCreateDateDialog();
+
+
+            }
+        });
+
+
+    }
+
+    private void onCreateDateDialog() {
+
+        try
+        {
+            //Get today's Date
+            Date today = new Date();
+            Calendar calc = Calendar.getInstance();
+            int year = calc.get(Calendar.YEAR);
+            int month = calc.get(Calendar.MONTH);
+            int day = calc.get(Calendar.DAY_OF_MONTH);
+
+            //Show the Dialog Picker
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),this,year,month,day);
+            datePickerDialog.show();
+
+        }catch (Exception s)
+        {
+
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+        Calendar calc = Calendar.getInstance();
+        calc.set(Calendar.YEAR,year);
+        calc.set(Calendar.MONTH,month);
+        calc.set(Calendar.DAY_OF_MONTH,day);
+
+        Date chosenDate = calc.getTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("d-MMM-yy");
+
+        String chosenFormattedDate = formatter.format(chosenDate);
+
+        this.doScanWithDate(chosenFormattedDate);
+
+    }
+
+
+    private void doScanWithDate(final String chosenDate)
+    {
         final ProgressDialog dialog = NewViewUtils.getDeterminateDialog(getActivity());
         //show dialog
         dialog.show();
 
         try
         {
-            this.setRequestsListView((ListView) rootView.findViewById(R.id.mainFilesList));
+
 
 
             final Thread newRequestsThread = new Thread(new Runnable() {
@@ -66,6 +142,9 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                 public void run() {
 
                     final DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+
+                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+                    settingsManager.getNewRequests().clear();
 
                     if(storageUtils.getSettingsManager().isEmptyRequests())
                     {
@@ -76,7 +155,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                                 .getAccount().getUserName(), storageUtils.getSettingsManager()
                                 .getAccount().getPassword())
                                 .setMethodType(conn.GET_HTTP_METHOD)
-                                .path("files/new")
+                                .path(String.format("files/selectDate?date=%s",chosenDate))
                                 .call(new TypeToken<List<RestfulFile>>() {
                                 }.getType());
 
@@ -103,13 +182,8 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                                 file.setEmp(storageUtils.getSettingsManager().getAccount());
                                 file.setState(FileModelStates.NEW.toString());
 
-                                /*if(storageUtils.getSettingsManager().getSyncFilesManager()
-                                        .getFilesDBManager().getFileByNumber(file.getFileNumber()) == null)
-                                {
-                                    tempList.add(file);
-                                }*/
 
-                                storageUtils.insertOrUpdateFile(file);
+                               // storageUtils.insertOrUpdateFile(file);
 
                                 ++counter;
 
@@ -130,8 +204,12 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                                 requestsAdapter = new NewRequestsAdapter(getActivity(),
                                         R.layout.new_single_file_view,
                                         storageUtils.getNewRequests());
+
+                                requestsAdapter.setListener(NewRequestsFragment.this);
                                 getRequestsListView().setAdapter(requestsAdapter);
                                 requestsAdapter.notifyDataSetChanged();
+
+                                NewRequestsFragment.this.refreshLocal();
 
                                 dialog.dismiss();
 
@@ -144,36 +222,11 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
 
 
-                }
-            });
-
-            //Binding the actions
-            // First : Bind the refresh Button
-            Button refreshButton = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
-            refreshButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    NewRequestsFragment.this.refreshLocal();
-                }
-            });
-
-
-            //Scan button
-            Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
-
-            scanButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    //Scan
-                    NewRequestsFragment.this.refresh();
-
 
 
                 }
             });
+
 
             newRequestsThread.start();
 
@@ -181,12 +234,18 @@ public class NewRequestsFragment extends Fragment implements IFragment {
         {
             s.printStackTrace();
         }
-
     }
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.Fragment_NewRequests_Title);
+        String title = getResources().getString(R.string.Fragment_NewRequests_Title);
+
+        if(this.getRequestsAdapter() != null)
+        {
+            title  = String.format("%s(%s)",title,this.getRequestsAdapter().getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -196,6 +255,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
             this.getRequestsAdapter().notifyDataSetChanged();
 
     }
+
 
 
     public void refreshLocal()
@@ -216,12 +276,21 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
             NewRequestsAdapter adapter = new NewRequestsAdapter(getActivity()
                     ,R.layout.new_single_file_view,
-                    newRequests)
-                    ;
+                    newRequests);
+
+            adapter.setListener(this);
             getRequestsListView().setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
-            SoundUtils.playSound(getActivity());
+
+            //Force the fragment listener to update
+
+            updateListener();
+
+
+
+
+
 
 
         }catch (Exception s)
@@ -230,9 +299,20 @@ public class NewRequestsFragment extends Fragment implements IFragment {
         }
     }
 
+    private void updateListener() {
+
+        if(this.listener != null)
+        {
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
+    }
+
+
     @Override
     public void refresh() {
-        try
+
+        this.refreshLocal();
+       /* try
         {
             if(ConnectivityUtils.isConnected(getActivity()))
             {
@@ -344,7 +424,7 @@ public class NewRequestsFragment extends Fragment implements IFragment {
         {
             s.printStackTrace();
 
-        }
+        }*/
     }
 
     @Override
@@ -372,8 +452,13 @@ public class NewRequestsFragment extends Fragment implements IFragment {
                             , RestfulFile.READY_FILE);
                 }
 
+                SoundUtils.playSound(getActivity());
+
                 //Now refresh the current fragment
                 NewRequestsFragment.this.refreshLocal();
+
+                //Then do the synchronization in background
+                NetworkUtils.ScheduleSynchronization(getActivity());
 
             }else
             {
@@ -391,12 +476,20 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
     }
 
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+
+    }
+
     public NewRequestsAdapter getRequestsAdapter() {
         return requestsAdapter;
     }
 
     public void setRequestsAdapter(NewRequestsAdapter requestsAdapter) {
         this.requestsAdapter = requestsAdapter;
+        this.requestsAdapter.setListener(this);
     }
 
     public ListView getRequestsListView() {
@@ -405,5 +498,12 @@ public class NewRequestsFragment extends Fragment implements IFragment {
 
     public void setRequestsListView(ListView requestsListView) {
         this.requestsListView = requestsListView;
+    }
+
+
+    @Override
+    public void doUpdateFragment() {
+
+        this.refresh();
     }
 }

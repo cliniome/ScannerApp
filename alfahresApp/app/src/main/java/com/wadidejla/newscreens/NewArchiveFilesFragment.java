@@ -2,10 +2,12 @@ package com.wadidejla.newscreens;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.net.Network;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.KeeperCheckInAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -30,6 +33,8 @@ import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.tasks.ScanAndReceiveTask;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
+
+import org.apache.http.cookie.CookieAttributeHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +46,14 @@ import static com.wadidejla.newscreens.utils.ScannerUtils.SCANNER_TYPE_CAMERA;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewArchiveFilesFragment extends Fragment implements Archiver {
+public class NewArchiveFilesFragment extends Fragment implements Archiver , IAdapterListener {
 
 
 
     private ListView archiveListView;
     private KeeperCheckInAdapter adapter;
+
+    private FragmentListener listener;
 
     @Nullable
     @Override
@@ -72,6 +79,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
             if(receivedFiles == null) receivedFiles = new ArrayList<RestfulFile>();
 
             this.adapter = new KeeperCheckInAdapter(getActivity(),R.layout.new_single_file_view,receivedFiles);
+            this.adapter.setListener(this);
             this.archiveListView.setAdapter(this.adapter);
 
             //bind the options in here
@@ -92,21 +100,6 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
             });
 
 
-           /* //Bind the scan button
-            final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
-           *//* scanButton.setVisibility(View.GONE);*//*
-
-            scanButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    //Scan for temporary container
-                    ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA,
-                            NewArchiveFilesFragment.this,false,null);
-
-                }
-            });*/
 
             //Bind do actions button
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
@@ -139,7 +132,16 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
                                                     //Mark them
 
                                                     DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+/* else {
+                                       //That means clear that file
+                                       availableFiles.remove(file);
+                                       storageUtils.deleteReceivedFile(file);
+                                       storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                               .deleteFile(file.getFileNumber());
 
+                                       SoundUtils.playSound(getContext());
+                                       NewRequestsAdapter.this.notifyDataSetChanged();
+                                   }*/
                                                     List<RestfulFile> availableFiles = storageUtils.getReceivedFiles();
 
                                                     if (availableFiles != null) {
@@ -154,6 +156,9 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
                                                         //now update
                                                         SoundUtils.playSound(getActivity());
                                                         NewArchiveFilesFragment.this.refresh();
+
+                                                        //Schedule for immediate Synchronization
+                                                        NetworkUtils.ScheduleSynchronization(NewArchiveFilesFragment.this.getActivity());
                                                     }
                                                 }
                                             }, new Runnable() {
@@ -184,7 +189,15 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.KEEPER_ARCHIVE_TITLE);
+
+        String title = getResources().getString(R.string.KEEPER_ARCHIVE_TITLE);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.adapter.getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -206,208 +219,230 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
     @Override
     public void handleScanResults(final String barcode) {
 
-        //That means it is normal querying for trolley to retrieve contained files
-
-        if(barcode != null)
+        try
         {
-            BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
+            //That means it is normal querying for trolley to retrieve contained files
 
-            if(barcodeUtils.isTrolley())
+            if(barcode != null)
             {
+                BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
 
-                ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
-                        barcode,NewArchiveFilesFragment.this);
-                ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                dialog.show();
-                scanTask.setDialog(dialog);
-                scanTask.setFragment(NewArchiveFilesFragment.this);
+                if(barcodeUtils.isTrolley())
+                {
 
-                //Start the scanning process
-                Thread scanningThread = new Thread(scanTask);
-                scanningThread.start();
+                    ScanAndReceiveTask scanTask = new ScanAndReceiveTask(getActivity(),
+                            barcode,NewArchiveFilesFragment.this);
+                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
+                    dialog.show();
+                    scanTask.setDialog(dialog);
+                    scanTask.setFragment(NewArchiveFilesFragment.this);
+
+                    //Start the scanning process
+                    Thread scanningThread = new Thread(scanTask);
+                    scanningThread.start();
 
 
-            }else if (barcodeUtils.isMedicalFile())
-            {
-                final SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+                }else if (barcodeUtils.isMedicalFile())
+                {
+                    final SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-                final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
-                waitingDialog.show();
-                //that means it is an individual file
-                Runnable individualFileTask = new Runnable() {
-                    @Override
-                    public void run() {
+                    final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
+                    waitingDialog.show();
+                    //that means it is an individual file
+                    Runnable individualFileTask = new Runnable() {
+                        @Override
+                        public void run() {
 
-                        try
-                        {
-                            AlfahresConnection connection = settingsManager.getConnection();
-                            HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
-                                    settingsManager.getAccount().getPassword())
-                                    .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                    .path(String.format("files/oneFile?fileNumber=%s",barcode))
-                                    .call(SyncBatch.class);
-
-                            if(response != null && Integer.parseInt(response.getResponseCode())
-                                    == HttpResponse.OK_HTTP_CODE)
+                            try
                             {
-                                //get that file
-                                SyncBatch batch = (SyncBatch)response.getPayload();
+                                AlfahresConnection connection = settingsManager.getConnection();
+                                HttpResponse response = connection.setAuthorization(settingsManager.getAccount().getUserName(),
+                                        settingsManager.getAccount().getPassword())
+                                        .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                        .path(String.format("files/oneFile?fileNumber=%s",barcode))
+                                        .call(SyncBatch.class);
 
-                                if(batch.getFiles() != null && batch.getFiles().size() > 0)
+                                if(response != null && Integer.parseInt(response.getResponseCode())
+                                        == HttpResponse.OK_HTTP_CODE)
                                 {
-                                    //get that individual file
-                                    RestfulFile individualFile = batch.getFiles().get(0);
+                                    //get that file
+                                    SyncBatch batch = (SyncBatch)response.getPayload();
 
-                                    //mark that file as coordinator_in (Received) and make it ready
-                                   /* individualFile.setState(FileModelStates.COORDINATOR_IN.toString());*/
-                                    individualFile.setEmp(settingsManager.getAccount());
-                                    individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
-
-                                    individualFile.toggleSelection();
-
-                                    if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
+                                    if(batch.getFiles() != null && batch.getFiles().size() > 0)
                                     {
-                                        for(RestfulFile current : settingsManager.getReceivedFiles())
+                                        //get that individual file
+                                        RestfulFile individualFile = batch.getFiles().get(0);
+
+                                        //mark that file as coordinator_in (Received) and make it ready
+                                   /* individualFile.setState(FileModelStates.COORDINATOR_IN.toString());*/
+                                        individualFile.setEmp(settingsManager.getAccount());
+                                        individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
+
+                                        individualFile.toggleSelection();
+
+                                        if(settingsManager.getReceivedFiles() != null && settingsManager.getReceivedFiles().size() > 0)
                                         {
-                                            current.setSelected(0);
+                                            for(RestfulFile current : settingsManager.getReceivedFiles())
+                                            {
+                                                current.setSelected(0);
+                                            }
                                         }
+
+                                        //now save it into the database
+                                        settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
+                                        settingsManager.addToReceivedFiles(individualFile);
+
+
+
+                                    }else
+                                    {
+                                        NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                //dismiss the current waitingDialog
+                                                waitingDialog.dismiss();
+
+                                                final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
+                                                        "Scan Results", "There are no files for the moment !");
+
+                                                choiceDialog.show();
+
+
+                                            }
+                                        });
                                     }
+                                }
 
-                                    //now save it into the database
-                                    settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
-                                    settingsManager.addToReceivedFiles(individualFile);
+                            }catch (Exception s)
+                            {
+                                s.printStackTrace();
+                            }
+                            finally {
 
-
-
-                                }else
-                                {
-                                    NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            //dismiss the current waitingDialog
+                                NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NewArchiveFilesFragment.this.refresh();
+                                        SoundUtils.playSound(getActivity());
+                                        try
+                                        {
                                             waitingDialog.dismiss();
 
-                                            final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
-                                                    "Scan Results", "There are no files for the moment !");
+                                            DBStorageUtils storageUtils  = new DBStorageUtils(getActivity());
 
-                                            choiceDialog.show();
+                                            List<RestfulFile> receivedFiles = storageUtils.getReceivedFiles();
 
+                                            RestfulFile foundFile = null;
 
-                                        }
-                                    });
-                                }
-                            }
-
-                        }catch (Exception s)
-                        {
-                            s.printStackTrace();
-                        }
-                        finally {
-
-                            NewArchiveFilesFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NewArchiveFilesFragment.this.refresh();
-                                    SoundUtils.playSound(getActivity());
-                                    try
-                                    {
-                                        waitingDialog.dismiss();
-
-                                        DBStorageUtils storageUtils  = new DBStorageUtils(getActivity());
-
-                                        List<RestfulFile> receivedFiles = storageUtils.getReceivedFiles();
-
-                                        RestfulFile foundFile = null;
-
-                                        if(receivedFiles != null)
-                                        {
-                                            for(RestfulFile file : receivedFiles)
+                                            if(receivedFiles != null)
                                             {
-                                                if(file.getFileNumber().equals(barcode))
+                                                for(RestfulFile file : receivedFiles)
                                                 {
-                                                    foundFile = file;
-                                                    break;
+                                                    if(file.getFileNumber().equals(barcode))
+                                                    {
+                                                        foundFile = file;
+                                                        break;
+                                                    }
+                                                }
+
+                                                //now check if the current found file is not null
+                                                if(foundFile != null)
+                                                {
+                                                    //Mark the file as toggle the file selection state
+                                                    if(foundFile.getSelected() > 0)
+
+                                                        foundFile.setSelected(0);
+                                                    else foundFile.setSelected(1);
+
+                                                    //Then save it
+                                                    storageUtils.insertOrUpdateFile(foundFile);
+                                                    //Refresh the current screen
+                                                    NewArchiveFilesFragment.this.refresh();
                                                 }
                                             }
 
-                                            //now check if the current found file is not null
-                                            if(foundFile != null)
-                                            {
-                                                //Mark the file as toggle the file selection state
-                                                if(foundFile.getSelected() > 0)
-                                                    foundFile.setSelected(0);
-                                                else foundFile.setSelected(1);
+                                        }catch (Exception s)
+                                        {
 
-                                                //Then save it
-                                                storageUtils.insertOrUpdateFile(foundFile);
-                                                //Refresh the current screen
-                                                NewArchiveFilesFragment.this.refresh();
-                                            }
                                         }
-
-                                    }catch (Exception s)
-                                    {
-
                                     }
-                                }
-                            });
+                                });
+                            }
+
                         }
+                    };//the end of the individualFileTask
 
-                    }
-                };//the end of the individualFileTask
+                    Thread scanThread = new Thread(individualFileTask);
+                    scanThread.start();
+                    //Mark the current received file as active
 
-                Thread scanThread = new Thread(individualFileTask);
-                scanThread.start();
-                //Mark the current received file as active
+                    //Get all received Files from the database
 
-                //Get all received Files from the database
-
-            }else if (barcodeUtils.isShelf())
-            {
-                //Get the selected file only from the received files and update its shelf
-                List<RestfulFile> receivedFiles = new DBStorageUtils(getActivity()).getReceivedFiles();
-
-                if(receivedFiles != null)
+                }else if (barcodeUtils.isShelf())
                 {
-                    RestfulFile targetFile = null;
+                    //Get the selected file only from the received files and update its shelf
+                    List<RestfulFile> receivedFiles = new DBStorageUtils(getActivity()).getReceivedFiles();
 
-                    for(RestfulFile foundFile : receivedFiles)
+                    if(receivedFiles != null)
                     {
-                        if(foundFile.getSelected() > 0 ) //that means it is selected already
+                        RestfulFile targetFile = null;
+
+                        for(RestfulFile foundFile : receivedFiles)
                         {
-                            targetFile = foundFile;
-                            break;
+                            if(foundFile.getSelected() > 0 ) //that means it is selected already
+                            {
+                                targetFile = foundFile;
+                                break;
+                            }
                         }
-                    }
 
-                    //assign the shelf to it
-                    if(targetFile != null)
-                    {
-                        targetFile.setShelfId(barcode);
-                        targetFile.setState(FileModelStates.CHECKED_IN.toString());
-                        targetFile.setReadyFile(RestfulFile.READY_FILE);
+                        //assign the shelf to it
+                        if(targetFile != null)
+                        {
+                            targetFile.setShelfId(barcode);
+                            targetFile.setState(FileModelStates.CHECKED_IN.toString());
+                            targetFile.setReadyFile(RestfulFile.READY_FILE);
 
-                        //operate on that file
-                        new DBStorageUtils(getActivity())
-                                .operateOnFile(targetFile,FileModelStates.CHECKED_IN.toString(),
-                                        RestfulFile.READY_FILE);
-                        SoundUtils.playSound(getActivity());
-                        this.refresh();
-                    }else
-                    {
-                        Toast.makeText(getActivity(),"There is no file selected",Toast.LENGTH_LONG)
-                                .show();
+                            //operate on that file
+                            new DBStorageUtils(getActivity())
+                                    .operateOnFile(targetFile,FileModelStates.CHECKED_IN.toString(),
+                                            RestfulFile.READY_FILE);
+                            SoundUtils.playSound(getActivity());
+
+                            this.refresh();
+                        }else
+                        {
+                            Toast.makeText(getActivity(),"There is no file selected",Toast.LENGTH_LONG)
+                                    .show();
+                        }
                     }
                 }
+
+
+            }else
+            {
+                Toast.makeText(getActivity(), "Barcode Is empty", Toast.LENGTH_SHORT)
+                        .show();
             }
 
-
-        }else
+        }catch (Exception s)
         {
-            Toast.makeText(getActivity(), "Barcode Is empty", Toast.LENGTH_SHORT)
-                    .show();
+            Log.e("error",s.getMessage());
         }
+
+        finally
+        {
+            //Schedule synchronization process immediately
+            NetworkUtils.ScheduleSynchronization(getActivity());
+        }
+
+    }
+
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
     }
 
     @Override
@@ -451,6 +486,21 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver {
         }catch (Exception s)
         {
             s.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        try
+        {
+            if(this.listener != null)
+                this.listener.invalidate();
+
+        }catch (Exception s)
+        {
+            Log.w("Error",s.getMessage());
         }
 
     }

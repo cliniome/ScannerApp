@@ -22,6 +22,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.NewReceiveFilesAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.tasks.MarkingTask;
@@ -36,11 +37,12 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewReceptionistReceiveFragment extends Fragment implements IFragment{
+public class NewReceptionistReceiveFragment extends Fragment implements IFragment , IAdapterListener {
 
 
     private ListView receiveFilesList;
     private NewReceiveFilesAdapter adapter;
+    private FragmentListener listener;
 
 
     @Nullable
@@ -203,7 +205,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                                     .deleteFile(file.getFileNumber());
                                         }
 
-                                        //clear all
+                                        //clear allNewOutgoingFilesFragment
                                         receivedFiles.clear();
                                     }
 
@@ -233,7 +235,14 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.ScreenUtils_Receive_Files);
+        String title =  getResources().getString(R.string.ScreenUtils_Receive_Files);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.adapter.getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -248,6 +257,8 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
         if(this.getAdapter() != null)
             this.getAdapter().notifyDataSetChanged();
+
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
     }
 
@@ -434,6 +445,12 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
         }
     }
 
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+    }
+
     private RestfulFile checkFileExists(String fileBarcode, SystemSettingsManager settingsManager) {
 
         RestfulFile foundFile = null;
@@ -469,5 +486,14 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
     public void setAdapter(NewReceiveFilesAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+        {
+            this.listener.invalidate();
+        }
     }
 }

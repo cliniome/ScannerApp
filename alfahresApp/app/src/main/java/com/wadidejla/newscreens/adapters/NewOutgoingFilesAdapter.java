@@ -1,9 +1,11 @@
 package com.wadidejla.newscreens.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.IFragment;
+import com.wadidejla.newscreens.NewOutgoingFilesFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -32,6 +38,8 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
 
     private List<RestfulFile> availableFiles;
 
+    private IAdapterListener listener;
+
     private int resourceId;
 
     public NewOutgoingFilesAdapter(Context context, int resource) {
@@ -45,6 +53,9 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
     public void notifyDataSetChanged() {
         this.checkForData();
         super.notifyDataSetChanged();
+
+        if(this.listener != null)
+            this.listener.doUpdateFragment();
     }
 
     @Override
@@ -97,9 +108,7 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
         patientNameView.setText(file.getPatientName());
 
 
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
+
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -219,10 +228,13 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
     {
         try
         {
+
+
             //In here , we are going to check for all files marked as Ready for current Employee
             DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
             this.availableFiles = storageUtils.getAllReadyFilesForCurrentEmployee();
+
 
         }catch (Exception s)
         {
@@ -235,5 +247,13 @@ public class NewOutgoingFilesAdapter extends ArrayAdapter<RestfulFile> {
     public int getCount() {
 
         return availableFiles.size();
+    }
+
+    public IAdapterListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IAdapterListener listener) {
+        this.listener = listener;
     }
 }

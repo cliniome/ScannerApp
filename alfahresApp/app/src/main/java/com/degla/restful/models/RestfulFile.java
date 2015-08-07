@@ -105,7 +105,7 @@ public class RestfulFile implements Serializable {
 
     public boolean isReadyForSync()
     {
-        if(this.getState() != null && (this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()) ||
+       /* if(this.getState() != null && (this.getState().equalsIgnoreCase(FileModelStates.MISSING.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.OUT_OF_CABIN.toString()) ||
         this.getState().equalsIgnoreCase(FileModelStates.COORDINATOR_IN.toString()) ||
                 this.isMultipleClinics() ||
@@ -117,7 +117,9 @@ public class RestfulFile implements Serializable {
             return(this.getEmp() != null && this.getEmp().getUserName() != null
                     &&
                     this.getTemporaryCabinetId() != null && this.getTemporaryCabinetId().length() > 0);
-        }
+        }*/
+
+        return ((this.getReadyFile() > 0) ? true : false);
     }
 
 

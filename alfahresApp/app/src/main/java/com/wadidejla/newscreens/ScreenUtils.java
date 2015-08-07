@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 
 import com.wadidejla.newscreens.utils.TabDetails;
 import com.wadidejla.newscreens.utils.TabTypes;
-import com.wadidejla.screens.CoordinatorCollectionFragment;
-import com.wadidejla.screens.LocalSyncFilesFragment;
-import com.wadidejla.screens.MainFilesScreenFragment;
-import com.wadidejla.screens.ScanAndReceiveFragment;
 import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.ArrayList;
@@ -53,15 +49,18 @@ public class ScreenUtils {
 
                     TabDetails sortingShippingFiles = new TabDetails(con.getResources()
                             .getString(R.string.SHIPPING_SCREEN_TITLE),
-                            R.drawable.shipping,TabTypes.SORTING);
+                            R.drawable.sort,TabTypes.SORTING);
+
+                    TabDetails checkOutFiles = new TabDetails(con.getResources().getString(R.string.CHECK_OUT_SCREEN_TITLE),R.drawable.shipping,TabTypes.CHECKOUT);
 
                     TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
                             R.drawable.eye,TabTypes.CHECKSTATUS);
 
-                    availableTabs.add(newRequests);
                     availableTabs.add(ongoingFiles);
+                    availableTabs.add(newRequests);
                     availableTabs.add(receiveFiles);
                     availableTabs.add(sortingShippingFiles);
+                    availableTabs.add(checkOutFiles);
                     availableTabs.add(checkFileStatus);
 
 
@@ -135,10 +134,11 @@ public class ScreenUtils {
             if(settingsManager.getAccount().getRole().equals(KEEPER_ROLE))
             {
                 //that is the keeper
-                fragments.add(new NewRequestsFragment());
                 fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new NewRequestsFragment());
                 fragments.add(new NewArchiveFilesFragment());
-                fragments.add(new SortingShippingScreen());
+                fragments.add(new SortingFacilityScreen());
+                fragments.add(new CheckOutFileFragment());
                 fragments.add(new CheckFileStatusFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))

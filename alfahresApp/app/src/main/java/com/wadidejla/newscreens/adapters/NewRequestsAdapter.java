@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.Network;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
@@ -31,6 +35,10 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
 
     private List<RestfulFile> availableFiles;
     private int resourceId;
+
+    private IAdapterListener listener;
+
+
 
     private int defaultBackColor = Color.WHITE;
 
@@ -91,10 +99,6 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
         TextView patientNameView = (TextView)convertView.findViewById(R.id.new_file_PatientName);
         patientNameView.setText(file.getPatientName());
 
-
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -157,45 +161,64 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
 
-                        .setItems(new String[]{"Mark File as Missing...", "Clear That File..."}, new DialogInterface.OnClickListener() {
+                        .setItems(new String[]{"Mark File as Missing..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
-                                if (i == 0) // that means mark file as missing
-                                {
-                                    //access the files Manager from the settings
-                                    try {
+                               try
+                               {
+                                   if (i == 0) // that means mark file as missing
+                                   {
+                                       //access the files Manager from the settings
+                                       try {
 
 
-                                        storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
-                                                RestfulFile.READY_FILE);
+                                           storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
+                                                   RestfulFile.READY_FILE);
 
-                                        //Play the sound
-                                        SoundUtils.playSound(getContext());
-                                        //Now refresh the adapter
-                                        NewRequestsAdapter.this.notifyDataSetChanged();
+                                           //Play the sound
+                                           SoundUtils.playSound(getContext());
+                                           //Now refresh the adapter
+                                           NewRequestsAdapter.this.notifyDataSetChanged();
 
-                                    } catch (Exception s) {
-                                        Log.w("FilesArrayAdapter", s.getMessage());
+                                           //Do the synchronization process if available
+                                           NetworkUtils.ScheduleSynchronization(getContext());
 
-                                    } finally {
+                                       } catch (Exception s) {
+                                           Log.w("FilesArrayAdapter", s.getMessage());
 
-                                        dialogInterface.dismiss();
-                                    }
+                                       } finally {
+
+                                           dialogInterface.dismiss();
+                                       }
 
 
-                                } else {
-                                    //That means clear that file
-                                    availableFiles.remove(file);
-                                    storageUtils.deleteReceivedFile(file);
-                                    storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
-                                            .deleteFile(file.getFileNumber());
+                                   }
 
-                                    SoundUtils.playSound(getContext());
-                                    NewRequestsAdapter.this.notifyDataSetChanged();
-                                }
+
+                                   /* else {
+                                       //That means clear that file
+                                       availableFiles.remove(file);
+                                       storageUtils.deleteReceivedFile(file);
+                                       storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                               .deleteFile(file.getFileNumber());
+
+                                       SoundUtils.playSound(getContext());
+                                       NewRequestsAdapter.this.notifyDataSetChanged();
+                                   }*/
+
+                               }catch (Exception s)
+                               {
+                                   Log.w("Error",s.getMessage());
+                               }
+
+                                finally {
+
+                                   if(NewRequestsAdapter.this.getListener() != null)
+                                       NewRequestsAdapter.this.getListener().doUpdateFragment();
+                               }
 
                             }
                         }).create();
@@ -214,5 +237,13 @@ public class NewRequestsAdapter extends ArrayAdapter<RestfulFile> {
     public int getCount() {
 
         return availableFiles.size();
+    }
+
+    public IAdapterListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IAdapterListener listener) {
+        this.listener = listener;
     }
 }

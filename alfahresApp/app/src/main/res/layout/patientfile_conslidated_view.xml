@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
@@ -45,8 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
+                android:textColor="@android:color/holo_red_dark" />
             <TextView
                 android:id="@+id/new_file_FileNumber"
                 android:text="xxxxxxxx"
@@ -167,8 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
+                android:textColor="@android:color/holo_red_dark" />
             <TextView
                 android:id="@+id/new_file_RequestingClinicCode"
                 android:text="xxxxxxxx"
@@ -180,82 +177,6 @@
 
         </LinearLayout>
 
-        <!-- Cabin ID -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-
-                android:text="@string/file_view_cabinetId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
-            <TextView
-                android:id="@+id/new_file_cabinetId"
-                android:text="xxxxxxxx"
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <!-- Shelf ID -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-
-                android:text="@string/file_view_shelfId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
-            <TextView
-                android:id="@+id/new_file_ShelfId"
-                android:text="xxxxxxxx"
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <!-- Requesting Clinic -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-
-                android:text="@string/file_view_column"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
-            <TextView
-                android:id="@+id/new_file_FileColumnId"
-                android:text="xxxxxxxx"
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.Network;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.IAdapterListener;
 import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.NewArchiveFilesFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -32,7 +35,7 @@ import static com.wadidejla.newscreens.utils.ScannerUtils.SCANNER_TYPE_CAMERA;
 /**
  * Created by snouto on 09/06/15.
  */
-public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
+public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile>{
 
     private List<RestfulFile> checkInFiles;
 
@@ -40,6 +43,7 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
 
     private IFragment parentFragment;
 
+    private IAdapterListener listener;
 
 
     public KeeperCheckInAdapter(Context context, int resource,List<RestfulFile> files) {
@@ -59,6 +63,9 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
 
         this.loadData();
         super.notifyDataSetChanged();
+
+        if(this.listener != null)
+            this.listener.doUpdateFragment();
     }
 
     private void loadData() {
@@ -124,10 +131,6 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
         TextView patientNameView = (TextView)convertView.findViewById(R.id.new_file_PatientName);
         patientNameView.setText(file.getPatientName());
 
-
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -221,29 +224,43 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if (i == 0) // that means mark file as missing
-                                {
-                                    //access the files Manager from the settings
-                                    try {
-                                        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+                               try
+                               {
+                                   if (i == 0) // that means mark file as missing
+                                   {
+                                       //access the files Manager from the settings
+                                       try {
+                                           DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
-                                        storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
-                                                RestfulFile.READY_FILE);
+                                           storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
+                                                   RestfulFile.READY_FILE);
 
-                                        //Play the sound
-                                        SoundUtils.playSound(getContext());
-                                        //Now refresh the adapter
-                                        KeeperCheckInAdapter.this.notifyDataSetChanged();
+                                           //Play the sound
+                                           SoundUtils.playSound(getContext());
+                                           //N17dpow refresh the adapter
+                                           KeeperCheckInAdapter.this.notifyDataSetChanged();
 
-                                    } catch (Exception s) {
-                                        Log.w("FilesArrayAdapter", s.getMessage());
 
-                                    } finally {
 
-                                        dialogInterface.dismiss();
-                                    }
+                                       } catch (Exception s) {
+                                           Log.w("FilesArrayAdapter", s.getMessage());
 
-                                }
+                                       } finally {
+
+                                           dialogInterface.dismiss();
+                                       }
+
+                                   }
+
+                               }catch (Exception s)
+                               {
+                                   Log.e("Error",s.getMessage());
+                               }
+                                finally {
+
+                                   //Schedule Immediate Synchronization
+                                   NetworkUtils.ScheduleSynchronization(getContext());
+                               }
 
                             }
                         }).create();
@@ -271,5 +288,13 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile> {
 
     public void setParentFragment(IFragment parentFragment) {
         this.parentFragment = parentFragment;
+    }
+
+    public IAdapterListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IAdapterListener listener) {
+        this.listener = listener;
     }
 }

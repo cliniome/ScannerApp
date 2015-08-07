@@ -12,4 +12,8 @@ public interface IFragment {
     void refresh();
 
     void handleScanResults(String barcode);
+
+    void setFragmentListener(FragmentListener listener);
+
+
 }

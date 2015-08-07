@@ -17,31 +17,6 @@
     </ListView>
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="#80000000"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/refresh"
-            android:textAlignment="center"
-            android:id="@+id/new_files_layout_refresh_btn"
-            android:text="Refresh"
-            android:layout_height="wrap_content" />
-
-        <!--<Button
-            android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/scan"
-            android:textAlignment="center"
-            android:id="@+id/new_files_layout_scan_btn"
-            android:text="Scan Now"
-            android:layout_height="wrap_content" />-->
-
-
-    </LinearLayout>
 
 
 </RelativeLayout>

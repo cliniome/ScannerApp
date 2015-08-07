@@ -1,5 +1,6 @@
 package wadidejla.com.alfahresapp;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,22 +17,26 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.FragmentListener;
 import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.NewOutgoingCoordinatorFragment;
 import com.wadidejla.newscreens.NewOutgoingFilesFragment;
 import com.wadidejla.newscreens.ScreenUtils;
 import com.wadidejla.newscreens.adapters.TabDetailsArrayAdapter;
+import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.TabDetails;
 import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.List;
 
 
-public class MainDrawerActivity extends ActionBarActivity {
+public class MainDrawerActivity extends ActionBarActivity implements FragmentListener {
 
 
     private static final String BARCODE_ACTION = "com.barcode.sendBroadcast";
@@ -84,6 +89,8 @@ public class MainDrawerActivity extends ActionBarActivity {
                     drawerLayout.closeDrawer(mainListView);
                 }
             });
+
+
 
             //Get the default view
             int defaultIndex = getDefaultFragment();
@@ -175,6 +182,13 @@ public class MainDrawerActivity extends ActionBarActivity {
 
             if(currentFragment != null)
             {
+                if(currentFragment instanceof IFragment)
+                {
+                    IFragment fragment = (IFragment)currentFragment;
+                    fragment.setFragmentListener(this);
+
+
+                }
                 //get the fragment transaction
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -258,13 +272,28 @@ public class MainDrawerActivity extends ActionBarActivity {
             return true;
         }else if (item.getItemId() == R.id.btn_logout_main)
         {
+            SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(this);
 
-            SystemSettingsManager.createInstance(this).logOut();
-            //then go to the login screen
-            Intent logoutIntent = new Intent(this,LoginScreen.class);
-            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.finish();
-            startActivity(logoutIntent);
+            List<RestfulFile> pendingFiles = settingsManager.getSyncFilesManager().getFilesDBManager()
+                    .getAllReadyFiles();
+
+            if(pendingFiles != null && pendingFiles.size() > 0)
+            {
+                AlertDialog dialog = NewViewUtils.getAlertDialog(this,"Pending Files Available","You have Pending Files in Outgoing Screen , Please sync them " +
+                        "before logging out");
+
+                dialog.show();
+
+
+            }else
+            {
+                settingsManager.logOut();
+                //then go to the login screen
+                Intent logoutIntent = new Intent(this,LoginScreen.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.finish();
+                startActivity(logoutIntent);
+            }
 
         }else if (item.getItemId() == android.R.id.home)
         {
@@ -295,5 +324,25 @@ public class MainDrawerActivity extends ActionBarActivity {
        {
            Log.e("Error",s.getMessage());
        }
+    }
+
+    @Override
+    public void invalidate() {
+
+        try
+        {
+
+            ViewGroup vg = (ViewGroup)findViewById(R.id.drawer_layout);
+
+            vg.invalidate();
+
+
+            //Get the current fragment
+            updateFragment();
+
+        }catch (Exception s)
+        {
+            Log.w("Error",s.getMessage());
+        }
     }
 }

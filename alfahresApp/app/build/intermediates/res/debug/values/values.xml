@@ -197,6 +197,7 @@
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="CHECK_FILE_STATUS_TITLE">Check Files Status</string>
+    <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
@@ -274,7 +275,7 @@
     <string name="file_status_lbl">File Status</string>
     <string name="file_view_cabinetId">Cabin No :</string>
     <string name="file_view_column">Col. No :</string>
-    <string name="file_view_fileNo">File No :</string>
+    <string name="file_view_fileNo">File No</string>
     <string name="file_view_patientNo">Patient No :</string>
     <string name="file_view_shelfId">Shelf No :</string>
     <string name="hello_world">Hello world!</string>

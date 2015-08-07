@@ -1,7 +1,7 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,18 +17,13 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
-import com.wadidejla.newscreens.adapters.NewRequestsAdapter;
 import com.wadidejla.newscreens.adapters.ShippingRequestsAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
-import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
-import com.wadidejla.tasks.ManualSyncTask;
 import com.wadidejla.utils.SoundUtils;
-import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -36,12 +31,13 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 20/06/15.
  */
-public class SortingShippingScreen extends Fragment implements IFragment {
+public class CheckOutFileFragment extends Fragment implements IFragment , IAdapterListener {
 
 
     private ListView listView;
     private ShippingRequestsAdapter adapter;
 
+    private FragmentListener listener;
 
 
     @Nullable
@@ -78,7 +74,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                 public void onClick(View view) {
 
 
-                    SortingShippingScreen.this.refresh();
+                    CheckOutFileFragment.this.refresh();
 
                 }
             });
@@ -91,7 +87,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                 public void onClick(View view) {
 
                     ScannerUtils.ScanBarcode(getActivity(),ScannerUtils.SCANNER_TYPE_CAMERA
-                            ,SortingShippingScreen.this,false,null);
+                            ,CheckOutFileFragment.this,false,null);
 
 
                 }
@@ -110,7 +106,14 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.SHIPPING_SCREEN_TITLE);
+        String title =  getResources().getString(R.string.CHECK_OUT_SCREEN_TITLE);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.adapter.getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -127,7 +130,16 @@ public class SortingShippingScreen extends Fragment implements IFragment {
             this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,settingsManager.getShippingFiles());
             this.listView.setAdapter(this.adapter);
             this.adapter.notifyDataSetChanged();
+
+            this.listView.post(new Runnable() {
+                @Override
+                public void run() {
+                    CheckOutFileFragment.this.listView.setSelection(CheckOutFileFragment.this.adapter.getCount()-1);
+                }
+            });
         }
+
+        this.doUpdateFragment();
 
     }
 
@@ -205,6 +217,8 @@ public class SortingShippingScreen extends Fragment implements IFragment {
                                                        foundFile
                                                );
 
+
+
                                                getActivity().runOnUiThread(new Runnable() {
                                                    @Override
                                                    public void run() {
@@ -212,7 +226,7 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
                                                        //Play the sound
                                                        SoundUtils.playSound(getActivity());
-                                                       SortingShippingScreen.this.refresh();
+                                                       CheckOutFileFragment.this.refresh();
                                                    }
                                                });
                                            }
@@ -253,13 +267,12 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
                     if(settingsManager.getShippingFiles() != null && settingsManager.getShippingFiles().size() > 0)
                     {
-                        List<RestfulFile> markedFiles = new ArrayList<RestfulFile>();
+
 
                         //assign that trolley to all existing files
                         for(RestfulFile shippingFile : settingsManager.getShippingFiles())
                         {
-                           if(shippingFile.getSelected() == 1)
-                           {
+
                                shippingFile.setTemporaryCabinetId(trolleyId);
                                shippingFile.setReadyFile(RestfulFile.READY_FILE); // convert it into ready files
                                shippingFile.setEmp(settingsManager.getAccount());
@@ -267,14 +280,8 @@ public class SortingShippingScreen extends Fragment implements IFragment {
 
                                //now operate on that file
                                settingsManager.getFilesManager().getFilesDBManager().insertFile(shippingFile);
-                               markedFiles.add(shippingFile);
-                           }
                         }
-                        //now remove all shipping files
-                        for(RestfulFile markedFile : markedFiles)
-                        {
-                            settingsManager.getShippingFiles().remove(markedFile);
-                        }
+
                         //settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
 
                         //Now play the sound
@@ -293,5 +300,21 @@ public class SortingShippingScreen extends Fragment implements IFragment {
             s.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+        {
+            ((Activity)listener).setTitle(this.getTitle());
+        }
     }
 }

@@ -19,6 +19,7 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.IAdapterListener;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
@@ -37,6 +38,10 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
     private List<RestfulFile> availableFiles;
     private int resourceId;
 
+    private IAdapterListener listener;
+
+
+
     public NewDistributeFilesAdapter(Context context, int resource) {
         super(context, resource);
         this.setResourceId(resource);
@@ -47,6 +52,8 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
     public void notifyDataSetChanged() {
        // this.checkData();
         super.notifyDataSetChanged();
+
+
     }
 
     @Override
@@ -98,9 +105,6 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
             patientNameView.setText(file.getPatientName());
 
 
-            //Batch Number
-            TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-            batchNumberView.setText(file.getBatchRequestNumber());
 
             //Doc Name
             TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -311,4 +315,13 @@ public class NewDistributeFilesAdapter extends ArrayAdapter<RestfulFile> {
     public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
+
+    public IAdapterListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IAdapterListener listener) {
+        this.listener = listener;
+    }
+
 }

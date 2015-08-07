@@ -24,21 +24,16 @@
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/refresh"
-            android:textAlignment="center"
-            android:id="@+id/new_files_layout_refresh_btn"
-            android:text="Refresh"
-            android:layout_height="wrap_content" />
 
         <Button
             android:layout_width="wrap_content"
-            android:drawableLeft="@drawable/refresh"
+            android:drawableLeft="@drawable/date"
             android:textAlignment="center"
-            android:id="@+id/new_files_layout_scan_btn"
-            android:text="Download Requests"
+            android:id="@+id/pick_choose_date"
+            android:text="Choose Date..."
             android:layout_height="wrap_content" />
+
+
 
 
 

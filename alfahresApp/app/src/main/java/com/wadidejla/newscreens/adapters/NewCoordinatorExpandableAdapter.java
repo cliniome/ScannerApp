@@ -23,8 +23,11 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.listeners.KeeperOnClickListener;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.NewCollectFilesFragment;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.RestfulTransferInfo;
@@ -47,6 +50,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> mainCategories;
     private HashMap<String,List<RestfulFile>> categorizedData;
 
+    private IAdapterListener fragment;
+
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
 
 
@@ -61,7 +66,41 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         //this.loadData();
         super.notifyDataSetChanged();
 
+        int totalFiles = getTotalFiles();
+
+        if(fragment instanceof NewCollectFilesFragment)
+        {
+            ((NewCollectFilesFragment)fragment).setTotalFiles(totalFiles);
+
+
+        }
+
+        if(fragment != null)
+            fragment.doUpdateFragment();
+
+
+        NetworkUtils.ScheduleSynchronization(getContext());
+
+
+
     }
+
+    private int getTotalFiles()
+    {
+        int totalFiles = 0 ;
+
+        if(categorizedData != null)
+        {
+            for(List<RestfulFile> files : categorizedData.values())
+            {
+                totalFiles += files.size();
+            }
+        }
+
+        return totalFiles;
+    }
+
+
 
     public void loadData() {
 
@@ -314,9 +353,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         patientNameView.setText(file.getPatientName());
 
 
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
+
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -651,4 +688,11 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         this.listener = listener;
     }
 
+    public IAdapterListener getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(IAdapterListener fragment) {
+        this.fragment = fragment;
+    }
 }

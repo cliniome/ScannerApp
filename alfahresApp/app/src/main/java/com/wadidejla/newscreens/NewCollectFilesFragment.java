@@ -19,6 +19,7 @@ import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.adapters.NewCoordinatorExpandableAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -39,11 +40,14 @@ import static com.wadidejla.newscreens.utils.ScannerUtils.SCANNER_TYPE_CAMERA;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewCollectFilesFragment extends Fragment implements IFragment
+public class NewCollectFilesFragment extends Fragment implements IFragment , IAdapterListener
 {
 
     private ExpandableListView expandableListView;
+    private FragmentListener listener;
     private NewCoordinatorExpandableAdapter adapter;
+
+    private int totalFiles = 0;
 
 
     @Nullable
@@ -63,6 +67,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
         {
             this.expandableListView = (ExpandableListView)rootView.findViewById(R.id.coordinator_list_view);
             this.adapter = new NewCoordinatorExpandableAdapter(getActivity());
+            this.adapter.setFragment(this);
             this.expandableListView.setAdapter(this.adapter);
             //Bind the actions in here
 
@@ -217,7 +222,11 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
     @Override
     public String getTitle() {
-         return getResources().getString(R.string.ScreenUtils_Collect_Files);
+         String title =  getResources().getString(R.string.ScreenUtils_Collect_Files);
+
+        title = String.format("%s(%s)",title,this.getTotalFiles());
+
+        return title;
     }
 
     @Override
@@ -234,6 +243,8 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
             this.adapter.loadData();
             this.adapter.notifyDataSetChanged();
         }
+
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
 
     }
@@ -380,6 +391,14 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
 
     }
 
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+
+        this.listener = listener;
+
+    }
+
     private void getFilesReadyToBeCollected(RestfulFile foundFile) {
 
         try
@@ -408,5 +427,21 @@ public class NewCollectFilesFragment extends Fragment implements IFragment
         {
             Log.e("Error",s.getMessage());
         }
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+            this.listener.invalidate();
+
+    }
+
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public void setTotalFiles(int totalFiles) {
+        this.totalFiles = totalFiles;
     }
 }

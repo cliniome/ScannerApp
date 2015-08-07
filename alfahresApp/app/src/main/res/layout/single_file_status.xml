@@ -34,6 +34,12 @@
         android:layout_marginTop="3dp"
         android:layout_alignParentStart="true" />
 
+    <!-- New Addition -->
+
+
+
+    <!-- -->
+
     <TextView
         android:id="@+id/new_file_PatientNumber"
         android:layout_width="wrap_content"
@@ -88,6 +94,50 @@
         android:layout_below="@+id/file_status_Txt"
         android:layout_toRightOf="@+id/file_emp_lbl"
         android:layout_toEndOf="@+id/file_emp_lbl" />
+
+    <TextView
+        android:id="@+id/fxClinicName"
+        android:text="Clinic Name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/file_emp_seen_txt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txtClinicNameText"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clinic Name Here"
+        android:layout_below="@+id/file_emp_seen_txt"
+        android:layout_alignLeft="@+id/file_status_Txt"
+        android:layout_alignStart="@+id/file_status_Txt"
+        android:textSize="16dp"
+        android:textColor="@android:color/holo_red_dark" />
+
+    <TextView
+        android:id="@+id/fxclinicCodeText"
+        android:text="Clinic Code"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtClinicNameText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txtClinicCode"
+        android:text="Clinic Code here"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtClinicNameText"
+        android:layout_alignLeft="@+id/file_emp_seen_txt"
+        android:layout_alignStart="@+id/file_emp_seen_txt"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16dp" />
 
 
 </RelativeLayout>

@@ -92,10 +92,6 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
         patientNameView.setText(file.getPatientName());
 
 
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
-
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
         docNameView.setText(file.getClinicDocName());
@@ -157,7 +153,7 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
 
-                        .setItems(new String[]{"Mark File as Missing...", "Clear That File..."}, new DialogInterface.OnClickListener() {
+                        .setItems(new String[]{"Clear That File..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -169,32 +165,14 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
                                     try {
 
 
-                                        boolean resultOp = storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
-                                                RestfulFile.READY_FILE);
+                                        //That means clear that file
+                                        availableFiles.remove(file);
+                                        storageUtils.deleteReceivedFile(file);
+                                        storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                                .deleteFile(file.getFileNumber());
 
-                                        if (resultOp) {
-                                            //Delete the file from the shipping files
-                                            SystemSettingsManager.createInstance(getContext())
-                                                    .getShippingFiles().remove(file);
-
-                                            //Play the sound
-                                            SoundUtils.playSound(getContext());
-                                            //Now refresh the adapter
-                                            ShippingRequestsAdapter.this.notifyDataSetChanged();
-                                        }else
-                                        {
-                                            ((Activity)getContext()).runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-
-                                                    AlertDialog dialog = NewViewUtils.getAlertDialog(getContext(),"Warning",
-                                                            "The file does not exist,Please try again");
-
-                                                    dialog.show();
-                                                }
-                                            });
-                                        }
-
+                                        SoundUtils.playSound(getContext());
+                                        ShippingRequestsAdapter.this.notifyDataSetChanged();
 
 
                                     } catch (Exception s) {
@@ -206,15 +184,6 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
                                     }
 
 
-                                } else {
-                                    //That means clear that file
-                                    availableFiles.remove(file);
-                                    storageUtils.deleteReceivedFile(file);
-                                    storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
-                                            .deleteFile(file.getFileNumber());
-
-                                    SoundUtils.playSound(getContext());
-                                    ShippingRequestsAdapter.this.notifyDataSetChanged();
                                 }
 
                             }

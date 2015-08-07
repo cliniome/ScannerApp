@@ -3,12 +3,14 @@ package com.wadidejla.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.degla.restful.models.RestfulEmployee;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.db.AlfahresDBHelper;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.TabDetailsArrayAdapter;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.utils.AlFahresFilesManager;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.FilesManager;
@@ -103,18 +105,6 @@ public class SystemSettingsManager {
 
         if(foundFile == null)
             collection.add(file);
-       else {
-            //delete the file
-            collection.remove(foundFile);
-
-            if(foundFile.getSelected() == 1)
-                foundFile.setSelected(0);
-
-            else foundFile.setSelected(1);
-
-            //now add it back to the collection
-            collection.add(foundFile);
-        }
 
         return (foundFile == null ? true : false);
     }
@@ -155,9 +145,17 @@ public class SystemSettingsManager {
 
     public void logOut()
     {
-        this.setNewRequests(null);
-        this.setReceivedFiles(null);
-        this.setCollectingBegun(false);
+        try
+        {
+            //Schedule an immediate Synchronization
+            this.setNewRequests(null);
+            this.setReceivedFiles(null);
+            this.setCollectingBegun(false);
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+        }
     }
 
 

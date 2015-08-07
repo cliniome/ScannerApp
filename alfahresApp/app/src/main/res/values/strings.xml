@@ -17,7 +17,7 @@
     <string name="LOGIN_UNAUTH_MESSAGE">You are not Authorized to use The system</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_logout_main">Logout</string>
-    <string name="file_view_fileNo">File No :</string>
+    <string name="file_view_fileNo">File No</string>
     <string name="file_view_patientNo">Patient No :</string>
     <string name="file_view_cabinetId">Cabin No :</string>
     <string name="file_view_shelfId">Shelf No :</string>
@@ -65,6 +65,7 @@
     <string name="CHECK_FILE_STATUS_TITLE">Check Files Status</string>
     <string name="last_seen_by">Emp. Name</string>
     <string name="file_status_lbl">File Status</string>
+    <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
 
 
 </resources>

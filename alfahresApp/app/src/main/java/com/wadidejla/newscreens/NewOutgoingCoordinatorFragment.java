@@ -31,11 +31,13 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 08/06/15.
  */
-public class NewOutgoingCoordinatorFragment extends Fragment implements IFragment {
+public class NewOutgoingCoordinatorFragment extends Fragment implements IFragment , IAdapterListener {
 
 
     private ListView outgoingList;
     private NewOutgoingCoordinatorAdapter adapter;
+
+    private FragmentListener listener;
 
 
     @Nullable
@@ -56,6 +58,8 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
         {
             this.outgoingList = (ListView)rootView.findViewById(R.id.mainFilesList);
             this.adapter = new NewOutgoingCoordinatorAdapter(getActivity(),R.layout.new_single_file_view);
+            this.adapter.setListener(this);
+
             this.outgoingList.setAdapter(this.adapter);
 
 
@@ -174,7 +178,14 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.ScreenUtils_Ongoing_Files);
+        String title =  getResources().getString(R.string.ScreenUtils_Ongoing_Files);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.adapter.getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -232,5 +243,18 @@ public class NewOutgoingCoordinatorFragment extends Fragment implements IFragmen
         dialog.dismiss();
         SoundUtils.playSound(getActivity());*/
 
+    }
+
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+            this.listener.invalidate();
     }
 }

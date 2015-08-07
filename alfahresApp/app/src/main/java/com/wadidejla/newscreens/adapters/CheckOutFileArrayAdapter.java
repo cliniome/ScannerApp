@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.utils.FileStateUtils;
 
@@ -21,14 +20,14 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 28/07/15.
  */
-public class CheckFileStatusArrayAdapter extends ArrayAdapter<RestfulFile> {
+public class CheckOutFileArrayAdapter extends ArrayAdapter<RestfulFile> {
 
 
     private List<RestfulFile> files;
 
     private int resourceId;
 
-    public CheckFileStatusArrayAdapter(Context context, int resource) {
+    public CheckOutFileArrayAdapter(Context context, int resource) {
         super(context, resource);
         this.setResourceId(resource);
         files = new ArrayList<RestfulFile>();
@@ -46,21 +45,6 @@ public class CheckFileStatusArrayAdapter extends ArrayAdapter<RestfulFile> {
             //get the file Number Text
             TextView txtFileNumber = (TextView)convertView.findViewById(R.id.new_file_FileNumber);
             txtFileNumber.setText(file.getFileNumber());
-
-            //Get the patient Number
-            TextView txtPatientNumber = (TextView)convertView.findViewById(R.id.new_file_PatientNumber);
-            txtPatientNumber.setText(file.getPatientNumber());
-
-            //Get the status
-            TextView txtFileStatus = (TextView)convertView.findViewById(R.id.file_status_Txt);
-
-             FileStateUtils stateUtils = new FileStateUtils();
-
-            txtFileStatus.setText(stateUtils.getReadableState(file.getState()));
-
-            //Get the employee ID
-            TextView txtEmpName = (TextView)convertView.findViewById(R.id.file_emp_seen_txt);
-            txtEmpName.setText(file.getLastEmployeeName());
 
 
             //Get the clinic Name

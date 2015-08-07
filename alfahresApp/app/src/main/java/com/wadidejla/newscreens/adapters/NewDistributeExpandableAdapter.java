@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Network;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,11 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.listeners.KeeperOnClickListener;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.NewCoordinatorDistributeFragment;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.RestfulTransferInfo;
@@ -44,6 +48,10 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> mainCategories;
     private HashMap<String,List<RestfulFile>> categorizedData;
 
+    private IAdapterListener fragment;
+
+    private int totalFiles = 0;
+
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
 
 
@@ -56,6 +64,27 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+
+
+        if(this.categorizedData != null)
+        {
+            for(List<RestfulFile> files : this.categorizedData.values())
+            {
+                totalFiles += files.size();
+            }
+
+            if(this.fragment instanceof NewCoordinatorDistributeFragment)
+            {
+                ((NewCoordinatorDistributeFragment)this.fragment).setTotalFiles(totalFiles);
+            }
+        }
+
+        if(this.fragment != null)
+            this.fragment.doUpdateFragment();
+
+
+        NetworkUtils.ScheduleSynchronization(getContext());
+
 
     }
 
@@ -236,7 +265,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int parent, boolean lastChild, View convertView, ViewGroup viewGroup) {
+    public View getGroupView(final int parent, boolean lastChild, View convertView, ViewGroup viewGroup) {
 
         if(convertView == null)
         {
@@ -246,11 +275,52 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         //Get the text view to set the group title
-        String groupTitle = (String) getGroup(parent);
+        final String groupTitle = (String) getGroup(parent);
 
         TextView groupView = (TextView)convertView.findViewById(R.id.coordinator_parent_item_txt);
         groupView.setTypeface(null, Typeface.BOLD);
         groupView.setText(groupTitle);
+
+        groupView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog dialog = NewViewUtils.getChoiceDialog(getContext(), "Distribute Files ?", String.format("Are You Sure to Distribute all these files to %s", groupTitle),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+
+                                List<RestfulFile> files = categorizedData.get(mainCategories.get(parent));
+
+                                if(files != null && files.size() > 0)
+                                {
+                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+                                    for(RestfulFile file : files)
+                                    {
+                                        file.setTemporaryCabinetId("");
+
+                                        storageUtils.operateOnFile(file, FileModelStates.DISTRIBUTED.toString(),
+                                                RestfulFile.READY_FILE);
+                                    }
+
+                                    //Now make a sound
+                                    SoundUtils.playSound(getContext());
+
+                                    //Make refresh
+                                    NewDistributeExpandableAdapter.this.notifyDataSetChanged();
+                                }
+                            }
+                        }, new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+
+                dialog.show();
+            }
+        });
 
         return convertView;
     }
@@ -310,9 +380,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
         patientNameView.setText(file.getPatientName());
 
 
-        //Batch Number
-        TextView batchNumberView = (TextView)convertView.findViewById(R.id.new_file_BatchNumber);
-        batchNumberView.setText(file.getBatchRequestNumber());
+
 
         //Doc Name
         TextView docNameView = (TextView)convertView.findViewById(R.id.new_file_RequestingDocName);
@@ -647,4 +715,19 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
         this.listener = listener;
     }
 
+    public IAdapterListener getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(IAdapterListener fragment) {
+        this.fragment = fragment;
+    }
+
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public void setTotalFiles(int totalFiles) {
+        this.totalFiles = totalFiles;
+    }
 }

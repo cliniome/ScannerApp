@@ -76,18 +76,7 @@ public class NewTransferFilesFragment extends Fragment implements IFragment {
                 }
             });*/
 
-            //Bind the Scan button
-            Button scanBtn = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
 
-            scanBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    //Scan for temporary container
-                    ScannerUtils.ScanBarcode(getActivity(), SCANNER_TYPE_CAMERA,
-                            NewTransferFilesFragment.this, false, null);
-                }
-            });
 
 
             // Bind the options button
@@ -303,6 +292,11 @@ public class NewTransferFilesFragment extends Fragment implements IFragment {
 
     @Override
     public void handleScanResults(String barcode) {
+
+    }
+
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
 
     }
 }

@@ -33,11 +33,14 @@ import static com.wadidejla.newscreens.utils.ScannerUtils.SCANNER_TYPE_CAMERA;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewDistributeFilesFragment extends Fragment implements IFragment {
+public class NewDistributeFilesFragment extends Fragment implements IFragment , IAdapterListener {
 
 
     private ListView distributeFilesList;
     private NewDistributeFilesAdapter adapter;
+    private int totalFiles = 0;
+
+    private FragmentListener listener;
 
 
     @Nullable
@@ -57,6 +60,7 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
             //Begin the view initialization in here
             this.distributeFilesList = (ListView)rootView.findViewById(R.id.mainFilesList);
             this.adapter = new NewDistributeFilesAdapter(getActivity(),R.layout.new_single_file_view);
+            this.adapter.setListener(this);
             this.distributeFilesList.setAdapter(this.adapter);
             //Bind refresh, scan , actions buttons
             Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
@@ -215,7 +219,11 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.ScreenUtils_Distribute_Files);
+        String title =  getResources().getString(R.string.ScreenUtils_Distribute_Files);
+
+        title = String.format("%s(%s)",title,this.getTotalFiles());
+
+        return title;
     }
 
     @Override
@@ -269,5 +277,29 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment {
             s.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+        {
+            this.listener.invalidate();
+        }
+    }
+
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public void setTotalFiles(int totalFiles) {
+        this.totalFiles = totalFiles;
     }
 }

@@ -2,6 +2,7 @@ package com.wadidejla.newscreens;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.net.Network;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.NewReceiveFilesAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -37,11 +39,13 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewReceiveFilesFragment extends Fragment implements IFragment{
+public class NewReceiveFilesFragment extends Fragment implements IFragment , IAdapterListener{
 
 
     private ListView receiveFilesList;
     private NewReceiveFilesAdapter adapter;
+
+    private FragmentListener listener;
 
 
     @Nullable
@@ -88,21 +92,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
                 }
             });
 
-           /* final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
 
-            scanButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    //Scan for temporary container
-                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA,NewReceiveFilesFragment.this
-                            ,false,null);
-
-
-
-                }
-            });*/
 
 
             //Do action
@@ -232,7 +222,14 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.ScreenUtils_Receive_Files);
+        String title =  getResources().getString(R.string.ScreenUtils_Receive_Files);
+
+        if(this.adapter != null)
+        {
+            title = String.format("%s(%s)",title,this.adapter.getCount());
+        }
+
+        return title;
     }
 
     @Override
@@ -247,6 +244,11 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
         if(this.getAdapter() != null)
             this.getAdapter().notifyDataSetChanged();
+
+        if(this.listener != null)
+            this.listener.invalidate();
+
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
     }
 
@@ -428,6 +430,14 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
         }
     }
 
+    @Override
+    public void setFragmentListener(FragmentListener listener) {
+
+        this.listener = listener;
+    }
+
+
+
 
     public ListView getReceiveFilesList() {
         return receiveFilesList;
@@ -443,5 +453,12 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment{
 
     public void setAdapter(NewReceiveFilesAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    @Override
+    public void doUpdateFragment() {
+
+        if(this.listener != null)
+            this.listener.invalidate();
     }
 }

@@ -16,6 +16,7 @@ import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.CheckFileStatusArrayAdapter;
+import com.wadidejla.newscreens.adapters.CheckOutFileArrayAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 
@@ -27,11 +28,11 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 28/07/15.
  */
-public class CheckFileStatusFragment extends Fragment implements IFragment {
+public class SortingFacilityScreen extends Fragment implements IFragment {
 
     private ListView listView;
 
-    private CheckFileStatusArrayAdapter adapter;
+    private CheckOutFileArrayAdapter adapter;
 
     private List<RestfulFile> availableFiles;
 
@@ -61,7 +62,7 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
         {
             //get the list view
             listView = (ListView)layout_view.findViewById(R.id.mainFilesList);
-            adapter = new CheckFileStatusArrayAdapter(getActivity(),R.layout.single_file_status);
+            adapter = new CheckOutFileArrayAdapter(getActivity(),R.layout.checkout_file_status);
             listView.setAdapter(adapter);
             setAvailableFiles(new ArrayList<RestfulFile>());
 
@@ -73,11 +74,11 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                 public void onClick(View view) {
 
                     //Clear all the files
-                    CheckFileStatusFragment.this
+                    SortingFacilityScreen.this
                             .getAvailableFiles().clear();
 
                     //then refresh
-                    CheckFileStatusFragment.this.refresh();
+                    SortingFacilityScreen.this.refresh();
                 }
             });
 
@@ -90,7 +91,7 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
 
     @Override
     public String getTitle() {
-        return getResources().getString(R.string.CHECK_FILE_STATUS_TITLE);
+        return getResources().getString(R.string.CHECK_OUT_SCREEN_TITLE);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
 
         try {
 
-            adapter = new CheckFileStatusArrayAdapter(getActivity(),R.layout.single_file_status);
+            adapter = new CheckOutFileArrayAdapter(getActivity(),R.layout.checkout_file_status);
             adapter.setFiles(this.getAvailableFiles());
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -133,6 +134,11 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
             Log.e("Error",s.getMessage());
         }
 
+    }
+
+    public void clearFiles()
+    {
+        this.setAvailableFiles(new ArrayList<RestfulFile>());
     }
 
     @Override
@@ -157,30 +163,35 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                             AlfahresConnection connection = settingsManager.getConnection();
                             HttpResponse response = connection.setAuthorization(settingsManager.getAccount())
                                     .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
-                                    .path(String.format("files/fileDetails?fileNumber=%s",barcode))
-                                    .call(FileBatchDetails.class);
+                                    .path(String.format("files/sortFile?fileNumber=%s",barcode))
+                                    .call(SyncBatch.class);
 
                             if(response != null && Integer.parseInt(response.getResponseCode()) ==
                                     HttpResponse.OK_HTTP_CODE)
                             {
                                 //That means everything is ok
                                 //get the syncBatch
-                                FileBatchDetails batch = (FileBatchDetails)response.getPayload();
+                                SyncBatch batch = (SyncBatch)response.getPayload();
 
                                 if(batch != null)
                                 {
                                     //get the files
-                                    final RestfulFile file = batch.getFile();
-                                    file.setLastEmployeeName(batch.getEmployeeName());
+                                    final List<RestfulFile> files = batch.getFiles();
+
+                                    //get the file
+                                    final RestfulFile file = files.get(0);
                                     //set the files
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
 
-                                            CheckFileStatusFragment.this.addFiles(file,
-                                                    CheckFileStatusFragment.this.getAvailableFiles());
+                                            //Clear all Available Files
+                                            SortingFacilityScreen.this.clearFiles();
+
+                                            SortingFacilityScreen.this.addFiles(file,
+                                                    SortingFacilityScreen.this.getAvailableFiles());
                                             //refresh them
-                                            CheckFileStatusFragment.this.refresh();
+                                            SortingFacilityScreen.this.refresh();
                                         }
                                     });
                                 }
@@ -207,6 +218,8 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
 
     @Override
     public void setFragmentListener(FragmentListener listener) {
+
+
 
     }
 
