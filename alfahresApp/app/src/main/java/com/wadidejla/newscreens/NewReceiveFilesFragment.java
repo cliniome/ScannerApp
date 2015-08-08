@@ -74,9 +74,6 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
 
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
-
-
-
             //Do action
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
 
@@ -87,13 +84,13 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                     PopupMenu menu = new PopupMenu(getActivity(),view);
                     menu.inflate(R.menu.new_receive_pop_menu);
 
-                  /*  SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
                     if(settingsManager.getAccount().isKeeper() ||
                             settingsManager.getAccount().isReceptionist())
                     {
                         menu.getMenu().getItem(R.id.pop_mark_all_received).setVisible(false);
-                    }*/
+                    }
 
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

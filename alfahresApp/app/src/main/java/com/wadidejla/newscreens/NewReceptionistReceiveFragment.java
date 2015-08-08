@@ -49,7 +49,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         
-        View rootView = inflater.inflate(R.layout.new_receive_files_layout,container,false);
+        View rootView = inflater.inflate(R.layout.receptionist_receive_files_layout,container,false);
         this.initView(rootView);
         return rootView;
 
@@ -71,39 +71,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
 
-            //Bind the action buttons in here
-            //Access the refresh button
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
 
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewReceptionistReceiveFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
-
-           /* final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
-
-            scanButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    //Scan for temporary container
-                    ScannerUtils.ScanBarcode(getActivity(),SCANNER_TYPE_CAMERA,NewReceiveFilesFragment.this
-                            ,false,null);
-
-
-
-                }
-            });*/
 
 
             //Do action
@@ -116,13 +84,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                     PopupMenu menu = new PopupMenu(getActivity(),view);
                     menu.inflate(R.menu.new_receptionist_receive_menu);
 
-                  /*  SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-                    if(settingsManager.getAccount().isKeeper() ||
-                            settingsManager.getAccount().isReceptionist())
-                    {
-                        menu.getMenu().getItem(R.id.pop_mark_all_received).setVisible(false);
-                    }*/
 
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

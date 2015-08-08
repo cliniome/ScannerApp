@@ -82,22 +82,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
             this.adapter.setListener(this);
             this.archiveListView.setAdapter(this.adapter);
 
-            //bind the options in here
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
 
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewArchiveFilesFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
 
 
 

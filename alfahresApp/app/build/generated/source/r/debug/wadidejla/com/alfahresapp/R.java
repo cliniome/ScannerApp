@@ -1760,14 +1760,15 @@ containing a value of this type.
         public static final int new_single_file_view=0x7f04002b;
         public static final int new_single_transfer_view=0x7f04002c;
         public static final int patientfile_conslidated_view=0x7f04002d;
-        public static final int select_dialog_item_material=0x7f04002e;
-        public static final int select_dialog_multichoice_material=0x7f04002f;
-        public static final int select_dialog_singlechoice_material=0x7f040030;
-        public static final int single_file_status=0x7f040031;
-        public static final int single_file_view=0x7f040032;
-        public static final int sorting_facility_layout=0x7f040033;
-        public static final int support_simple_spinner_dropdown_item=0x7f040034;
-        public static final int tab_detail_item=0x7f040035;
+        public static final int receptionist_receive_files_layout=0x7f04002e;
+        public static final int select_dialog_item_material=0x7f04002f;
+        public static final int select_dialog_multichoice_material=0x7f040030;
+        public static final int select_dialog_singlechoice_material=0x7f040031;
+        public static final int single_file_status=0x7f040032;
+        public static final int single_file_view=0x7f040033;
+        public static final int sorting_facility_layout=0x7f040034;
+        public static final int support_simple_spinner_dropdown_item=0x7f040035;
+        public static final int tab_detail_item=0x7f040036;
     }
     public static final class menu {
         public static final int keeper_archive_pop_menu=0x7f100000;
