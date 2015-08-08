@@ -19,6 +19,7 @@ import com.degla.restful.models.RestfulFile;
 import com.wadidejla.newscreens.adapters.NewCoordinatorExpandableAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.ExpandableListViewUtils;
 import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.newscreens.utils.ScannerUtils;
@@ -69,6 +70,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             this.adapter = new NewCoordinatorExpandableAdapter(getActivity());
             this.adapter.setFragment(this);
             this.expandableListView.setAdapter(this.adapter);
+            this.adapter.setListView(this.expandableListView);
             //Bind the actions in here
 
 
@@ -200,7 +202,6 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
         NetworkUtils.ScheduleSynchronization(getActivity());
 
-
     }
 
     @Override
@@ -253,26 +254,16 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                     if(foundFile != null)
                                     {
 
-                                        if(foundFile.getSelected() > 0)// that means it is selected
+                                        //otherwise , toggle the selection of that file
+                                        foundFile.toggleSelection();
+                                        if(foundFile.getSelected() > 0 && foundFile.isMultipleClinics())
                                         {
-                                            if(foundFile.isMultipleClinics()) // that means it is transferrable
-                                            {
-                                                //operate on that file
-                                                storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
-
-
-                                                return;
-                                            }
+                                            //Mark that file immediately as sent out
+                                            storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+                                            return;
                                         }
-
-                                        foundFile.setTemporaryCabinetId("");
-                                        //Mark it as selected
-                                        if(foundFile.getSelected() == 1)
-                                            foundFile.setSelected(0);
-                                        else foundFile.setSelected(1);
-
-
                                         this.getFilesReadyToBeCollected(foundFile);
+
 
                                         storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
                                     }
@@ -373,7 +364,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                         current.setSelected(0); // unselect it
 
                         //then update it
-                        storageUtils.operateOnFile(current,current.getState(),current.getReadyFile());
+                        //storageUtils.operateOnFile(current,current.getState(),current.getReadyFile());
                     }
                 }
             }

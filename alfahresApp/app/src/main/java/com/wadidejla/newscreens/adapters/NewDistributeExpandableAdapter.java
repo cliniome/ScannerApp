@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.NewCoordinatorDistributeFragment;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.IExpandableAdapter;
 import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -43,7 +45,7 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
+public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter implements IExpandableAdapter {
 
     private Context context;
     private List<String> mainCategories;
@@ -54,6 +56,8 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
     private int totalFiles = 0;
 
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
+
+    private ExpandableListView parentList;
 
 
     public NewDistributeExpandableAdapter(Context ctx)
@@ -774,5 +778,27 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter {
 
     public void setTotalFiles(int totalFiles) {
         this.totalFiles = totalFiles;
+    }
+
+    @Override
+    public List<String> getMain_Categories() {
+
+        return this.getMainCategories();
+    }
+
+    @Override
+    public HashMap<String, List<RestfulFile>> getMainData() {
+        return this.getCategorizedData();
+    }
+
+    @Override
+    public void setListView(ExpandableListView listView) {
+
+        this.parentList = listView;
+    }
+
+    @Override
+    public ExpandableListView getExpandableList() {
+        return this.parentList;
     }
 }

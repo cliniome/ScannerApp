@@ -66,6 +66,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
             this.expandableListView = (ExpandableListView)rootView.findViewById(R.id.coordinator_list_view);
             this.adapter = new NewDistributeExpandableAdapter(getActivity());
             this.expandableListView.setAdapter(this.adapter);
+            this.adapter.setListView(this.expandableListView);
             //Bind the actions in here
 
 
@@ -278,7 +279,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                         if(foundFile != null)
                         {
                             BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
-                            //mark it as collected
+                            //mark it as Distributed
                             DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
                             foundFile.setState(FileModelStates.DISTRIBUTED.toString());

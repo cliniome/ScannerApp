@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.wadidejla.newscreens.IAdapterListener;
 import com.wadidejla.newscreens.NewCollectFilesFragment;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.IExpandableAdapter;
 import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -44,7 +46,7 @@ import wadidejla.com.alfahresapp.R;
 /**
  * Created by snouto on 09/06/15.
  */
-public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
+public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter implements IExpandableAdapter {
 
     private Context context;
     private List<String> mainCategories;
@@ -54,10 +56,13 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
 
+    private ExpandableListView parentList;
+
 
     public NewCoordinatorExpandableAdapter(Context ctx)
     {
         this.setContext(ctx);
+
         this.loadData();
     }
 
@@ -295,8 +300,29 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
         groupView.setTypeface(null, Typeface.BOLD);
         groupView.setText(groupTitle);
 
+        //this.scrollToSelectedFile(parent);
+
         return convertView;
     }
+
+    private void scrollToSelectedFile(int parent) {
+
+        String key = this.getMainCategories().get(parent);
+
+        List<RestfulFile> availableFiles = this.getMainData().get(key);
+
+        if(availableFiles != null && availableFiles.size() > 0)
+        {
+            for(int childPos = 0 ; childPos < availableFiles.size();childPos++)
+            {
+                if(availableFiles.get(childPos).getSelected() > 0)
+                {
+                    this.getExpandableList().setSelectedChild(parent,childPos,true);
+                }
+            }
+        }
+    }
+
 
     @Override
     public View getChildView(int parent, int child, boolean lastChild, View convertView, ViewGroup viewGroup) {
@@ -336,6 +362,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
             ImageView imgView = (ImageView)convertView.findViewById(R.id.new_file_img);
             imgView.setImageResource(R.drawable.complete);
             convertView.setBackgroundColor(Color.CYAN);
+
+            this.getExpandableList().setSelectedChild(parent,child,true);
         }
 
 
@@ -669,5 +697,28 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
 
     public void setFragment(IAdapterListener fragment) {
         this.fragment = fragment;
+    }
+
+    @Override
+    public List<String> getMain_Categories() {
+
+        return this.getMainCategories();
+    }
+
+    @Override
+    public HashMap<String, List<RestfulFile>> getMainData() {
+        return this.getCategorizedData();
+    }
+
+    @Override
+    public void setListView(ExpandableListView listView) {
+
+        this.parentList = listView;
+    }
+
+    @Override
+    public ExpandableListView getExpandableList() {
+
+        return this.parentList;
     }
 }
