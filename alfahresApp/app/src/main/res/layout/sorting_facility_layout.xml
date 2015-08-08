@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
 
-
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/mainFilesList"
         android:background="?android:activatedBackgroundIndicator"
         android:soundEffectsEnabled="true"
         android:drawSelectorOnTop="true"
+        android:layout_marginTop="50dp"
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_height="match_parent">
@@ -24,14 +24,21 @@
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
 
-
-
         <Button
-            android:id="@+id/new_outgoing_sync_btn"
             android:layout_width="wrap_content"
-            android:text="Sync Now"
-            android:drawableLeft="@drawable/sync"
+            android:drawableLeft="@drawable/clear"
+            android:textAlignment="center"
+            android:id="@+id/new_files_layout_refresh_btn"
+            android:text="Clear Files"
             android:layout_height="wrap_content" />
+
+        <!-- <Button
+             android:layout_width="wrap_content"
+             android:drawableLeft="@drawable/scan"
+             android:textAlignment="center"
+             android:id="@+id/new_files_layout_scan_btn"
+             android:text="Scan Now"
+             android:layout_height="wrap_content" />-->
 
 
 

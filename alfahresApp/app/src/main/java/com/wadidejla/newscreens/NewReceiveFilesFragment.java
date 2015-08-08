@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.net.Network;
@@ -72,25 +73,6 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                     ,receivedFiles));
 
             this.getReceiveFilesList().setAdapter(this.getAdapter());
-
-
-            //Bind the action buttons in here
-            //Access the refresh button
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
-
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewReceiveFilesFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
 
 
 
@@ -246,7 +228,9 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
             this.getAdapter().notifyDataSetChanged();
 
         if(this.listener != null)
-            this.listener.invalidate();
+        {
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
 
         NetworkUtils.ScheduleSynchronization(getActivity());
 

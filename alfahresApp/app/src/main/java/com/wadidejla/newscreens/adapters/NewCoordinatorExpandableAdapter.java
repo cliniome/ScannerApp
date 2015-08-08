@@ -419,7 +419,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                 {
                     final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                             .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                            .setItems(new String[]{"Mark File as Missing...","Collect That File..."},
+                            .setItems(new String[]{"Mark File as Missing..."},
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -447,31 +447,6 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter {
                                                     dialogInterface.dismiss();
                                                 }
 
-
-                                            }else
-                                            {
-                                                //That means Collect that file manually.
-                                                try {
-                                                    DBStorageUtils storageUtils = new DBStorageUtils(getContext());
-
-                                                    file.setTemporaryCabinetId("");
-
-                                                    storageUtils.operateOnFile(file, FileModelStates.COORDINATOR_OUT.toString(),
-                                                            RestfulFile.READY_FILE);
-
-                                                    //Play the sound
-                                                    SoundUtils.playSound(getContext());
-                                                    //Now refresh the adapter
-                                                    NewCoordinatorExpandableAdapter
-                                                            .this.notifyDataSetChanged();
-
-                                                } catch (Exception s) {
-                                                    Log.w("FilesArrayAdapter", s.getMessage());
-
-                                                } finally {
-
-                                                    dialogInterface.dismiss();
-                                                }
 
                                             }
 

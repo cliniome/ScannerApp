@@ -54,7 +54,7 @@ public class CollectingTask implements Runnable {
                     file.setState(state);
                     //remove the temporary cabinet
                     file.setTemporaryCabinetId("");
-                    file.setReadyFile(RestfulFile.READY_FILE);
+                    file.setReadyFile(RestfulFile.NOT_READY_FILE);
 
                     storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
                             .insertFile(file);

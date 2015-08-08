@@ -5,9 +5,6 @@
         android:title="Mark All as Missing"
         android:icon="@drawable/missing"/>
 
-    <item android:id="@+id/pop_mark_all_collect"
-        android:title="Collect All Files"
-        android:icon="@drawable/accepted"/>
 
 
 </menu>

@@ -71,22 +71,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             this.expandableListView.setAdapter(this.adapter);
             //Bind the actions in here
 
-            //Bind the refresh button in here
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
 
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewCollectFilesFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
 
            /* //Bind the scan Button
             final Button scanButton = (Button)rootView.findViewById(R.id.new_files_layout_scan_btn);
@@ -168,38 +153,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                 }
                                 break;
 
-                                case R.id.pop_mark_all_collect: {
 
-                                    final AlertDialog choiceDialog = NewViewUtils.getChoiceDialog(getActivity(),
-                                            "Are you Sure ?", "Did you Collect all these Files from Clinics ?",
-                                            new Runnable() {
-                                                @Override
-                                                public void run() {
-
-                                                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                                                    dialog.show();
-                                                    //start The marking Task in the background
-                                                    CollectingTask collectingTask = new CollectingTask(getActivity()
-                                                            ,EmployeeUtils.SEND_FILES);
-                                                    collectingTask.setDialog(dialog);
-                                                    collectingTask.setFragment(NewCollectFilesFragment.this);
-
-                                                    //now encapsulate the task into a thread
-                                                    Thread markingThread = new Thread(collectingTask);
-                                                    markingThread.start();
-                                                }
-                                            }, new Runnable() {
-                                                @Override
-                                                public void run() {
-
-                                                    //Do nohing in here
-                                                }
-                                            });
-
-                                    choiceDialog.show();
-                                }
-
-                                break;
                             }
 
                             return true;
@@ -305,6 +259,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                             {
                                                 //operate on that file
                                                 storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+
 
                                                 return;
                                             }

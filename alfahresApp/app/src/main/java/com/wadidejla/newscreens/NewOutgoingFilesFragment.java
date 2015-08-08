@@ -63,22 +63,6 @@ public class NewOutgoingFilesFragment extends Fragment implements IFragment , IA
             this.outgoingList.setAdapter(this.adapter);
 
 
-            //Access the refresh button
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_outgoing_layout_refresh_btn);
-
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewOutgoingFilesFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
 
 
             //Access the syncing process

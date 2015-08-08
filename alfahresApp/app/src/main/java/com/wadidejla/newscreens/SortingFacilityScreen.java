@@ -36,6 +36,8 @@ public class SortingFacilityScreen extends Fragment implements IFragment {
 
     private List<RestfulFile> availableFiles;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

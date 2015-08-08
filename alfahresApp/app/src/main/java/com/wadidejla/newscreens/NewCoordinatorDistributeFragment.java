@@ -68,22 +68,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
             this.expandableListView.setAdapter(this.adapter);
             //Bind the actions in here
 
-            //Bind the refresh button in here
-            Button refreshAction = (Button)rootView.findViewById(R.id.new_files_layout_refresh_btn);
 
-            refreshAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    ProgressDialog dialog = NewViewUtils.getWaitingDialog(getActivity());
-                    dialog.show();
-
-                    NewCoordinatorDistributeFragment.this.refresh();
-
-                    dialog.dismiss();
-                }
-            });
 
 
             //Bind Do Actions Menu Button

@@ -19,6 +19,7 @@ import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.ShippingRequestsAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
@@ -138,6 +139,8 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                 }
             });
         }
+
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
         this.doUpdateFragment();
 
@@ -282,7 +285,7 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                settingsManager.getFilesManager().getFilesDBManager().insertFile(shippingFile);
                         }
 
-                        //settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
+                        settingsManager.setShippingFiles(new ArrayList<RestfulFile>());
 
                         //Now play the sound
                         SoundUtils.playSound(getActivity());
