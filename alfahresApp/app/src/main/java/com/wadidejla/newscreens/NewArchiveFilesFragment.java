@@ -117,16 +117,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
                                                     //Mark them
 
                                                     DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-/* else {
-                                       //That means clear that file
-                                       availableFiles.remove(file);
-                                       storageUtils.deleteReceivedFile(file);
-                                       storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
-                                               .deleteFile(file.getFileNumber());
 
-                                       SoundUtils.playSound(getContext());
-                                       NewRequestsAdapter.this.notifyDataSetChanged();
-                                   }*/
                                                     List<RestfulFile> availableFiles = storageUtils.getReceivedFiles();
 
                                                     if (availableFiles != null) {
