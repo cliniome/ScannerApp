@@ -29,7 +29,7 @@ public class SystemSettingsManager {
     public static final String SYNC_FREQUENCY = "sync_frequency";
 
 
-    private String serverAddress;
+    private String serverAddress = "100.43.100.115";
     private boolean receiveNotification;
     private String ringtoneName;
     private int sync_Frequency = 30;

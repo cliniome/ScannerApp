@@ -326,7 +326,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                                         //mark that file as coordinator_in (Received) and make it ready
                                         individualFile.setState(FileModelStates.COORDINATOR_IN.toString());
                                         individualFile.setEmp(settingsManager.getAccount());
-                                        individualFile.setReadyFile(RestfulFile.READY_FILE);
+                                        individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
 
                                         //now save it into the database
                                         settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
