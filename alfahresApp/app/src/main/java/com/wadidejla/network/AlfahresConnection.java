@@ -32,7 +32,7 @@ public class AlfahresConnection {
     public static final String DEFAULT_PORT = "8080";
     public static final String DEFAULT_BASEPATH="alfahres";
     public static final String DEFAULT_RESTFUL_PATH="rest";
-    private String hostName="192.168.1.7";
+    private String hostName="127.0.0.1";
     private String port="8080";
     private String basePath="alfahres";
     private String restfulPath = "rest";

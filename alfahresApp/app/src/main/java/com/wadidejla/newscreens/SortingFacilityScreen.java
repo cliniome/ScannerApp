@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,9 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.CheckFileStatusArrayAdapter;
 import com.wadidejla.newscreens.adapters.CheckOutFileArrayAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
+import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +178,7 @@ public class SortingFacilityScreen extends Fragment implements IFragment {
                                 //get the syncBatch
                                 SyncBatch batch = (SyncBatch)response.getPayload();
 
-                                if(batch != null)
+                                if(batch != null && batch.getFiles() != null && batch.getFiles().size() > 0)
                                 {
                                     //get the files
                                     final List<RestfulFile> files = batch.getFiles();
@@ -194,6 +197,21 @@ public class SortingFacilityScreen extends Fragment implements IFragment {
                                                     SortingFacilityScreen.this.getAvailableFiles());
                                             //refresh them
                                             SortingFacilityScreen.this.refresh();
+                                        }
+                                    });
+                                }else
+                                {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            SortingFacilityScreen.this.clearFiles();
+
+                                            AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning",
+                                                    String.format("File : %s , Is not found or might be not prepared by " +
+                                                            "keeper yet !",barcode));
+
+                                            dialog.show();
                                         }
                                     });
                                 }
