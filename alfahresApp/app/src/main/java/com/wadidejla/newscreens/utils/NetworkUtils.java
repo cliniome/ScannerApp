@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.ArrayList;
@@ -17,6 +19,49 @@ import java.util.List;
  * Created by snouto on 07/08/15.
  */
 public class NetworkUtils {
+
+
+    public static void ScheduleSynchronization(final Context context , final IFragment fragment)
+    {
+        try
+        {
+            //TODO : Implement the synchronization process in here
+            Runnable synchronizationProcess = new Runnable() {
+                @Override
+                public void run() {
+
+                    if(ConnectivityUtils.isConnected(context))
+                    {
+                        beginSynchronization(context);
+
+                        if(fragment != null)
+                        {
+                            if(context instanceof Activity)
+                            {
+                                ((Activity)context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragment.refresh();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            //Begin the synchronization process now
+            Thread syncThread = new Thread(synchronizationProcess);
+            syncThread.start();
+
+        }catch (Exception s)
+        {
+            Log.e("Error",s.getMessage());
+
+        }
+
+    }
 
 
     public static void ScheduleSynchronization(final Context context)
@@ -48,7 +93,7 @@ public class NetworkUtils {
     }
 
 
-    public static void beginSynchronization(Context context)
+    public static synchronized void beginSynchronization(Context context)
     {
         SystemSettingsManager systemSettingsManager = SystemSettingsManager.createInstance(context);
         AlfahresConnection connection = systemSettingsManager.getConnection();

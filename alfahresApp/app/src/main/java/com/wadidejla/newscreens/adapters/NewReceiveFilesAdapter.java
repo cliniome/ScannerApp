@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
@@ -35,6 +37,8 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
 
     private int resourceId;
 
+    private IAdapterListener listener;
+
 
     public NewReceiveFilesAdapter(Context context, int resource,List<RestfulFile> files) {
         super(context, resource);
@@ -49,7 +53,11 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
         this.availableFiles = storageUtils.getReceivedFiles();
         super.notifyDataSetChanged();
 
-        NetworkUtils.ScheduleSynchronization(getContext());
+
+        if(this.listener != null)
+            this.listener.doUpdateFragment();
+
+
     }
 
     @Override
@@ -188,6 +196,8 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
                                         //Play the sound
                                         SoundUtils.playSound(getContext());
 
+                                        NetworkUtils.ScheduleSynchronization(getContext());
+
                                     } catch (Exception s) {
                                         Log.w("FilesArrayAdapter", s.getMessage());
 
@@ -230,5 +240,13 @@ public class NewReceiveFilesAdapter extends ArrayAdapter<RestfulFile> {
     public int getCount() {
 
         return availableFiles.size();
+    }
+
+    public IAdapterListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IAdapterListener listener) {
+        this.listener = listener;
     }
 }

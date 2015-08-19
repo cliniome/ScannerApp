@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -59,6 +60,17 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
         return rootView;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.adapter != null)
+        {
+            this.adapter.notifyDataSetChanged();
+
+        }
+    }
+
     private void initView(View rootView) {
 
         try
@@ -66,11 +78,10 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
             this.expandableListView = (ExpandableListView)rootView.findViewById(R.id.coordinator_list_view);
             this.adapter = new NewDistributeExpandableAdapter(getActivity());
             this.expandableListView.setAdapter(this.adapter);
+            this.adapter.setFragment(this);
             this.adapter.setListView(this.expandableListView);
+
             //Bind the actions in here
-
-
-
 
             //Bind Do Actions Menu Button
 
@@ -323,7 +334,12 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
 
         if(this.listener != null)
+        {
             this.listener.invalidate();
+
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
+
     }
 
     public int getTotalFiles() {

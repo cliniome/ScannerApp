@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.wadidejla.tasks.MarkingTask;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +62,16 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
         this.initView(rootView);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(this.adapter != null)
+        {
+            this.adapter.notifyDataSetChanged();
+        }
     }
 
     private void initView(View rootView) {
@@ -188,7 +200,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     @Override
     public void chainUpdate() {
 
-        this.refresh();
+        NetworkUtils.ScheduleSynchronization(getActivity(),this);
     }
 
     @Override
@@ -200,7 +212,13 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             this.adapter.notifyDataSetChanged();
         }
 
-        NetworkUtils.ScheduleSynchronization(getActivity());
+
+        if(this.expandableListView != null)
+        {
+            this.expandableListView.smoothScrollToPosition(0);
+        }
+
+
 
     }
 
@@ -213,7 +231,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             {
                 BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
                 //mark it as collected
-                DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                final  DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
                          if(barcodeUtils.isMedicalFile())
                             {
@@ -255,13 +273,41 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                     {
 
                                         //otherwise , toggle the selection of that file
-                                        foundFile.toggleSelection();
+
                                         if(foundFile.getSelected() > 0 && foundFile.isMultipleClinics())
                                         {
-                                            //Mark that file immediately as sent out
-                                            storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+
+                                            final RestfulFile tempFinal = foundFile;
+                                           AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(), "Warning", String.format("File : %s has another appointment , would you like " +
+                                                   "to transfer Now or Cancel to view the transfer details ?", foundFile.getFileNumber()), new Runnable() {
+                                               @Override
+                                               public void run() {
+
+                                                   //Mark that file immediately as sent out
+                                                   storageUtils.operateOnFile(tempFinal, FileModelStates.COORDINATOR_OUT.toString(), RestfulFile.READY_FILE);
+
+
+                                                   NewCollectFilesFragment.this.chainUpdate();
+
+
+                                               }
+                                           }, new Runnable() {
+                                               @Override
+                                               public void run() {
+
+                                               }
+                                           });
+
+                                            dialog.show();
+
+
+
+
                                             return;
                                         }
+
+                                        foundFile.toggleSelection();
+
                                         this.getFilesReadyToBeCollected(foundFile);
 
 
@@ -275,9 +321,11 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                          {
                              Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
-                             RestfulFile foundFile = null;
+
 
                              Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
+
+
 
                              if(collectedFiles != null && !collectedFiles.isEmpty())
                              {
@@ -293,24 +341,18 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                          {
                                              if(file.getSelected() == 1) //grab the selected file
                                              {
-                                                 foundFile = file;
-                                                 break;
+                                                 file.setTemporaryCabinetId(barcode);
+
+                                                 file.setSelected(0);
+
+                                                 storageUtils.operateOnFile(file,FileModelStates.COORDINATOR_OUT.toString(),
+                                                         RestfulFile.READY_FILE);
                                              }
                                          }
                                      }
                                  }
                              }
 
-                             if(foundFile != null)
-                             {
-                                 //mark that file as coordinator out and mark it as ready file
-                                 foundFile.setTemporaryCabinetId(barcode);
-
-                                 foundFile.setSelected(0);
-
-                                 storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),
-                                         RestfulFile.READY_FILE);
-                             }
 
                          }
 
@@ -332,7 +374,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             SoundUtils.playSound(getActivity());
 
             //Update the screen
-            this.refresh();
+            this.chainUpdate();
         }
 
     }
@@ -379,7 +421,11 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     public void doUpdateFragment() {
 
         if(this.listener != null)
+        {
             this.listener.invalidate();
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
+
 
     }
 

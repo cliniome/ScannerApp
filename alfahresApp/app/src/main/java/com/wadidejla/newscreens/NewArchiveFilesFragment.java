@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.net.Network;
@@ -189,6 +190,9 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
 
         if(this.adapter != null)
             this.adapter.notifyDataSetChanged();
+
+        if(this.archiveListView != null)
+            this.archiveListView.smoothScrollToPosition(0);
 
     }
 
@@ -472,7 +476,11 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
         try
         {
             if(this.listener != null)
+            {
                 this.listener.invalidate();
+                ((Activity)this.listener).setTitle(getTitle());
+            }
+
 
         }catch (Exception s)
         {

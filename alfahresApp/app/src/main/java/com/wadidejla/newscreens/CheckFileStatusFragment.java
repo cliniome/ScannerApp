@@ -18,6 +18,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.CheckFileStatusArrayAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.SoundUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +184,9 @@ public class CheckFileStatusFragment extends Fragment implements IFragment {
                                             CheckFileStatusFragment.this.refresh();
                                         }
                                     });
+
+
+
                                 }
                             }
 

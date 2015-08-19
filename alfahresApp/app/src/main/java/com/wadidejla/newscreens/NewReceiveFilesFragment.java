@@ -72,6 +72,9 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
             this.setAdapter(new NewReceiveFilesAdapter(getActivity(),R.layout.new_single_file_view
                     ,receivedFiles));
 
+            //Set the listener
+            this.getAdapter().setListener(this);
+
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
             //Do action
@@ -214,7 +217,10 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
     @Override
     public void chainUpdate() {
 
-        this.refresh();
+        if(this.listener != null)
+        {
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
 
     }
 
@@ -228,6 +234,9 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
         {
             ((Activity)this.listener).setTitle(this.getTitle());
         }
+
+        if(this.receiveFilesList != null)
+            this.receiveFilesList.smoothScrollToPosition(0);
 
         NetworkUtils.ScheduleSynchronization(getActivity());
 
@@ -439,7 +448,12 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
     @Override
     public void doUpdateFragment() {
 
+
+
         if(this.listener != null)
+        {
             this.listener.invalidate();
+            ((Activity)this.listener).setTitle(this.getTitle());
+        }
     }
 }

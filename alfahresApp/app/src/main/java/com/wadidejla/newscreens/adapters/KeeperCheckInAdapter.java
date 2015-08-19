@@ -26,6 +26,8 @@ import com.wadidejla.newscreens.utils.ScannerUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -75,6 +77,16 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile>{
         {
             DBStorageUtils storageUtils  = new DBStorageUtils(getContext());
             this.checkInFiles = storageUtils.getReceivedFiles();
+
+            if(this.checkInFiles != null && this.checkInFiles.size() > 0)
+            {
+                Collections.sort(this.checkInFiles, new Comparator<RestfulFile>() {
+                    @Override
+                    public int compare(RestfulFile first, RestfulFile second) {
+                        return second.getSelected() - first.getSelected();
+                    }
+                });
+            }
 
 
 

@@ -18,6 +18,8 @@ public class RestfulClinic implements Serializable {
     @Expose
     private List<RestfulFile> files;
 
+    private transient int selected;
+
 
     public RestfulClinic(){
 
@@ -60,5 +62,13 @@ public class RestfulClinic implements Serializable {
 
     public void setFiles(List<RestfulFile> files) {
         this.files = files;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

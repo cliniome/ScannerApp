@@ -281,7 +281,7 @@ public class NewTransferFilesFragment extends Fragment implements IFragment {
                 }
             };
 
-            // start the network thread
+            // start the com.wadi.degla.network thread
             Thread networkingThread =new Thread(networkingTask);
             networkingThread.start();
 

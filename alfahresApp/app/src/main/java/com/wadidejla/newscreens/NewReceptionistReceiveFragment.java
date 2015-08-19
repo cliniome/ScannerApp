@@ -1,5 +1,6 @@
 package com.wadidejla.newscreens;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
             this.setAdapter(new NewReceiveFilesAdapter(getActivity(),R.layout.new_single_file_view
                     ,receivedFiles));
+
+            this.getAdapter().setListener(this);
 
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
@@ -220,6 +223,9 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
         if(this.getAdapter() != null)
             this.getAdapter().notifyDataSetChanged();
 
+        if(this.receiveFilesList != null)
+            this.receiveFilesList.smoothScrollToPosition(0);
+
         NetworkUtils.ScheduleSynchronization(getActivity());
 
     }
@@ -286,7 +292,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                         //then remove it from the received files
                         settingsManager.getReceivedFiles().remove(foundFile);
                         //then add it back again
-                        settingsManager.getReceivedFiles().add(foundFile);
+                        settingsManager.addToReceivedFiles(foundFile);
                     }
                     //then notify the application to refresh in any case
                     this.refresh();
@@ -456,6 +462,8 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
         if(this.listener != null)
         {
             this.listener.invalidate();
+
+            ((Activity)this.listener).setTitle(this.getTitle());
         }
     }
 }

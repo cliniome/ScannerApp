@@ -25,6 +25,8 @@ import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -128,21 +130,38 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
         if(this.adapter != null && this.listView != null)
         {
             SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+
+
+            if(settingsManager.getShippingFiles() != null)
+            {
+                Collections.sort(settingsManager.getShippingFiles(), new Comparator<RestfulFile>() {
+                    @Override
+                    public int compare(RestfulFile first, RestfulFile second) {
+
+                        return second.getSelected() - first.getSelected();
+                    }
+                });
+            }
+
             this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,settingsManager.getShippingFiles());
             this.listView.setAdapter(this.adapter);
             this.adapter.notifyDataSetChanged();
 
-            this.listView.post(new Runnable() {
+           /* this.listView.post(new Runnable() {
                 @Override
                 public void run() {
-                    CheckOutFileFragment.this.listView.setSelection(CheckOutFileFragment.this.adapter.getCount()-1);
+                    CheckOutFileFragment.this.listView.setSelection(CheckOutFileFragment.this.adapter.getCount() - 1);
                 }
-            });
+            });*/
+
+
         }
 
         NetworkUtils.ScheduleSynchronization(getActivity());
 
         this.doUpdateFragment();
+
+        this.listView.smoothScrollToPosition(0);
 
     }
 

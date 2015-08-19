@@ -430,48 +430,59 @@ public class NewRequestsFragment extends Fragment implements IFragment , DatePic
     @Override
     public void handleScanResults(String fileBarcode) {
 
-        if(fileBarcode != null)
-        {
-            //Get the Restful file
-            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-            //Get the restful File
-            RestfulFile foundFile = storageUtils.getRestfulRequestByBarcode(fileBarcode);
-
-            if(foundFile != null)
+        try {
+            if(fileBarcode != null)
             {
-                if(foundFile.isInpatient())
+                //Get the Restful file
+                DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                //Get the restful File
+                RestfulFile foundFile = storageUtils.getRestfulRequestByBarcode(fileBarcode);
+
+                if(foundFile != null)
                 {
-                    //Now check_OUT the current file
-                    storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString()
-                            , RestfulFile.READY_FILE);
+                    if(foundFile.isInpatient())
+                    {
+                        //Now check_OUT the current file
+                        storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString()
+                                , RestfulFile.READY_FILE);
+
+                    }else
+                    {
+                        //Now check_OUT the current file
+                        storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
+                                , RestfulFile.READY_FILE);
+                    }
+
+                    SoundUtils.playSound(getActivity());
+
+                    //Now refresh the current fragment
+                    NewRequestsFragment.this.refreshLocal();
+
+
 
                 }else
                 {
-                    //Now check_OUT the current file
-                    storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
-                            , RestfulFile.READY_FILE);
+                    Toast.makeText(getActivity(),String.format("File %s is not found ",fileBarcode)
+                            ,Toast.LENGTH_SHORT)
+                            .show();
+
                 }
-
-                SoundUtils.playSound(getActivity());
-
-                //Now refresh the current fragment
-                NewRequestsFragment.this.refreshLocal();
-
-                //Then do the synchronization in background
-                NetworkUtils.ScheduleSynchronization(getActivity());
 
             }else
             {
-                Toast.makeText(getActivity(),String.format("File %s is not found ",fileBarcode)
-                        ,Toast.LENGTH_SHORT)
+                Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
                         .show();
-
             }
 
-        }else
+        }catch (Exception s)
         {
-            Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
-                    .show();
+            Log.e("Error",s.getMessage());
+        }
+
+        finally {
+
+            //Then do the synchronization in background
+            NetworkUtils.ScheduleSynchronization(getActivity());
         }
 
     }

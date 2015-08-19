@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +31,15 @@ public class CollectionBatch implements Serializable {
 
         if(clinics != null && clinics.size() > 0)
         {
+            //Sort clinics based on selected
+            Collections.sort(clinics, new Comparator<RestfulClinic>() {
+                @Override
+                public int compare(RestfulClinic first, RestfulClinic second) {
+
+                    return second.getSelected() - first.getSelected();
+                }
+            });
+
             for(RestfulClinic clinic : clinics)
             {
                 String categoryTitle = String.format("%s(%s)",clinic.getClinicName(),clinic.getClinicCode());
@@ -132,17 +143,24 @@ public class CollectionBatch implements Serializable {
             newClinic.setClinicCode(file.getClinicCode());
             newClinic.setFiles(new ArrayList<RestfulFile>());
             newClinic.getFiles().add(file);
+            newClinic.setSelected(file.getSelected());
 
             this.getClinics().add(newClinic);
         }else
         {
             if(current.getFiles() != null)
+            {
                 current.getFiles().add(file);
+
+            }
+
             else
             {
                 current.setFiles(new ArrayList<RestfulFile>());
                 current.getFiles().add(file);
             }
+
+            current.setSelected(file.getSelected());
         }
 
         return true;
@@ -215,6 +233,14 @@ public class CollectionBatch implements Serializable {
             for(RestfulClinic clinic : clinics)
             {
                 String clinicTitle = String.format("%s(%s)",clinic.getClinicName(),clinic.getClinicCode());
+
+                Collections.sort(clinic.getFiles(), new Comparator<RestfulFile>() {
+                    @Override
+                    public int compare(RestfulFile first, RestfulFile second) {
+
+                        return second.getSelected()  - first.getSelected();
+                    }
+                });
                 categorizedData.put(clinicTitle,clinic.getFiles());
             }
         }

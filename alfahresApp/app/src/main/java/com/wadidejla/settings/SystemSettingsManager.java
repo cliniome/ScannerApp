@@ -104,7 +104,7 @@ public class SystemSettingsManager {
         RestfulFile foundFile = this.checkFileExistsInCollection(collection,file);
 
         if(foundFile == null)
-            collection.add(file);
+            collection.add(0,file);
 
         return (foundFile == null ? true : false);
     }
@@ -329,7 +329,7 @@ public class SystemSettingsManager {
             this.receivedFiles = new ArrayList<RestfulFile>();
 
         if(!fileExists(file,this.receivedFiles))
-            this.getReceivedFiles().add(file);
+            this.getReceivedFiles().add(0,file);
 
     }
 
