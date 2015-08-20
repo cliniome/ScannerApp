@@ -347,6 +347,8 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                                  storageUtils.operateOnFile(file,FileModelStates.COORDINATOR_OUT.toString(),
                                                          RestfulFile.READY_FILE);
+
+                                                 this.refresh();
                                              }
                                          }
                                      }
@@ -373,8 +375,10 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             //Then play the sound
             SoundUtils.playSound(getActivity());
 
-            //Update the screen
-            this.chainUpdate();
+          if(this.adapter != null)
+          {
+              this.adapter.notifyDataSetChanged();
+          }
         }
 
     }

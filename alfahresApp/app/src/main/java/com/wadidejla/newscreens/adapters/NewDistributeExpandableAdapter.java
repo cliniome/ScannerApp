@@ -76,10 +76,13 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
         if(this.categorizedData != null)
         {
-            for(List<RestfulFile> files : this.categorizedData.values())
+            /*for(List<RestfulFile> files : this.categorizedData.values())
             {
                 totalFiles += files.size();
-            }
+            }*/
+
+            if(this.categorizedData.values() != null)
+                totalFiles = this.categorizedData.values().size();
 
             if(this.fragment instanceof NewCoordinatorDistributeFragment)
             {
@@ -117,6 +120,24 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                     @Override
                     public void run() {
 
+
+                        boolean success = false;
+                        try
+                        {
+                            NetworkUtils.beginSynchronization(getContext());
+
+                            success = true;
+
+                        }catch (Exception s)
+                        {
+                            Log.e("Error",s.getMessage());
+                            success = false;
+                        }
+
+
+                        if(!success)
+                            return;
+
                         AlfahresConnection connection = storageUtils.getSettingsManager().getConnection();
 
                         HttpResponse response = connection.path("files/getDistributedFiles").setMethodType(AlfahresConnection.POST_HTTP_METHOD)
@@ -144,12 +165,18 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                         for(RestfulFile tempFile : clinic.getFiles())
                                         {
 
-                                            boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                          /*  boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
                                                     .getFileByEmployeeAndNumber(storageUtils.getSettingsManager().getAccount().getUserName(),
-                                                            tempFile.getFileNumber()) != null;
+                                                            tempFile.getFileNumber()) != null;*/
 
-                                            if(!containsFile)
-                                                allFiles.add(tempFile);
+                                            RestfulFile existingFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                                    .getFileByNumber(tempFile.getFileNumber());
+
+                                            if(existingFile != null)
+                                                tempFile.setSelected(existingFile.getSelected());
+
+
+                                             allFiles.add(tempFile);
 
                                         }
                                     }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Network;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +72,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
         //this.loadData();
         super.notifyDataSetChanged();
 
-        this.loadData();
+       // this.loadData();
 
         int totalFiles = getTotalFiles();
 
@@ -128,6 +129,24 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                     @Override
                     public void run() {
 
+
+                        //force synchronization first in synchronous way
+                        boolean success = false;
+
+                        try
+                        {
+                            NetworkUtils.beginSynchronization(getContext());
+                            success = true;
+
+                        }catch (Exception s)
+                        {
+                            Log.e("Error",s.getMessage());
+                            success = false;
+                        }
+
+                        if(!success) return;
+
+                        //Then force the download of new files
                         AlfahresConnection connection = storageUtils.getSettingsManager().getConnection();
 
                         HttpResponse response = connection.path("files/collect").setMethodType(AlfahresConnection.POST_HTTP_METHOD)
@@ -155,12 +174,21 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                                         for(RestfulFile tempFile : clinic.getFiles())
                                         {
 
-                                            boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
+                                           RestfulFile existingFile = storageUtils.getSettingsManager().getFilesManager()
+                                                   .getFilesDBManager().getFileByNumber(tempFile.getFileNumber());
+
+                                            if(existingFile != null)
+                                                tempFile.setSelected(existingFile.getSelected());
+
+
+                                            allFiles.add(tempFile);
+
+                                           /* boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
                                                     .getFileByEmployeeAndNumber(storageUtils.getSettingsManager().getAccount().getUserName(),
                                                             tempFile.getFileNumber()) != null;
 
                                             if(!containsFile)
-                                                allFiles.add(tempFile);
+                                                allFiles.add(tempFile);*/
 
                                         }
                                     }
