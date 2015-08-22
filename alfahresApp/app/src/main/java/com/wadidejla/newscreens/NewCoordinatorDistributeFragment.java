@@ -258,12 +258,13 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
                     if(adapter != null)
                     {
+                        DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
                         Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
-                        RestfulFile foundFile = null;
+                        RestfulFile foundFile = storageUtils.getDistributableFile(barcode);
 
-                        Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
+                        /*Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
 
                         if(collectedFiles != null && !collectedFiles.isEmpty())
                         {
@@ -285,7 +286,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                                     }
                                 }
                             }
-                        }
+                        }*/
 
 
                         //check if the found file is not null
@@ -293,8 +294,6 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                         {
                             BarcodeUtils barcodeUtils = new BarcodeUtils(barcode);
                             //mark it as Distributed
-                            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-
                             foundFile.setState(FileModelStates.DISTRIBUTED.toString());
                             foundFile.setEmp(storageUtils.getSettingsManager().getAccount());
                             foundFile.setReadyFile(RestfulFile.READY_FILE);
