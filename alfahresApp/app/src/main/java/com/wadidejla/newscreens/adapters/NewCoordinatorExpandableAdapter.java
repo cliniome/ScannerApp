@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Network;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,11 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
     private ExpandableListView parentList;
 
+    private int expandableParent;
+    private int expandableChild;
+
+
+
 
     public NewCoordinatorExpandableAdapter(Context ctx)
     {
@@ -70,9 +76,10 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
     @Override
     public void notifyDataSetChanged() {
         //this.loadData();
+
         super.notifyDataSetChanged();
 
-       // this.loadData();
+
 
         int totalFiles = getTotalFiles();
 
@@ -84,13 +91,35 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
         }
 
         if(fragment != null)
-            fragment.doUpdateFragment();
+        {
+            Fragment currentFragment = (Fragment)fragment;
+            if(currentFragment.isAdded() && !currentFragment.isDetached())
+            {
+                fragment.doUpdateFragment();
+            }
+
+        }
+
 
 
         NetworkUtils.ScheduleSynchronization(getContext());
 
 
 
+
+    }
+
+    public void doRefresh()
+    {
+        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+        CollectionBatch batch = new CollectionBatch();
+        //get all local files ready to be collected if any
+        List<RestfulFile> localFiles = storageUtils.getFilesReadyForCollection();
+        batch.addAllRestfulFiles(localFiles);
+        this.setMainCategories(batch.getCategories());
+        this.setCategorizedData(batch.getCategorizedData());
+
+        this.notifyDataSetChanged();
 
     }
 
@@ -217,7 +246,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                                     @Override
                                     public void run() {
 
-                                        NewCoordinatorExpandableAdapter.this.notifyDataSetChanged();
+                                        NewCoordinatorExpandableAdapter.this.doRefresh();
                                     }
                                 });
                             }
@@ -233,12 +262,14 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
             }
 
-            CollectionBatch batch = new CollectionBatch();
+          /*  CollectionBatch batch = new CollectionBatch();
             //get all local files ready to be collected if any
             List<RestfulFile> localFiles = storageUtils.getFilesReadyForCollection();
             batch.addAllRestfulFiles(localFiles);
             this.setMainCategories(batch.getCategories());
-            this.setCategorizedData(batch.getCategorizedData());
+            this.setCategorizedData(batch.getCategorizedData());*/
+
+            this.doRefresh();
 
         }catch (Exception s)
         {
@@ -397,9 +428,12 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
               imgView.setImageResource(R.drawable.complete);
               convertView.setBackgroundColor(Color.CYAN);
 
-              this.getExpandableList().setSelectedChild(parent,child,true);
+              this.getExpandableList().setSelectedChild(parent, child, true);
 
               this.getExpandableList().expandGroup(parent);
+              this.setExpandableParent(parent);
+              this.setExpandableChild(child);
+
           }
 
 
@@ -499,9 +533,12 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
                                                       //Play the sound
                                                       SoundUtils.playSound(getContext());
+                                                      NewCoordinatorExpandableAdapter.this.doRefresh();
+                                                      //Order a new Load Data
                                                       //Now refresh the adapter
                                                       NewCoordinatorExpandableAdapter
                                                               .this.notifyDataSetChanged();
+
 
                                                   } catch (Exception s) {
                                                       Log.w("FilesArrayAdapter", s.getMessage());
@@ -540,6 +577,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
                                                       //Play the sound
                                                       SoundUtils.playSound(getContext());
+
+                                                      NewCoordinatorExpandableAdapter.this.doRefresh();
                                                       //Now refresh the adapter
                                                       NewCoordinatorExpandableAdapter
                                                               .this.notifyDataSetChanged();
@@ -572,9 +611,12 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
                                                               //Play the sound
                                                               SoundUtils.playSound(getContext());
+                                                              NewCoordinatorExpandableAdapter.this.doRefresh();
                                                               //Now refresh the adapter
                                                               NewCoordinatorExpandableAdapter
                                                                       .this.notifyDataSetChanged();
+
+
                                                           }
                                                       }, new Runnable() {
                                                           @Override
@@ -776,5 +818,21 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
     public ExpandableListView getExpandableList() {
 
         return this.parentList;
+    }
+
+    public int getExpandableParent() {
+        return expandableParent;
+    }
+
+    public void setExpandableParent(int expandableParent) {
+        this.expandableParent = expandableParent;
+    }
+
+    public int getExpandableChild() {
+        return expandableChild;
+    }
+
+    public void setExpandableChild(int expandableChild) {
+        this.expandableChild = expandableChild;
     }
 }

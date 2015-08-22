@@ -2,6 +2,7 @@ package com.wadidejla.newscreens.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.degla.restful.models.BooleanResult;
@@ -36,15 +37,21 @@ public class NetworkUtils {
 
                         if(fragment != null)
                         {
-                            if(context instanceof Activity)
+                            Fragment currentFragment = (Fragment)fragment;
+
+                            if(currentFragment != null && !currentFragment.isDetached() && currentFragment.isAdded())
                             {
-                                ((Activity)context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragment.refresh();
-                                    }
-                                });
+                                if(context instanceof Activity)
+                                {
+                                    ((Activity)context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            fragment.refresh();
+                                        }
+                                    });
+                                }
                             }
+
                         }
                     }
                 }

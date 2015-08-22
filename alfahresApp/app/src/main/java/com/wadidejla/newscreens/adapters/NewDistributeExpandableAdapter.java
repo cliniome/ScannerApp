@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Network;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,6 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
     private IAdapterListener fragment;
 
-    private int totalFiles = 0;
 
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
 
@@ -74,31 +74,33 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
         super.notifyDataSetChanged();
 
 
-        if(this.categorizedData != null)
-        {
-            /*for(List<RestfulFile> files : this.categorizedData.values())
-            {
-                totalFiles += files.size();
-            }*/
+        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+        List<RestfulFile> distributableFiles = storageUtils.getFilesToBeDistributed();
 
-            if(this.categorizedData.values() != null)
-                totalFiles = this.categorizedData.values().size();
+
+        if(distributableFiles != null)
+        {
+            int totalFiles = distributableFiles.size();
+
+
 
             if(this.fragment instanceof NewCoordinatorDistributeFragment)
             {
                 ((NewCoordinatorDistributeFragment)this.fragment).setTotalFiles(totalFiles);
             }
+
+            if(fragment != null)
+            {
+                Fragment currentFragment = (Fragment)fragment;
+                if(currentFragment.isAdded() && !currentFragment.isDetached())
+                {
+                    fragment.doUpdateFragment();
+                }
+
+            }
         }
 
-        if(this.fragment != null)
-        {
-            this.fragment.doUpdateFragment();
-
-        }
-
-
-
-        NetworkUtils.ScheduleSynchronization(getContext());
+       // NetworkUtils.ScheduleSynchronization(getContext());
 
 
     }
@@ -235,7 +237,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
     }
 
-    private void doRefresh()
+    public void doRefresh()
     {
         DBStorageUtils storageUtils = new DBStorageUtils(getContext());
         CollectionBatch batch = new CollectionBatch();
@@ -526,6 +528,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
                                                           //Play the sound
                                                           SoundUtils.playSound(getContext());
+                                                          NewDistributeExpandableAdapter.this.doRefresh();
                                                           //Now refresh the adapter
                                                           NewDistributeExpandableAdapter
                                                                   .this.notifyDataSetChanged();
@@ -552,10 +555,10 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
                                                           //Play the sound
                                                           SoundUtils.playSound(getContext());
+                                                          NewDistributeExpandableAdapter.this.doRefresh();
                                                           //Now refresh the adapter
                                                           NewDistributeExpandableAdapter
                                                                   .this.notifyDataSetChanged();
-
                                                       } catch (Exception s) {
                                                           Log.w("FilesArrayAdapter", s.getMessage());
 
@@ -604,6 +607,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                                           //Play the sound
                                                           SoundUtils.playSound(getContext());
                                                           //Now refresh the adapter
+                                                          NewDistributeExpandableAdapter.this.doRefresh();
                                                           NewDistributeExpandableAdapter
                                                                   .this.notifyDataSetChanged();
 
@@ -629,6 +633,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
                                                           //Play the sound
                                                           SoundUtils.playSound(getContext());
+                                                          NewDistributeExpandableAdapter.this.doRefresh();
                                                           //Now refresh the adapter
                                                           NewDistributeExpandableAdapter
                                                                   .this.notifyDataSetChanged();
@@ -812,13 +817,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
         this.fragment = fragment;
     }
 
-    public int getTotalFiles() {
-        return totalFiles;
-    }
 
-    public void setTotalFiles(int totalFiles) {
-        this.totalFiles = totalFiles;
-    }
 
     @Override
     public List<String> getMain_Categories() {

@@ -17,7 +17,6 @@ import android.widget.PopupMenu;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
-import com.wadidejla.newscreens.adapters.NewCoordinatorExpandableAdapter;
 import com.wadidejla.newscreens.adapters.NewDistributeExpandableAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
@@ -212,8 +211,9 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
     }
 
     @Override
-    public String getTitle() {
-         String title =  getResources().getString(R.string.ScreenUtils_Distribute_Files);
+    public synchronized String getTitle() {
+
+        String title = "Distribute Files";
 
         if(this.adapter != null)
         {
@@ -226,6 +226,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
     @Override
     public void chainUpdate() {
 
+        NetworkUtils.ScheduleSynchronization(getActivity(),this);
         this.refresh();
     }
 
@@ -234,11 +235,12 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
         if(this.adapter != null)
         {
+
             this.adapter.loadData();
-            this.adapter.notifyDataSetChanged();
+            this.adapter.doRefresh();
         }
 
-        NetworkUtils.ScheduleSynchronization(getActivity());
+        /*NetworkUtils.ScheduleSynchronization(getActivity());*/
 
 
     }
@@ -304,7 +306,8 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                             SoundUtils.playSound(getActivity());
 
                             //Update the screen
-                            this.refresh();
+                            this.chainUpdate();
+
                         }
 
 
@@ -330,12 +333,17 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
 
     @Override
-    public void doUpdateFragment() {
+    public synchronized void doUpdateFragment() {
 
 
         if(this.listener != null)
         {
             this.listener.invalidate();
+
+            if(this.expandableListView != null)
+            {
+                this.expandableListView.expandGroup(0);
+            }
 
             ((Activity)this.listener).setTitle(this.getTitle());
         }

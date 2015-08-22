@@ -153,7 +153,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                                         //now update
                                                         SoundUtils.playSound(getActivity());
-                                                        NewCollectFilesFragment.this.refresh();
+                                                        NewCollectFilesFragment.this.chainUpdate();
                                                     }
                                                 }
                                             }, new Runnable() {
@@ -179,7 +179,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
             });
 
             //Do the refresh
-            this.refresh();
+            this.chainUpdate();
 
 
         }catch (Exception s)
@@ -189,9 +189,9 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     }
 
     @Override
-    public String getTitle() {
-         String title =  getResources().getString(R.string.ScreenUtils_Collect_Files);
+    public synchronized String getTitle() {
 
+        String title = "Collect Files";
         title = String.format("%s(%s)",title,this.getTotalFiles());
 
         return title;
@@ -201,6 +201,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     public void chainUpdate() {
 
         NetworkUtils.ScheduleSynchronization(getActivity(),this);
+        this.refresh();
     }
 
     @Override
@@ -209,14 +210,14 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
         if(this.adapter != null)
         {
             this.adapter.loadData();
-            this.adapter.notifyDataSetChanged();
+            this.adapter.doRefresh();
         }
 
 
-        if(this.expandableListView != null)
+       /* if(this.expandableListView != null)
         {
             this.expandableListView.smoothScrollToPosition(0);
-        }
+        }*/
 
 
 
@@ -240,10 +241,11 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                 if(adapter != null)
                                 {
 
+
                                     Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
-                                    RestfulFile foundFile = null;
-
+                                    RestfulFile foundFile = storageUtils.getCollectableFile(barcode);
+/*
                                     Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
 
                                     if(collectedFiles != null && !collectedFiles.isEmpty())
@@ -266,7 +268,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                                 }
                                             }
                                         }
-                                    }
+                                    }*/
 
 
                                     if(foundFile != null)
@@ -311,7 +313,9 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                         this.getFilesReadyToBeCollected(foundFile);
 
 
-                                        storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
+                                        storageUtils.operateOnFile(foundFile, foundFile.getState(), RestfulFile.NOT_READY_FILE);
+
+
                                     }
 
                             }
@@ -348,7 +352,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                                  storageUtils.operateOnFile(file,FileModelStates.COORDINATOR_OUT.toString(),
                                                          RestfulFile.READY_FILE);
 
-                                                 this.refresh();
+                                                 this.chainUpdate();
                                              }
                                          }
                                      }
@@ -377,7 +381,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
           if(this.adapter != null)
           {
-              this.adapter.notifyDataSetChanged();
+              this.adapter.doRefresh();
           }
         }
 
@@ -407,10 +411,14 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                         continue;
                     else
                     {
-                        current.setSelected(0); // unselect it
+                        if(current.getSelected() > 1)
+                        {
+                            current.setSelected(0);
+                            storageUtils.operateOnFile(current,current.getState(),current.getReadyFile());
+                        }
 
                         //then update it
-                        //storageUtils.operateOnFile(current,current.getState(),current.getReadyFile());
+
                     }
                 }
             }
@@ -422,11 +430,17 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     }
 
     @Override
-    public void doUpdateFragment() {
+    public synchronized void doUpdateFragment() {
 
         if(this.listener != null)
         {
             this.listener.invalidate();
+            if(this.expandableListView != null)
+            {
+                this.expandableListView.expandGroup(0);
+
+
+            }
             ((Activity)this.listener).setTitle(this.getTitle());
         }
 
