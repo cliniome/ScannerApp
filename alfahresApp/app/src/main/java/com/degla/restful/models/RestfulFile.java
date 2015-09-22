@@ -16,9 +16,14 @@ public class RestfulFile implements Serializable {
     public static final int NOT_READY_FILE = 0;
 
     @Expose
+    private int appointmentId;
+    @Expose
     private String fileNumber;
     @Expose
     private Long operationDate;
+
+    @Expose
+    private Long deviceOperationDate;
     @Expose
     private String description;
     @Expose
@@ -360,5 +365,23 @@ public class RestfulFile implements Serializable {
 
     public void setLastEmployeeName(String lastEmployeeName) {
         this.lastEmployeeName = lastEmployeeName;
+    }
+
+    public Long getDeviceOperationDate() {
+
+        if(deviceOperationDate == null) return Long.valueOf(-1);
+        return deviceOperationDate;
+    }
+
+    public void setDeviceOperationDate(Long deviceOperationDate) {
+        this.deviceOperationDate = deviceOperationDate;
+    }
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
     }
 }

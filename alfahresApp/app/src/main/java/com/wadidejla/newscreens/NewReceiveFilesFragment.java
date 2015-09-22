@@ -33,6 +33,8 @@ import com.wadidejla.tasks.ScanAndReceiveTask;
 import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
 import static com.wadidejla.newscreens.utils.ScannerUtils.*;
+
+import java.util.Date;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -336,6 +338,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                                         individualFile.setState(FileModelStates.COORDINATOR_IN.toString());
                                         individualFile.setEmp(settingsManager.getAccount());
                                         individualFile.setReadyFile(RestfulFile.NOT_READY_FILE);
+                                        individualFile.setDeviceOperationDate(new Date().getTime());
 
                                         //now save it into the database
                                         settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);

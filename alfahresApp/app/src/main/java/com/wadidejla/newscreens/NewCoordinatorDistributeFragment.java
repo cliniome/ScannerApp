@@ -28,6 +28,7 @@ import com.wadidejla.utils.EmployeeUtils;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -264,29 +265,6 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
 
                         RestfulFile foundFile = storageUtils.getDistributableFile(barcode);
 
-                        /*Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
-
-                        if(collectedFiles != null && !collectedFiles.isEmpty())
-                        {
-                            Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
-
-                            while(iterator.hasNext())
-                            {
-                                List<RestfulFile> oneBatchFiles = iterator.next();
-
-                                if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
-                                {
-                                    for(RestfulFile file : oneBatchFiles)
-                                    {
-                                        if(file.getFileNumber().equals(barcode))
-                                        {
-                                            foundFile = file;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }*/
 
 
                         //check if the found file is not null
@@ -297,6 +275,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                             foundFile.setState(FileModelStates.DISTRIBUTED.toString());
                             foundFile.setEmp(storageUtils.getSettingsManager().getAccount());
                             foundFile.setReadyFile(RestfulFile.READY_FILE);
+                            foundFile.setDeviceOperationDate(new Date().getTime());
                             //now save the current file
                             storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
                                     .insertFile(foundFile);

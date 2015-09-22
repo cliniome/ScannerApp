@@ -48,7 +48,9 @@ public class LoginScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen_main);
-        setTitle(R.string.TITLE_LOGIN);
+        String title = getResources().getString(R.string.TITLE_LOGIN);
+        title +="("+(getResources().getString(R.string.APP_VERSION)) +")";
+        setTitle(title);
         this.init();
     }
 

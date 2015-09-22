@@ -27,6 +27,7 @@ import com.wadidejla.utils.SoundUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -299,6 +300,9 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                shippingFile.setReadyFile(RestfulFile.READY_FILE); // convert it into ready files
                                shippingFile.setEmp(settingsManager.getAccount());
                                shippingFile.setState(FileModelStates.CHECKED_OUT.toString());
+
+                            //Set the device operation date
+                            shippingFile.setDeviceOperationDate(new Date().getTime());
 
                                //now operate on that file
                                settingsManager.getFilesManager().getFilesDBManager().insertFile(shippingFile);

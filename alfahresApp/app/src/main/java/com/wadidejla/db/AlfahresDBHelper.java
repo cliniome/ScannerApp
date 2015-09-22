@@ -29,6 +29,8 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_EMP_USERNAME = "EmpUserName";
     public static final String COL_TRANSFERRABLE_FIELD="multipleClinics";
 
+    public static final String  COL_APPOINT_ID = "appointmentId";
+
     //New Fields
     public static final String COL_APPOINTMENT_TYPE="AppointmentType";
     public static final String COL_APPOINTMENT_DATE = "AppointmentDate";
@@ -42,6 +44,7 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public static final String COL_READY_FILE = "readyFile";
     public static final String COL_SELECTED_FILE="selected";
     public static final String COL_INPATIENT_FILE = "inpatient";
+    public static final String COL_DEVICE_OPERATION_DATE = "deviceOperationDate";
 
     //Definition of employees Table's Columns
     public static final String EMP_ID = "Id";
@@ -71,7 +74,10 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
             COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
             COL_APPOINTMENT_TIME + " text null, " + COL_APPOINTMENT_MADE_BY + " text null , "
             + COL_APPOINTMENT_TYPE + " text null , "
-            + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
+            + COL_OPERATION_DATE +" text null,"
+            + COL_DEVICE_OPERATION_DATE + " text null , "
+            + COL_SHELFID + " text null," +
+            COL_APPOINT_ID + " int null,"+
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
             EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," +COL_CLINIC_NAME +" text null," +
             COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
@@ -90,7 +96,10 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
             COL_PATIENTNAME + " text null," + COL_PATIENTNUMBER + " text null," +
             COL_APPOINTMENT_TIME + " text null, " + COL_APPOINTMENT_MADE_BY + " text null , "
             + COL_APPOINTMENT_TYPE + " text null , "
-            + COL_OPERATION_DATE +" text null," + COL_SHELFID + " text null," +
+            + COL_OPERATION_DATE +" text null,"
+            + COL_DEVICE_OPERATION_DATE + " text null, "
+            + COL_SHELFID + " text null," +
+            COL_APPOINT_ID + " int null,"+
             COL_STATE + " text null," + COL_TEMP_CABINID + " text null," +
             EMP_ID +" text not null,"+ COL_EMP_USERNAME +" text not null," +COL_CLINIC_NAME +" text null," +
             COL_CLINIC_DOC_NAME + " text null," + COL_BATCH_REQUEST_NUMBER + " text null"+
@@ -101,11 +110,11 @@ public class AlfahresDBHelper extends SQLiteOpenHelper {
     public String[] getAllFilesColumns()
     {
         return new String[]
-           {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
+           {KEY_ID,COL_TEMP_CABINID,COL_STATE,COL_SHELFID,COL_OPERATION_DATE,COL_DEVICE_OPERATION_DATE,COL_CABINETID,COL_DESCRIPTION,
            COL_CLINIC_DOC_NAME,COL_CLINIC_NAME,COL_BATCH_REQUEST_NUMBER,EMP_ID,COL_EMP_USERNAME,
            COL_APPOINTMENT_TYPE,COL_APPOINTMENT_MADE_BY,COL_APPOINTMENT_TIME,COL_APPOINTMENT_DATE_H,
            COL_APPOINTMENT_DATE,COL_PATIENTNUMBER,COL_PATIENTNAME,COL_CLINIC_CODE,COL_CLINIC_DOC_CODE,COL_TRANSFERRABLE_FIELD
-                   ,COL_READY_FILE,COL_SELECTED_FILE,COL_INPATIENT_FILE};
+                   ,COL_READY_FILE,COL_SELECTED_FILE,COL_INPATIENT_FILE,COL_APPOINT_ID};
 
     }
 

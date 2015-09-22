@@ -66,6 +66,7 @@
     <string name="last_seen_by">Emp. Name</string>
     <string name="file_status_lbl">File Status</string>
     <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
+    <string name="APP_VERSION">V2.7</string>
 
 
 </resources>

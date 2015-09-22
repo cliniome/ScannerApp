@@ -269,6 +269,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
                                         }
 
                                         //now save it into the database
+
                                         settingsManager.getFilesManager().getFilesDBManager().insertFile(individualFile);
                                         settingsManager.addToReceivedFiles(individualFile);
 

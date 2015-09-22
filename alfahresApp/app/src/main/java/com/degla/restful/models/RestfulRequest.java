@@ -35,6 +35,8 @@ public class RestfulRequest implements Serializable {
     private String appointmentTime;
     @Expose
     private String appointmentMadeBy;
+    @Expose
+    private int appointmentId;
 
 
 
@@ -132,5 +134,13 @@ public class RestfulRequest implements Serializable {
 
     public void setAppointmentMadeBy(String appointmentMadeBy) {
         this.appointmentMadeBy = appointmentMadeBy;
+    }
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
     }
 }

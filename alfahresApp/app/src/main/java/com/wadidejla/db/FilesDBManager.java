@@ -37,6 +37,124 @@ public class FilesDBManager {
     }
 
 
+    public synchronized List<RestfulFile> getFilesWhere(String whereClause , String orderBy)
+    {
+        try
+        {
+            String[] selectableFields = dbHelper.getAllSyncFilesColumns();
+            String[] whereArgs = null;
+            String groupBy = null;
+            String having = null;
+            String order = orderBy;
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            List<RestfulFile> files = new ArrayList<RestfulFile>();
+
+            Cursor cursor = db.query(this.getTableName(),selectableFields,
+                    whereClause,whereArgs,groupBy,having,order
+            );
+
+            while(cursor.moveToNext())
+            {
+                RestfulFile file = new RestfulFile();
+                int columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CABINETID);
+                file.setCabinetId(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DESCRIPTION);
+                file.setDescription(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_OPERATION_DATE);
+                String timeStamp = cursor.getString(columnIndex);
+                if( timeStamp!= null)
+                    file.setOperationDate(Long.parseLong(timeStamp));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SHELFID);
+                file.setShelfId(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_STATE);
+                file.setState(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TEMP_CABINID);
+                file.setTemporaryCabinetId(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.KEY_ID);
+                file.setFileNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_DOC_NAME);
+                file.setClinicDocName(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_NAME);
+                file.setClinicName(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_BATCH_REQUEST_NUMBER);
+                file.setBatchRequestNumber(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_EMP_USERNAME);
+                file.getEmp().setUserName(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.EMP_ID);
+                file.getEmp().setUserName(cursor.getString(columnIndex));
+
+
+                //Getting the new fields
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE);
+                file.setAppointmentDate(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_DATE_H);
+                file.setAppointmentDateH(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_MADE_BY);
+                file.setAppointmentMadeBy(cursor.getString(columnIndex));
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_TIME);
+                file.setAppointmentTime(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINTMENT_TYPE);
+                file.setAppointmentType(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_PATIENTNAME);
+                file.setPatientName(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_PATIENTNUMBER);
+                file.setPatientNumber(cursor.getString(columnIndex));
+
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_CODE);
+                file.setClinicCode(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_CLINIC_DOC_CODE);
+                file.setClinicDocCode(cursor.getString(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_READY_FILE);
+
+                file.setReadyFile(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_SELECTED_FILE);
+
+                file.setSelected(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
+                file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
+                file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
+
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
+
+
+
+
+                files.add(file);
+
+            }
+
+            //now close the connection to the database
+            db.close();
+
+            return files;
+
+        }catch (Exception s)
+        {
+            Log.w("FilesDBManager",s.getMessage());
+            return null;
+        }
+    }
+
+
     public synchronized  List<RestfulFile> getFilesWhere(String whereClause)
     {
         try
@@ -128,6 +246,14 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD);
                 file.setMultipleClinics(cursor.getInt(columnIndex) == 1 ? true : false);
 
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
 
 
 
@@ -240,6 +366,12 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
                 file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
 
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
+
 
                 files.add(file);
 
@@ -344,6 +476,13 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
                 file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
 
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
+
                 files.add(file);
 
             }
@@ -445,6 +584,12 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
                 file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
 
                 files.add(file);
 
@@ -548,6 +693,13 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
                 file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
 
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
+
                 files.add(file);
 
             }
@@ -648,6 +800,13 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_INPATIENT_FILE);
                 file.setInpatient(cursor.getInt(columnIndex) > 0 ? true : false);
+
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_DEVICE_OPERATION_DATE);
+                file.setDeviceOperationDate(cursor.getLong(columnIndex));
+
+                columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
+                file.setAppointmentId(cursor.getInt(columnIndex));
 
                 files.add(file);
 
@@ -816,6 +975,7 @@ public class FilesDBManager {
             }
 
             ContentValues values = new ContentValues();
+
             values.put(KEY_ID,file.getFileNumber());
             values.put(COL_CABINETID,file.getCabinetId());
             values.put(COL_DESCRIPTION,file.getDescription());
@@ -843,6 +1003,8 @@ public class FilesDBManager {
             values.put(COL_TRANSFERRABLE_FIELD,file.isMultipleClinics() == true ? 1 : 0);
             values.put(COL_SELECTED_FILE,file.getSelected());
             values.put(COL_INPATIENT_FILE,(file.isInpatient() == true) ? 1 : 0);
+            values.put(COL_DEVICE_OPERATION_DATE,file.getDeviceOperationDate().toString());
+            values.put(COL_APPOINT_ID,file.getAppointmentId());
 
 
             //now insert the current row into the database

@@ -52,6 +52,9 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
     private List<String> mainCategories;
     private HashMap<String,List<RestfulFile>> categorizedData;
 
+    private Object atomicObject = new Object();
+    private boolean onInit = false;
+
     private IAdapterListener fragment;
 
 
@@ -63,6 +66,8 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
     public NewDistributeExpandableAdapter(Context ctx)
     {
         this.setContext(ctx);
+
+        onInit = true;
         this.loadData();
     }
 
@@ -142,10 +147,22 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
                         AlfahresConnection connection = storageUtils.getSettingsManager().getConnection();
 
-                        HttpResponse response = connection.path("files/getDistributedFiles").setMethodType(AlfahresConnection.POST_HTTP_METHOD)
-                                .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
-                                        storageUtils.getSettingsManager().getAccount().getPassword())
-                                .call(CollectionBatch.class);
+                        HttpResponse response = null;
+
+                        if(onInit)
+                        {
+                            response = connection.path(String.format("files/getDistributedFiles?serverTimeStamp=%s","-1")).setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                    .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
+                                            storageUtils.getSettingsManager().getAccount().getPassword())
+                                    .call(CollectionBatch.class);
+                        }else
+                        {
+                            response = connection.path(String.format("files/getDistributedFiles?serverTimeStamp=%s",
+                                    storageUtils.getRecentServerTimeStamp(FileModelStates.COORDINATOR_IN))).setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                    .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
+                                            storageUtils.getSettingsManager().getAccount().getPassword())
+                                    .call(CollectionBatch.class);
+                        }
 
                         if(response != null && Integer.parseInt(response.getResponseCode())==
                                 HttpResponse.OK_HTTP_CODE)
@@ -195,6 +212,10 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                     //now save the current file into the database
                                     storageUtils.operateOnFile(file,FileModelStates.DISTRIBUTED.toString(),RestfulFile.NOT_READY_FILE);
                                 }*/
+                                removeLocalFiles();
+
+                                onInit = false;
+
                                 storageUtils.saveDistributedFiles(allFiles);
 
                                 CollectionBatch mybatch = new CollectionBatch();
@@ -234,6 +255,15 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
         {
             s.printStackTrace();
         }
+
+    }
+
+    //remove all local files
+    private void removeLocalFiles() {
+
+        if(!onInit) return;
+        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+        storageUtils.deleteAllFiles(storageUtils.getFilesReadyForDistribution());
 
     }
 
@@ -285,11 +315,14 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
     @Override
     public int getGroupCount() {
+        if(mainCategories.size() <= 0 ) return 0;
         return mainCategories.size();
     }
 
     @Override
     public int getChildrenCount(int parent) {
+
+        if(categorizedData.size() <= 0) return 0;
 
         return categorizedData.get(mainCategories.get(parent)).size();
     }

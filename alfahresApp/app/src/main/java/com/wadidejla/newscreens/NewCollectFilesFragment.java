@@ -78,6 +78,8 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
         try
         {
+
+
             this.expandableListView = (ExpandableListView)rootView.findViewById(R.id.coordinator_list_view);
             this.adapter = new NewCoordinatorExpandableAdapter(getActivity());
             this.adapter.setFragment(this);
@@ -188,6 +190,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
         }
     }
 
+
     @Override
     public synchronized String getTitle() {
 
@@ -245,31 +248,6 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                     Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
                                     RestfulFile foundFile = storageUtils.getCollectableFile(barcode);
-/*
-                                    Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
-
-                                    if(collectedFiles != null && !collectedFiles.isEmpty())
-                                    {
-                                        Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
-
-                                        while(iterator.hasNext())
-                                        {
-                                            List<RestfulFile> oneBatchFiles = iterator.next();
-
-                                            if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
-                                            {
-                                                for(RestfulFile file : oneBatchFiles)
-                                                {
-                                                    if(file.getFileNumber().equals(barcode))
-                                                    {
-                                                        foundFile = file;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }*/
-
 
                                     if(foundFile != null)
                                     {
@@ -323,42 +301,40 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                         }else if (barcodeUtils.isTrolley())
                          {
-                             Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
+                             //Get all selected collectable files
+                             boolean transferExists = false;
 
+                             List<RestfulFile> selectableCollectableFiles = storageUtils.getFilesReadyForCollection(true);
 
-                             Collection<List<RestfulFile>> collectedFiles = categorizedData.values();
-
-
-
-                             if(collectedFiles != null && !collectedFiles.isEmpty())
+                             if(selectableCollectableFiles != null && selectableCollectableFiles.size() >0)
                              {
-                                 Iterator<List<RestfulFile>> iterator = collectedFiles.iterator();
-
-                                 while(iterator.hasNext())
+                                 for(final RestfulFile currentFile :selectableCollectableFiles)
                                  {
-                                     List<RestfulFile> oneBatchFiles = iterator.next();
-
-                                     if(oneBatchFiles != null && !oneBatchFiles.isEmpty())
+                                     if(currentFile.isMultipleClinics())
                                      {
-                                         for(RestfulFile file : oneBatchFiles)
-                                         {
-                                             if(file.getSelected() == 1) //grab the selected file
-                                             {
-                                                 file.setTemporaryCabinetId(barcode);
-
-                                                 file.setSelected(0);
-
-                                                 storageUtils.operateOnFile(file,FileModelStates.COORDINATOR_OUT.toString(),
-                                                         RestfulFile.READY_FILE);
-
-                                                 this.chainUpdate();
-                                             }
-                                         }
+                                         transferExists = true;
+                                         continue;
                                      }
-                                 }
-                             }
 
+                                     currentFile.setTemporaryCabinetId(barcode);
+                                     currentFile.setSelected(0);
+                                     storageUtils.operateOnFile(currentFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+
+                                 }
+
+
+                                 if(transferExists)
+                                 {
+                                     AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning","There are some file(s) has/have other appointments." +
+                                     " , Please take actions separately on these files .");
+                                     dialog.show();
+                                 }
+
+                                 //update the view
+                                 this.chainUpdate();
+
+                             }
 
                          }
 

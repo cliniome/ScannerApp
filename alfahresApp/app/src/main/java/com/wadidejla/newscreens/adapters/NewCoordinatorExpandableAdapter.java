@@ -54,6 +54,10 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
     private List<String> mainCategories;
     private HashMap<String,List<RestfulFile>> categorizedData;
 
+    private Object atomicObject = new Object();
+
+    private boolean onInit = false;
+
     private IAdapterListener fragment;
 
     private KeeperOnClickListener<BaseExpandableListAdapter> listener;
@@ -69,7 +73,7 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
     public NewCoordinatorExpandableAdapter(Context ctx)
     {
         this.setContext(ctx);
-
+        onInit = true;
         this.loadData();
     }
 
@@ -140,6 +144,20 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
 
 
+    private void removeLocalFiles()
+    {
+
+        if(!onInit) return;
+
+        DBStorageUtils storageUtils = new DBStorageUtils(getContext());
+
+        synchronized (atomicObject)
+        {
+            storageUtils.deleteAllFiles(storageUtils.getFilesReadyForCollection());
+        }
+
+    }
+
     public void loadData() {
 
         try
@@ -178,10 +196,25 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                         //Then force the download of new files
                         AlfahresConnection connection = storageUtils.getSettingsManager().getConnection();
 
-                        HttpResponse response = connection.path("files/collect").setMethodType(AlfahresConnection.POST_HTTP_METHOD)
-                                .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
-                                        storageUtils.getSettingsManager().getAccount().getPassword())
-                                .call(CollectionBatch.class);
+                        HttpResponse response = null;
+
+                        if(onInit)
+                        {
+                            response = connection.path(String.format("files/collect?serverTimeStamp=%s"
+                                    ,"-1"))
+                                    .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                    .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
+                                            storageUtils.getSettingsManager().getAccount().getPassword())
+                                    .call(CollectionBatch.class);
+                        }else
+                        {
+                            response = connection.path(String.format("files/collect?serverTimeStamp=%s"
+                                    ,storageUtils.getRecentServerTimeStamp(FileModelStates.DISTRIBUTED).toString()))
+                                    .setMethodType(AlfahresConnection.GET_HTTP_METHOD)
+                                    .setAuthorization(storageUtils.getSettingsManager().getAccount().getUserName(),
+                                            storageUtils.getSettingsManager().getAccount().getPassword())
+                                    .call(CollectionBatch.class);
+                        }
 
                         if(response != null && Integer.parseInt(response.getResponseCode())==
                                 HttpResponse.OK_HTTP_CODE)
@@ -212,13 +245,6 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
 
                                             allFiles.add(tempFile);
 
-                                           /* boolean containsFile = storageUtils.getSettingsManager().getFilesManager().getFilesDBManager()
-                                                    .getFileByEmployeeAndNumber(storageUtils.getSettingsManager().getAccount().getUserName(),
-                                                            tempFile.getFileNumber()) != null;
-
-                                            if(!containsFile)
-                                                allFiles.add(tempFile);*/
-
                                         }
                                     }
                                 }
@@ -227,28 +253,39 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                             //now save all these files
                             if(allFiles.size() > 0)
                             {
-                                for(RestfulFile file : allFiles)
+                                //remove all local files
+                                removeLocalFiles();
+
+                                onInit = false;
+
+                                synchronized (atomicObject)
                                 {
-                                    file.setEmp(storageUtils.getSettingsManager().getAccount());
-                                    file.setReadyFile(RestfulFile.NOT_READY_FILE);
-                                    //now save the current file into the database
-                                    storageUtils.operateOnFile(file,FileModelStates.DISTRIBUTED.toString(),RestfulFile.NOT_READY_FILE);
+                                    for(RestfulFile file : allFiles)
+                                    {
+                                        file.setEmp(storageUtils.getSettingsManager().getAccount());
+                                        file.setReadyFile(RestfulFile.NOT_READY_FILE);
+                                        //now save the current file into the database
+                                        storageUtils.operateOnFile(file,FileModelStates.DISTRIBUTED.toString(),RestfulFile.NOT_READY_FILE);
+                                    }
+
+                                    CollectionBatch mybatch = new CollectionBatch();
+                                    //get all local files ready to be collected if any
+                                    List<RestfulFile> localFiles = storageUtils.getFilesReadyForCollection();
+                                    mybatch.addAllRestfulFiles(localFiles);
+                                    NewCoordinatorExpandableAdapter.this.setMainCategories(mybatch.getCategories());
+                                    NewCoordinatorExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
+
+                                    ((Activity)getContext()).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            NewCoordinatorExpandableAdapter.this.doRefresh();
+                                        }
+                                    });
+
                                 }
 
-                                CollectionBatch mybatch = new CollectionBatch();
-                                //get all local files ready to be collected if any
-                                List<RestfulFile> localFiles = storageUtils.getFilesReadyForCollection();
-                                mybatch.addAllRestfulFiles(localFiles);
-                                NewCoordinatorExpandableAdapter.this.setMainCategories(mybatch.getCategories());
-                                NewCoordinatorExpandableAdapter.this.setCategorizedData(mybatch.getCategorizedData());
 
-                                ((Activity)getContext()).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        NewCoordinatorExpandableAdapter.this.doRefresh();
-                                    }
-                                });
                             }
                         }
 
@@ -277,6 +314,8 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
         }
 
     }
+
+    //Remove all files for re-initialization
 
 
     public boolean removeFile(RestfulFile file)
@@ -318,11 +357,15 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
     @Override
     public int getChildrenCount(int parent) {
 
+        if(categorizedData.size() <= 0 ) return 0;
+
         return categorizedData.get(mainCategories.get(parent)).size();
     }
 
     @Override
     public Object getGroup(int position) {
+
+
         return mainCategories.get(position);
     }
 

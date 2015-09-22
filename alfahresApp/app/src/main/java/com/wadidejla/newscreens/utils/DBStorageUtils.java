@@ -11,6 +11,9 @@ import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.AlFahresFilesManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -170,6 +173,18 @@ public class DBStorageUtils {
     }
 
 
+    public void deleteAllFiles(List<RestfulFile> deletableFiles)
+    {
+        if(deletableFiles != null && deletableFiles.size() >0)
+        {
+            for(RestfulFile currentFile :deletableFiles)
+            {
+                getSettingsManager().getFilesManager().getFilesDBManager().deleteFile(currentFile.getFileNumber());
+            }
+        }
+    }
+
+
 
 
     public boolean operateOnFile(RestfulFile file, String newState, int Ready_File)
@@ -178,6 +193,9 @@ public class DBStorageUtils {
         file.setState(newState);
         file.setReadyFile(Ready_File);
         file.setEmp(settingsManager.getAccount());
+        //set the mobile device date
+        file.setDeviceOperationDate(new Date().getTime());
+        
         FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
 
         boolean result = filesDBManager.insertFile(file);
@@ -192,6 +210,49 @@ public class DBStorageUtils {
         return result;
 
 
+    }
+
+
+    public Long getRecentServerTimeStamp(FileModelStates state)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(state.toString())
+                    .append("'");
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString(),AlfahresDBHelper.COL_OPERATION_DATE + " DESC");
+
+            if(newFiles == null || newFiles.size() <=0) return Long.valueOf(-1);
+
+            //Return the top element from the list
+            RestfulFile firstOne = newFiles.get(0);
+
+
+            //Get its Server Operation Date
+            return firstOne.getOperationDate();
+
+
+
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+
+            return Long.valueOf(-1);
+
+        }
     }
 
     public List<RestfulFile> getFilesToBeDistributed()
@@ -260,7 +321,7 @@ public class DBStorageUtils {
 
         }catch (Exception s)
         {
-            Log.e("Error",s.getMessage());
+            Log.e("Error", s.getMessage());
             return null;
         }
     }
@@ -300,6 +361,41 @@ public class DBStorageUtils {
         {
             Log.e("Error",s.getMessage());
             return null;
+        }
+    }
+
+    public List<RestfulFile> getFilesReadyForCollection(boolean selected)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'")
+                    .append(" AND ").append(AlfahresDBHelper.COL_SELECTED_FILE)
+                    .append("=").append("'").append((selected == true) ? 1 : 0).append("'");
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
         }
     }
 
