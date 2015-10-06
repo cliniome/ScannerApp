@@ -440,7 +440,8 @@ public class NewRequestsFragment extends Fragment implements IFragment , DatePic
 
                 if(foundFile != null)
                 {
-                    if(foundFile.isInpatient())
+
+                    /*if(foundFile.isInpatient())
                     {
                         //Now check_OUT the current file
                         storageUtils.operateOnFile(foundFile, FileModelStates.CHECKED_OUT.toString()
@@ -448,10 +449,12 @@ public class NewRequestsFragment extends Fragment implements IFragment , DatePic
 
                     }else
                     {
-                        //Now check_OUT the current file
-                        storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
-                                , RestfulFile.READY_FILE);
-                    }
+
+                    }*/
+
+                    //Now check_OUT the current file
+                    storageUtils.operateOnFile(foundFile, FileModelStates.OUT_OF_CABIN.toString()
+                            , RestfulFile.READY_FILE);
 
                     SoundUtils.playSound(getActivity());
 

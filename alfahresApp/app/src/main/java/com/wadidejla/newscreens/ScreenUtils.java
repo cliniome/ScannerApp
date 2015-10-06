@@ -3,6 +3,7 @@ package com.wadidejla.newscreens;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.degla.restful.models.FileModelStates;
 import com.wadidejla.newscreens.utils.TabDetails;
 import com.wadidejla.newscreens.utils.TabTypes;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -56,11 +57,14 @@ public class ScreenUtils {
                     TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
                             R.drawable.eye,TabTypes.CHECKSTATUS);
 
+                    TabDetails checkInpatient = new TabDetails(con.getResources().getString(R.string.INPATIENT_SCREEN_TITLE),R.drawable.inpatient,TabTypes.CHECKOUT);
+
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(newRequests);
                     availableTabs.add(receiveFiles);
                     availableTabs.add(sortingShippingFiles);
                     availableTabs.add(checkOutFiles);
+                    availableTabs.add(checkInpatient);
                     availableTabs.add(checkFileStatus);
 
 
@@ -109,6 +113,48 @@ public class ScreenUtils {
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
                     availableTabs.add(checkFileStatus);
+                }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.ANALYSIS_COORDINATOR.toString().toLowerCase()))
+                {
+                    TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
+                            R.drawable.ongoing,TabTypes.OUTGOING);
+
+                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
+
+
+                    availableTabs.add(ongoingFiles);
+                    availableTabs.add(receiveFiles);
+
+                }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.CODING_COORDINATOR.toString().toLowerCase()))
+                {
+                    TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
+                            R.drawable.ongoing,TabTypes.OUTGOING);
+
+                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
+
+                    availableTabs.add(ongoingFiles);
+
+                    availableTabs.add(receiveFiles);
+
+                }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.INCOMPLETE_COORDINATOR.toString().toLowerCase()))
+                {
+                    TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
+                            R.drawable.ongoing,TabTypes.OUTGOING);
+                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
+
+
+                    availableTabs.add(ongoingFiles);
+                    availableTabs.add(receiveFiles);
+
+                }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.PROCESSING_COORDINATOR.toString().toLowerCase()))
+                {
+                    TabDetails ongoingFiles = new TabDetails(con.getResources().getString(R.string.ScreenUtils_Ongoing_Files),
+                            R.drawable.ongoing,TabTypes.OUTGOING);
+
+                    TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
+
+                    availableTabs.add(ongoingFiles);
+
+                    availableTabs.add(receiveFiles);
                 }
 
             }
@@ -139,6 +185,7 @@ public class ScreenUtils {
                 fragments.add(new NewArchiveFilesFragment());
                 fragments.add(new SortingFacilityScreen());
                 fragments.add(new CheckOutFileFragment());
+                fragments.add(new CheckOutInpatientFragment());
                 fragments.add(new CheckFileStatusFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))
@@ -151,11 +198,31 @@ public class ScreenUtils {
                 fragments.add(new CheckFileStatusFragment());
 
 
-            }else // that means he is a receptionist
+            }else if(settingsManager.getAccount().getRole().equals(RECEPTIONIST_ROLE)) // that means he is a receptionist
             {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewReceptionistReceiveFragment());
                 fragments.add(new CheckFileStatusFragment());
+            }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.ANALYSIS_COORDINATOR.toString().toLowerCase()))
+            {
+
+                fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new InPatientReceiveFragment());
+
+            }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.CODING_COORDINATOR.toString().toLowerCase()))
+            {
+                fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new InPatientReceiveFragment());
+
+            }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.INCOMPLETE_COORDINATOR.toString().toLowerCase()))
+            {
+                fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new InPatientReceiveFragment());
+
+            }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.PROCESSING_COORDINATOR.toString().toLowerCase()))
+            {
+                fragments.add(new NewOutgoingFilesFragment());
+                fragments.add(new InPatientReceiveFragment());
             }
 
         }

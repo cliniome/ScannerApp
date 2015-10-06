@@ -201,6 +201,9 @@
     <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
+    <string name="INPATIENT_CHECKOUT_TITLE">CheckOut Files</string>
+    <string name="INPATIENT_RECEIVE_TITLE">Receive Files</string>
+    <string name="INPATIENT_SCREEN_TITLE">In-Patient Files</string>
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
     <string name="LOGIN_LBL_PASSWORD">Password</string>
     <string name="LOGIN_LBL_USERNAME">User Name</string>

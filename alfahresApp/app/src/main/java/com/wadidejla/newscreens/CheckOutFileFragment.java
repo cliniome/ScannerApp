@@ -128,8 +128,8 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
     @Override
     public void refresh() {
 
-        if(this.adapter != null && this.listView != null)
-        {
+
+
             SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
 
 
@@ -156,7 +156,7 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
             });*/
 
 
-        }
+
 
         NetworkUtils.ScheduleSynchronization(getActivity());
 
