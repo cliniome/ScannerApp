@@ -18,6 +18,7 @@ import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.InPatientReceiveAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
@@ -197,6 +198,8 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
 
                                         InPatientReceiveFragment.this.adapter.getFiles().remove(foundFile);
 
+
+
                                     }else
                                     {
                                         //add it
@@ -213,6 +216,8 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
                                             //Play the sound
                                             SoundUtils.playSound(getActivity());
                                             InPatientReceiveFragment.this.refresh();
+
+                                            NetworkUtils.ScheduleSynchronization(getActivity());
                                         }
                                     });
                                 }
