@@ -13,7 +13,8 @@ public class FileStateUtils implements Serializable {
 
     private String[] states = {"Archived","Checked Out","Received by Coordinator","Sent out by Coordinator",
             "Received by Clinic","Received by Keeper","New File","Received by Receptionist","Prepared by Keeper",
-            "Transferred by coordinator","Missing"};
+            "Transferred by coordinator","Missing","Processing Coordinator","Analysis Coordinator","Incomplete Coordinator","Coding Coordinator",
+    "Temporary Stored","InPatient Completed"};
 
     public FileStateUtils(FileModelStates state) {
         this.setState(state);
@@ -52,6 +53,25 @@ public class FileStateUtils implements Serializable {
             state = FileModelStates.OUT_OF_CABIN;
         else if (readableState.toLowerCase().equals("Transferred by coordinator".toLowerCase()))
             state = FileModelStates.TRANSFERRED;
+        else if (readableState.toLowerCase().equals("Analysis Coordinator".toLowerCase()))
+            state = FileModelStates.ANALYSIS_COORDINATOR;
+        else if (readableState.toLowerCase().equals("Processing Coordinator".toLowerCase()))
+            state = FileModelStates.PROCESSING_COORDINATOR;
+        else if (readableState.toLowerCase().equals("Incomplete Coordinator".toLowerCase()))
+            state = FileModelStates.INCOMPLETE_COORDINATOR;
+        else if (readableState.toLowerCase().equals("Coding Coordinator".toLowerCase()))
+            state = FileModelStates.CODING_COORDINATOR;
+        else if (readableState.toLowerCase().equals("Temporary Stored".toLowerCase()))
+            state = FileModelStates.TEMPORARY_STORED;
+        else if (readableState.toLowerCase().equals("InPatient Completed".toLowerCase()))
+            state = FileModelStates.INPATIENT_COMPLETED;
+
+
+
+
+
+
+
 
 
         return state;
@@ -88,6 +108,18 @@ public class FileStateUtils implements Serializable {
                 return "Prepared by Keeper";
             case TRANSFERRED:
                 return "Transferred by coordinator";
+            case ANALYSIS_COORDINATOR:
+                return "Analysis Coordinator";
+            case INCOMPLETE_COORDINATOR:
+                return "Incomplete Coordinator";
+            case CODING_COORDINATOR:
+                return "Coding Coordinator";
+            case PROCESSING_COORDINATOR:
+                return "Processing Coordinator";
+            case TEMPORARY_STORED:
+                return "Temporary Stored";
+            case INPATIENT_COMPLETED:
+                return "InPatient Completed";
             default:
                 return readableState;
         }

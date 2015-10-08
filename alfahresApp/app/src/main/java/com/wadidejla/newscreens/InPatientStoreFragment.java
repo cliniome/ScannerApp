@@ -16,28 +16,29 @@ import com.degla.restful.models.RestfulFile;
 import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
-import com.wadidejla.newscreens.adapters.InPatientReceiveAdapter;
+import com.wadidejla.newscreens.adapters.InPatientCheckoutAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
 
 /**
- * Created by snouto on 06/10/15.
+ * Created by snouto on 08/10/15.
  */
-public class InPatientReceiveFragment extends Fragment implements IFragment {
+public class InPatientStoreFragment extends Fragment implements IFragment {
 
 
+
+    private InPatientCheckoutAdapter adapter;
     private ListView listView;
-    private InPatientReceiveAdapter adapter;
     private FragmentListener listener;
-
     private SystemSettingsManager settingsManager;
 
 
@@ -45,33 +46,27 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.inpatient_receive_layout,container,false);
-
+        View rootView = (View)inflater.inflate(R.layout.inpatient_storage_screen_layout,container,false);
         this.initView(rootView);
-
         return rootView;
     }
 
     private void initView(View rootView) {
 
-        try
-        {
-            this.listView = (ListView)rootView.findViewById(R.id.mainFilesList);
-            this.adapter = new InPatientReceiveAdapter(getActivity(),R.layout.new_single_file_view);
-            this.listView.setAdapter(adapter);
-            settingsManager = SystemSettingsManager.createInstance(getActivity());
 
-        }catch (Exception s)
-        {
-            Log.e("Inpatient-Receive",s.getMessage());
-        }
+        this.listView = (ListView)rootView.findViewById(R.id.mainFilesList);
+        this.adapter = new InPatientCheckoutAdapter(getActivity(),R.layout.new_single_file_view);
+        this.listView.setAdapter(this.adapter);
+        settingsManager = SystemSettingsManager.createInstance(getActivity());
+
     }
 
     @Override
     public String getTitle() {
+        String title =  getResources().getString(R.string.INPATIENT_STORAGE_SCREEN_TITLE);
 
-        String title = getResources().getString(R.string.INPATIENT_RECEIVE_TITLE);
-        title = String.format("%s(%s)",title,this.adapter.getCount());
+        title = String.format("%s(%s)", title, this.adapter.getCount());
+
         return title;
     }
 
@@ -80,52 +75,86 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
 
     }
 
+
+
     @Override
     public void refresh() {
 
+
         if(this.adapter != null)
+        {
             this.adapter.refresh();
+        }
 
     }
 
     @Override
-    public void handleScanResults(final String barcode) {
+    public void handleScanResults(String barcode) {
 
         try
         {
-            //that means the file is a medical file and not a trolley for example
-            final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
-            waitingDialog.show();
+            if(barcode == null ||barcode.isEmpty()) return;
 
             BarcodeUtils utils = new BarcodeUtils(barcode);
 
-            if(utils.isMedicalFile()) {
+            final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
+            waitingDialog.show();
 
+            if(utils.isMedicalFile())
+            {
                 Runnable runnable = getRunnableThread(barcode,waitingDialog);
 
                 Thread networkThread = new Thread(runnable);
                 networkThread.start();
 
-            }else if (utils.isTrolley())
+
+
+            }else if(utils.isTemporaryShelf()) // that means
             {
                 waitingDialog.dismiss();
-                return;
-            }else
-            {
-                waitingDialog.dismiss();
-                //Do the rest of storing the current file with a state of "Temporary Stored"
+               /*
+               1.receive
+2.store temporary
+3.check file status
+4.send to mrd
+                */
+
+                //Get the restful File
+                if (this.adapter.getFiles() != null && this.adapter.getFiles().size() >0)
+                {
+                    for(RestfulFile file : this.adapter.getFiles()) {
+
+                        //file.setTemporaryCabinetId(barcode);
+                        file.setDeviceOperationDate(new Date().getTime());
+                        file.setEmp(settingsManager.getAccount());
+                        file.setState(FileModelStates.TEMPORARY_STORED.toString());
+                        file.setReadyFile(RestfulFile.READY_FILE);
+                        file.setShelfId(barcode);
+                        file.setProcessed(false);
+                        settingsManager.getFilesManager().getFilesDBManager().insertFile(file);
+
+                    }
+
+                    //clear all the files within the adapter
+                    this.adapter.getFiles().clear();
+                    this.adapter.setFiles(new ArrayList<RestfulFile>());
+                    this.refresh();
+                    SoundUtils.playSound(getActivity());
+                    NetworkUtils.ScheduleSynchronization(getActivity());
+                }
+
             }
+
+
 
 
 
         }catch (Exception s)
         {
-            Log.e("Inpatient-Receive",s.getMessage());
+            Log.e("InPatientCheckOut",s.getMessage());
         }
 
     }
-
-
 
     private Runnable getRunnableThread(final String barcode,final AlertDialog waitingDialog)
     {
@@ -182,31 +211,8 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
                                 {
                                     final RestfulFile foundFile = foundFiles.get(0);
 
-                                    //Add it to the adapter
-                                   RestfulFile existingFile =  InPatientReceiveFragment.this.adapter.getFileWithNumber(foundFile.getFileNumber());
-
-                                    if(existingFile != null)
-                                    {
-                                        //so receive it in here
-                                        foundFile.setReadyFile(RestfulFile.READY_FILE);
-                                        foundFile.setDeviceOperationDate(new Date().getTime());
-                                        foundFile.setEmp(settingsManager.getAccount());
-                                        foundFile.setState(InPatientReceiveFragment.this.getState(foundFile.getState()));
-                                        foundFile.setProcessed(false);
-
-
-                                        //now save it
-                                        settingsManager.getFilesManager().getFilesDBManager().insertFile(foundFile);
-
-                                        InPatientReceiveFragment.this.adapter.getFiles().remove(foundFile);
-
-
-
-                                    }else
-                                    {
-                                        //add it
-                                        InPatientReceiveFragment.this.adapter.addFile(foundFile);
-                                    }
+                                    //add it
+                                    InPatientStoreFragment.this.adapter.addFile(foundFile);
 
 
 
@@ -217,7 +223,7 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
                                             //add it to the adapter in here
                                             //Play the sound
                                             SoundUtils.playSound(getActivity());
-                                            InPatientReceiveFragment.this.refresh();
+                                            InPatientStoreFragment.this.refresh();
 
                                             NetworkUtils.ScheduleSynchronization(getActivity());
                                         }
@@ -250,20 +256,6 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
 
             }
         };
-    }
-
-    private String getState(String currentState) {
-
-        if(settingsManager.getAccount().getRole().equalsIgnoreCase(FileModelStates.ANALYSIS_COORDINATOR.toString()))
-            return FileModelStates.ANALYSIS_COORDINATOR.toString();
-        else if (settingsManager.getAccount().getRole().equalsIgnoreCase(FileModelStates.CODING_COORDINATOR.toString()))
-            return FileModelStates.CODING_COORDINATOR.toString();
-        else if (settingsManager.getAccount().getRole().equalsIgnoreCase(FileModelStates.PROCESSING_COORDINATOR.toString()))
-            return FileModelStates.PROCESSING_COORDINATOR.toString();
-        else if (settingsManager.getAccount().getRole().equalsIgnoreCase(FileModelStates.INCOMPLETE_COORDINATOR.toString()))
-            return FileModelStates.INCOMPLETE_COORDINATOR.toString();
-
-        return currentState;
     }
 
     @Override

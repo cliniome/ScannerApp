@@ -135,6 +135,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) >0 ?true :false));
+
 
 
 
@@ -255,6 +258,11 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
+
+
+
 
 
                 files.add(file);
@@ -372,6 +380,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
+
 
                 files.add(file);
 
@@ -483,6 +494,9 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
 
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
+
                 files.add(file);
 
             }
@@ -590,6 +604,9 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
+
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
 
                 files.add(file);
 
@@ -700,6 +717,10 @@ public class FilesDBManager {
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
 
+
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
+
                 files.add(file);
 
             }
@@ -807,6 +828,10 @@ public class FilesDBManager {
 
                 columnIndex = cursor.getColumnIndex(AlfahresDBHelper.COL_APPOINT_ID);
                 file.setAppointmentId(cursor.getInt(columnIndex));
+
+
+                columnIndex = cursor.getColumnIndex( AlfahresDBHelper.COL_PROCESSED_FIELD);
+                file.setProcessed((cursor.getInt(columnIndex) > 0 ? true : false));
 
                 files.add(file);
 
@@ -1005,6 +1030,7 @@ public class FilesDBManager {
             values.put(COL_INPATIENT_FILE,(file.isInpatient() == true) ? 1 : 0);
             values.put(COL_DEVICE_OPERATION_DATE,file.getDeviceOperationDate().toString());
             values.put(COL_APPOINT_ID,file.getAppointmentId());
+            values.put(COL_PROCESSED_FIELD,(file.isProcessed() == true ? 1 : 0));
 
 
             //now insert the current row into the database

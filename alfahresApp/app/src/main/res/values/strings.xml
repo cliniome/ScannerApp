@@ -70,6 +70,8 @@
     <string name="INPATIENT_SCREEN_TITLE">In-Patient Files</string>
     <string name="INPATIENT_RECEIVE_TITLE">Receive Files</string>
     <string name="INPATIENT_CHECKOUT_TITLE">CheckOut Files</string>
+    <string name="INPATIENT_STORAGE_SCREEN_TITLE">Store Files</string>
+    <string name="INPATIENT_COMPLETE_FRAGMENT">Send Files</string>
 
 
 </resources>

@@ -120,9 +120,19 @@ public class ScreenUtils {
 
                     TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
 
+                    TabDetails storeFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_STORAGE_SCREEN_TITLE),R.drawable.shipping,TabTypes.CHECKIN);
+
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
+
+                    TabDetails completeFiles = new TabDetails(con.getString(R.string.INPATIENT_COMPLETE_FRAGMENT),R.drawable.complete,TabTypes.CHECKOUT);
+
 
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(storeFiles);
+                    availableTabs.add(completeFiles);
+                    availableTabs.add(checkFileStatus);
 
                 }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.CODING_COORDINATOR.toString().toLowerCase()))
                 {
@@ -131,9 +141,18 @@ public class ScreenUtils {
 
                     TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
 
-                    availableTabs.add(ongoingFiles);
+                    TabDetails storeFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_STORAGE_SCREEN_TITLE),R.drawable.shipping,TabTypes.CHECKIN);
 
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
+
+                    TabDetails completeFiles = new TabDetails(con.getString(R.string.INPATIENT_COMPLETE_FRAGMENT),R.drawable.complete,TabTypes.CHECKOUT);
+
+                    availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(storeFiles);
+                    availableTabs.add(completeFiles);
+                    availableTabs.add(checkFileStatus);
 
                 }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.INCOMPLETE_COORDINATOR.toString().toLowerCase()))
                 {
@@ -141,9 +160,19 @@ public class ScreenUtils {
                             R.drawable.ongoing,TabTypes.OUTGOING);
                     TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
 
+                    TabDetails storeFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_STORAGE_SCREEN_TITLE),R.drawable.shipping,TabTypes.CHECKIN);
+
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
+
+                    TabDetails completeFiles = new TabDetails(con.getString(R.string.INPATIENT_COMPLETE_FRAGMENT),R.drawable.complete,TabTypes.CHECKOUT);
+
 
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(storeFiles);
+                    availableTabs.add(completeFiles);
+                    availableTabs.add(checkFileStatus);
 
                 }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.PROCESSING_COORDINATOR.toString().toLowerCase()))
                 {
@@ -152,9 +181,18 @@ public class ScreenUtils {
 
                     TabDetails receiveFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_RECEIVE_TITLE),R.drawable.receive,TabTypes.RECEIVED);
 
-                    availableTabs.add(ongoingFiles);
+                    TabDetails storeFiles = new TabDetails(con.getResources().getString(R.string.INPATIENT_STORAGE_SCREEN_TITLE),R.drawable.shipping,TabTypes.CHECKIN);
 
+                    TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
+                            R.drawable.eye,TabTypes.CHECKSTATUS);
+
+                    TabDetails completeFiles = new TabDetails(con.getString(R.string.INPATIENT_COMPLETE_FRAGMENT),R.drawable.complete,TabTypes.CHECKOUT);
+
+                    availableTabs.add(ongoingFiles);
                     availableTabs.add(receiveFiles);
+                    availableTabs.add(storeFiles);
+                    availableTabs.add(completeFiles);
+                    availableTabs.add(checkFileStatus);
                 }
 
             }
@@ -203,26 +241,40 @@ public class ScreenUtils {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewReceptionistReceiveFragment());
                 fragments.add(new CheckFileStatusFragment());
+
             }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.ANALYSIS_COORDINATOR.toString().toLowerCase()))
             {
 
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new InPatientReceiveFragment());
+                fragments.add(new InPatientStoreFragment());
+                fragments.add(new InPatientCompleteFilesFragment());
+                fragments.add(new CheckFileStatusFragment());
+
 
             }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.CODING_COORDINATOR.toString().toLowerCase()))
             {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new InPatientReceiveFragment());
+                fragments.add(new InPatientStoreFragment());
+                fragments.add(new InPatientCompleteFilesFragment());
+                fragments.add(new CheckFileStatusFragment());
 
             }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.INCOMPLETE_COORDINATOR.toString().toLowerCase()))
             {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new InPatientReceiveFragment());
+                fragments.add(new InPatientStoreFragment());
+                fragments.add(new InPatientCompleteFilesFragment());
+                fragments.add(new CheckFileStatusFragment());
 
             }else if (settingsManager.getAccount().getRole().toLowerCase().equals(FileModelStates.PROCESSING_COORDINATOR.toString().toLowerCase()))
             {
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new InPatientReceiveFragment());
+                fragments.add(new InPatientStoreFragment());
+                fragments.add(new InPatientCompleteFilesFragment());
+                fragments.add(new CheckFileStatusFragment());
             }
 
         }

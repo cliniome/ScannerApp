@@ -202,8 +202,10 @@
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
     <string name="Fragment_NewRequests_Title">New Requests</string>
     <string name="INPATIENT_CHECKOUT_TITLE">CheckOut Files</string>
+    <string name="INPATIENT_COMPLETE_FRAGMENT">Send Files</string>
     <string name="INPATIENT_RECEIVE_TITLE">Receive Files</string>
     <string name="INPATIENT_SCREEN_TITLE">In-Patient Files</string>
+    <string name="INPATIENT_STORAGE_SCREEN_TITLE">Store Files</string>
     <string name="KEEPER_ARCHIVE_TITLE">Check In</string>
     <string name="LOGIN_LBL_PASSWORD">Password</string>
     <string name="LOGIN_LBL_USERNAME">User Name</string>
@@ -223,7 +225,7 @@
     <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
-    <string name="SYSTEM_IP">213.219.38.152</string>
+    <string name="SYSTEM_IP">192.168.1.8</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ScreenUtils_Collect_Files">Collect Files</string>

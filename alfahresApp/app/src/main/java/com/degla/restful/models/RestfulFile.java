@@ -67,6 +67,9 @@ public class RestfulFile implements Serializable {
     private String appointmentMadeBy;
 
     @Expose
+    private boolean processed;
+
+    @Expose
     private boolean inpatient;
 
     private int readyFile;
@@ -383,5 +386,13 @@ public class RestfulFile implements Serializable {
 
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 }

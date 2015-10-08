@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class BarcodeUtils {
 
 
+    public static final String TEMPORARY_CABINET_OBJECTID = "03";
     public static final String TROLLEY_OBJECTID = "02";
     public static final String SHELF_OBJECTID ="00";
     public static final String FILE_OBJECTID = "01";
@@ -19,6 +20,7 @@ public class BarcodeUtils {
     public static final String TROLLEY_REGEX = TROLLEY_OBJECTID + "-"+"[0-9]{6,8}$";
     public static final String SHELF_REGEX = SHELF_OBJECTID +"-"+"[0-9]{6,8}$";
     public static final String FILE_REGEX = FILE_OBJECTID +"-" +"[0-9]{6,8}$";
+    public static final String TEMPORARY_CABINET_REGEX = TEMPORARY_CABINET_OBJECTID + "-" + "[0-9]{6,8}$";
 
 
     private String barcode;
@@ -43,6 +45,11 @@ public class BarcodeUtils {
         if(this.barcode != null && regex.matcher(barcode).matches())
             return true;
         return false;
+    }
+
+    public boolean isTemporaryShelf()
+    {
+        return this.isA(TEMPORARY_CABINET_OBJECTID);
     }
 
     public boolean isShelf()
@@ -107,5 +114,6 @@ public class BarcodeUtils {
         patterns.put(TROLLEY_OBJECTID,TROLLEY_REGEX);
         patterns.put(SHELF_OBJECTID,SHELF_REGEX);
         patterns.put(FILE_OBJECTID,FILE_REGEX);
+        patterns.put(TEMPORARY_CABINET_OBJECTID,TEMPORARY_CABINET_REGEX);
     }
 }
