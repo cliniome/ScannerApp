@@ -259,7 +259,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                             final RestfulFile tempFinal = foundFile;
                                            AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(), "Warning", String.format("File : %s has another appointment , would you like " +
-                                                   "to transfer Now or Cancel to view the transfer details ?", foundFile.getFileNumber()), new Runnable() {
+                                                   "to transfer Now ?", foundFile.getFileNumber()), new Runnable() {
                                                @Override
                                                public void run() {
 
