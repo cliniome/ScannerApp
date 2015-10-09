@@ -61,9 +61,9 @@ public class ScreenUtils {
 
                     availableTabs.add(ongoingFiles);
                     availableTabs.add(newRequests);
-                    availableTabs.add(receiveFiles);
                     availableTabs.add(sortingShippingFiles);
                     availableTabs.add(checkOutFiles);
+                    availableTabs.add(receiveFiles);
                     availableTabs.add(checkInpatient);
                     availableTabs.add(checkFileStatus);
 
@@ -220,10 +220,10 @@ public class ScreenUtils {
                 //that is the keeper
                 fragments.add(new NewOutgoingFilesFragment());
                 fragments.add(new NewRequestsFragment());
-                fragments.add(new NewArchiveFilesFragment());
                 fragments.add(new SortingFacilityScreen());
                 fragments.add(new CheckOutFileFragment());
                 fragments.add(new CheckOutInpatientFragment());
+                fragments.add(new NewArchiveFilesFragment());
                 fragments.add(new CheckFileStatusFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))

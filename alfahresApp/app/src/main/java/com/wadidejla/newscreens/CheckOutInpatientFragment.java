@@ -148,6 +148,8 @@ public class CheckOutInpatientFragment extends Fragment implements IFragment {
                                             @Override
                                             public void run() {
 
+                                                SoundUtils.PlayError(getActivity());
+
                                                 AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
                                                         ,msg);
 
@@ -196,6 +198,8 @@ public class CheckOutInpatientFragment extends Fragment implements IFragment {
                                         @Override
                                         public void run() {
 
+                                            SoundUtils.PlayError(getActivity());
+
                                             AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
                                                     ,"The Patient File does not exist or you are not authorized to scan " +
                                                     "that file");
@@ -221,7 +225,11 @@ public class CheckOutInpatientFragment extends Fragment implements IFragment {
                 }else if (utils.isTrolley())
                 {
 
-                    if(this.adapter.getCount() <= 0) return;
+                    if(this.adapter.getCount() <= 0)
+                    {
+                        SoundUtils.PlayError(getActivity());
+                        return;
+                    }
                     else
                     {
                         for(RestfulFile current:this.adapter.getFiles())

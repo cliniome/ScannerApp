@@ -674,7 +674,8 @@ int menu new_receive_pop_menu 0x7f100008
 int menu new_receptionist_receive_menu 0x7f100009
 int menu outgoing_pop_menu 0x7f10000a
 int mipmap ic_launcher 0x7f030000
-int raw marked 0x7f070000
+int raw error 0x7f070000
+int raw marked 0x7f070001
 int string APP_VERSION 0x7f08000d
 int string CHECK_FILE_STATUS_TITLE 0x7f08000e
 int string CHECK_OUT_SCREEN_TITLE 0x7f08000f

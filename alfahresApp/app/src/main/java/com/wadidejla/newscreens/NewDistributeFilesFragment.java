@@ -269,6 +269,10 @@ public class NewDistributeFilesFragment extends Fragment implements IFragment , 
 
                 //now refresh the current fragment
                 this.refresh();
+            }else
+            {
+                SoundUtils.PlayError(getActivity());
+
             }
 
 

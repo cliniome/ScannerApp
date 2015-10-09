@@ -207,6 +207,13 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
 
                                    if(!boolResult.isState())
                                    {
+                                       //Play Error
+                                       getActivity().runOnUiThread(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               SoundUtils.PlayError(getActivity());
+                                           }
+                                       });
                                        //get the message
                                        final String msg = boolResult.getMessage();
 
@@ -260,6 +267,8 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                    getActivity().runOnUiThread(new Runnable() {
                                        @Override
                                        public void run() {
+
+                                           SoundUtils.PlayError(getActivity());
 
                                            AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
                                                    ,"The Patient File does not exist or you are not authorized to scan " +
@@ -315,6 +324,9 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
 
                         //now update
                         this.refresh();
+                    }else
+                    {
+                        SoundUtils.PlayError(getActivity());
                     }
 
 

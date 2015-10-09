@@ -257,6 +257,9 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
                                         if(foundFile.getSelected() > 0 && foundFile.isMultipleClinics())
                                         {
 
+                                            SoundUtils.PlayError(getActivity());
+                                            SoundUtils.vibrateDevice(getActivity());
+
                                             final RestfulFile tempFinal = foundFile;
                                            AlertDialog dialog = NewViewUtils.getChoiceDialog(getActivity(), "Warning", String.format("File : %s has another appointment , would you like " +
                                                    "to transfer Now ?", foundFile.getFileNumber()), new Runnable() {
@@ -326,6 +329,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                  if(transferExists)
                                  {
+
                                      AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning","There are some file(s) has/have other appointments." +
                                      " , Please take actions separately on these files .");
                                      dialog.show();

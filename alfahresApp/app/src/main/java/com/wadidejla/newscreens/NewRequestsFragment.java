@@ -465,6 +465,7 @@ public class NewRequestsFragment extends Fragment implements IFragment , DatePic
 
                 }else
                 {
+                    SoundUtils.PlayError(getActivity());
                     Toast.makeText(getActivity(),String.format("File %s is not found ",fileBarcode)
                             ,Toast.LENGTH_SHORT)
                             .show();
@@ -473,6 +474,7 @@ public class NewRequestsFragment extends Fragment implements IFragment , DatePic
 
             }else
             {
+                SoundUtils.PlayError(getActivity());
                 Toast.makeText(getActivity(),"Barcode Is empty",Toast.LENGTH_SHORT)
                         .show();
             }

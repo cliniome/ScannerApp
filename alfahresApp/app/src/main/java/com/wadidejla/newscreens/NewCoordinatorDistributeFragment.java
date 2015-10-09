@@ -286,6 +286,10 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                             //Update the screen
                             this.chainUpdate();
 
+                        }else
+                        {
+                            SoundUtils.PlayError(getActivity());
+
                         }
 
 

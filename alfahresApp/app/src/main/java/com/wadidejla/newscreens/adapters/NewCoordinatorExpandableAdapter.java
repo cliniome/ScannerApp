@@ -639,9 +639,10 @@ public class NewCoordinatorExpandableAdapter extends BaseExpandableListAdapter i
                                               {
                                                   //That means Collect that file manually.
                                                   try {
+                                                      SoundUtils.PlayError(getContext());
 
                                                       AlertDialog dialog = NewViewUtils.getChoiceDialog(getContext(), "Warning", String.format("File : %s has another appointment , would you like " +
-                                                              "to transfer Now or Cancel to view the transfer details ?", file.getFileNumber()), new Runnable() {
+                                                              "to transfer Now  ?", file.getFileNumber()), new Runnable() {
                                                           @Override
                                                           public void run() {
 

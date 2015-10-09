@@ -85,6 +85,8 @@ public class ManualSyncTask implements Runnable {
                            @Override
                            public void run() {
 
+                               SoundUtils.PlayError(context);
+
                                final AlertDialog dialog = new AlertDialog.Builder(context)
                                        .setTitle(R.string.SYNC_OFFLINE_TITLE)
                                        .setMessage(R.string.SYNC_DIALOG_MESSAGE)

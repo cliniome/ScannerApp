@@ -1793,7 +1793,8 @@ containing a value of this type.
         public static final int ic_launcher=0x7f030000;
     }
     public static final class raw {
-        public static final int marked=0x7f070000;
+        public static final int error=0x7f070000;
+        public static final int marked=0x7f070001;
     }
     public static final class string {
         public static final int APP_VERSION=0x7f08000d;

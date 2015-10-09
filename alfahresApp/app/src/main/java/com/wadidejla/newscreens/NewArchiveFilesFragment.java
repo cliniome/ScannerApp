@@ -283,6 +283,7 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
 
                                                 //dismiss the current waitingDialog
                                                 waitingDialog.dismiss();
+                                                SoundUtils.PlayError(getActivity());
 
                                                 final AlertDialog choiceDialog = NewViewUtils.getAlertDialog(getActivity(),
                                                         "Scan Results", "There are no files for the moment !");
@@ -341,6 +342,9 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
                                                     //Refresh the current screen
                                                     NewArchiveFilesFragment.this.refresh();
                                                 }
+                                            }else
+                                            {
+                                                SoundUtils.PlayError(getActivity());
                                             }
 
                                         }catch (Exception s)

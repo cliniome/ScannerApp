@@ -285,6 +285,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
 
                     if(foundFile == null)
                     {
+                        SoundUtils.PlayError(getActivity());
                         Toast.makeText(getActivity(),String.format("%s not Found",fileBarcode),Toast.LENGTH_LONG)
                                 .show();
                         return;
@@ -352,6 +353,8 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                                             @Override
                                             public void run() {
 
+                                                SoundUtils.PlayError(getActivity());
+
                                                 //dismiss the current waitingDialog
                                                 waitingDialog.dismiss();
 
@@ -370,6 +373,7 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
                                         @Override
                                         public void run() {
 
+                                            SoundUtils.PlayError(getActivity());
                                             //dismiss the current waitingDialog
                                             waitingDialog.dismiss();
 

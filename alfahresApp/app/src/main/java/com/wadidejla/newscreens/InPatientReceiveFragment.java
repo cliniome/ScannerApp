@@ -159,6 +159,8 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
                                 @Override
                                 public void run() {
 
+                                    SoundUtils.PlayError(getActivity());
+
                                     waitingDialog.dismiss();
 
                                     AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(), "Warning"
@@ -231,6 +233,7 @@ public class InPatientReceiveFragment extends Fragment implements IFragment {
                             @Override
                             public void run() {
 
+                                SoundUtils.PlayError(getActivity());
                                 AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
                                         ,"The Patient File does not exist or you are not authorized to scan " +
                                         "that file");

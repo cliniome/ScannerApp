@@ -342,6 +342,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                             @Override
                                             public void run() {
 
+                                                SoundUtils.PlayError(getActivity());
                                                 //dismiss the current waitingDialog
                                                 waitingDialog.dismiss();
 
@@ -360,6 +361,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                         @Override
                                         public void run() {
 
+                                            SoundUtils.PlayError(getActivity());
                                             //dismiss the current waitingDialog
                                             waitingDialog.dismiss();
 
