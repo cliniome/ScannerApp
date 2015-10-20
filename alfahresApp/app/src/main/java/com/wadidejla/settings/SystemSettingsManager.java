@@ -17,6 +17,7 @@ import com.wadidejla.utils.FilesManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.wadidejla.network.AlfahresConnection.*;
 
 /**
  * Created by snouto on 22/05/15.
@@ -149,6 +150,7 @@ public class SystemSettingsManager {
         {
             //Schedule an immediate Synchronization
             this.setNewRequests(null);
+            this.setAccount(null);
             this.setReceivedFiles(null);
             this.setCollectingBegun(false);
 
@@ -161,7 +163,8 @@ public class SystemSettingsManager {
 
     public AlfahresConnection getConnection()
     {
-        AlfahresConnection conn = new AlfahresConnection(getServerAddress(),"8080","alfahres","rest");
+        AlfahresConnection conn = new AlfahresConnection(getServerAddress(),DEFAULT_PORT,
+                DEFAULT_BASEPATH,"rest");
         return conn;
     }
 

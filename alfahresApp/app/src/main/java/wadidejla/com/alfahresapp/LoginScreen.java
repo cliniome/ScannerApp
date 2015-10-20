@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.wadidejla.preferences.AlfahresPreferenceManager;
 import com.wadidejla.service.AlfahresSyncService;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.settings.UserAccount;
+import static com.wadidejla.network.AlfahresConnection.*;
 
 /**
  * Created by snouto on 22/05/15.
@@ -52,6 +54,21 @@ public class LoginScreen extends ActionBarActivity {
         title +="("+(getResources().getString(R.string.APP_VERSION)) +")";
         setTitle(title);
         this.init();
+    }
+
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            moveTaskToBack(true);
+            return true;
+        }
+        else
+            return super.onKeyDown(keyCode, event);
     }
 
 
@@ -170,7 +187,7 @@ public class LoginScreen extends ActionBarActivity {
 
                                             AlfahresConnection connection = new AlfahresConnection(
                                                     LoginScreen.this.settingsManager.getServerAddress()
-                                                    ,"8080","alfahres","rest");
+                                                    ,DEFAULT_PORT,DEFAULT_BASEPATH,"rest");
 
                                             HttpResponse response = connection.path("employee/login").setMethodType(AlfahresConnection.GET_HTTP_METHOD)
                                                     .setAuthorization(username,password).call(RestfulEmployee.class);
@@ -202,8 +219,10 @@ public class LoginScreen extends ActionBarActivity {
                                                             LoginScreen.this.finish();
                                                             //Start the main activity
                                                             Intent mainIntent = new Intent(LoginScreen.this,MainDrawerActivity.class);
-                                                            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             startActivity(mainIntent);
+                                                            finish();
+
 
 
                                                         }

@@ -222,8 +222,8 @@ public class ScreenUtils {
                 fragments.add(new NewRequestsFragment());
                 fragments.add(new SortingFacilityScreen());
                 fragments.add(new CheckOutFileFragment());
-                fragments.add(new CheckOutInpatientFragment());
                 fragments.add(new NewArchiveFilesFragment());
+                fragments.add(new CheckOutInpatientFragment());
                 fragments.add(new CheckFileStatusFragment());
 
             }else if(settingsManager.getAccount().getRole().equals(COORDINATOR_ROLE))

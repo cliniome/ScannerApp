@@ -30,6 +30,7 @@ public class AlfahresConnection {
     public static final String GET_HTTP_METHOD="GET";
     public static final String POST_HTTP_METHOD="POST";
     public static final String DEFAULT_PORT = "8080";
+    //TODO:<Network> has been modified
     public static final String DEFAULT_BASEPATH="alfahres";
     public static final String DEFAULT_RESTFUL_PATH="rest";
     private String hostName="127.0.0.1";

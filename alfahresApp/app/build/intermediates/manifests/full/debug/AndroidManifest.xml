@@ -61,6 +61,7 @@
         </activity>
         <activity
             android:name="wadidejla.com.alfahresapp.MainTabbedActivity"
+            android:alwaysRetainTaskState="true"
             android:label="Alfahres System"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >

@@ -137,36 +137,38 @@ ADDED from AndroidManifest.xml:55:17
 activity#wadidejla.com.alfahresapp.MainTabbedActivity
 ADDED from AndroidManifest.xml:58:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:61:13
+		ADDED from AndroidManifest.xml:62:13
 	android:label
 		ADDED from AndroidManifest.xml:60:13
 	android:theme
-		ADDED from AndroidManifest.xml:62:13
+		ADDED from AndroidManifest.xml:63:13
 	android:name
 		ADDED from AndroidManifest.xml:59:13
+	android:alwaysRetainTaskState
+		ADDED from AndroidManifest.xml:61:13
 activity#wadidejla.com.alfahresapp.SettingsActivity
-ADDED from AndroidManifest.xml:65:9
+ADDED from AndroidManifest.xml:66:9
 	android:label
-		ADDED from AndroidManifest.xml:67:13
-	android:theme
-		ADDED from AndroidManifest.xml:69:13
-	android:parentActivityName
 		ADDED from AndroidManifest.xml:68:13
-	android:name
-		ADDED from AndroidManifest.xml:66:13
-meta-data#android.support.PARENT_ACTIVITY
-ADDED from AndroidManifest.xml:70:13
-	android:name
-		ADDED from AndroidManifest.xml:71:17
-	android:value
-		ADDED from AndroidManifest.xml:72:17
-activity#wadidejla.com.alfahresapp.MainDrawerActivity
-ADDED from AndroidManifest.xml:74:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:77:13
-	android:label
-		ADDED from AndroidManifest.xml:76:13
 	android:theme
-		ADDED from AndroidManifest.xml:78:13
+		ADDED from AndroidManifest.xml:70:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:69:13
 	android:name
-		ADDED from AndroidManifest.xml:75:13
+		ADDED from AndroidManifest.xml:67:13
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from AndroidManifest.xml:71:13
+	android:name
+		ADDED from AndroidManifest.xml:72:17
+	android:value
+		ADDED from AndroidManifest.xml:73:17
+activity#wadidejla.com.alfahresapp.MainDrawerActivity
+ADDED from AndroidManifest.xml:75:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:78:13
+	android:label
+		ADDED from AndroidManifest.xml:77:13
+	android:theme
+		ADDED from AndroidManifest.xml:79:13
+	android:name
+		ADDED from AndroidManifest.xml:76:13

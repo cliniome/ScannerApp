@@ -11,8 +11,8 @@ public class FileStateUtils implements Serializable {
 
     private FileModelStates state;
 
-    private String[] states = {"Archived","Checked Out","Received by Coordinator","Sent out by Coordinator",
-            "Received by Clinic","Received by Keeper","New File","Received by Receptionist","Prepared by Keeper",
+    private String[] states = {"Stored in Cabin","Checked Out","Received by Coordinator","Sent out by Coordinator",
+            "Received by Clinic","Received by Receptionist","Prepared by Clerk",
             "Transferred by coordinator","Missing","Processing Coordinator","Analysis Coordinator","Incomplete Coordinator","Coding Coordinator",
     "Temporary Stored","InPatient Completed"};
 
@@ -31,7 +31,7 @@ public class FileStateUtils implements Serializable {
             return state;
 
 
-        if(readableState.toLowerCase().equals("Archived".toLowerCase()))
+        if(readableState.toLowerCase().equals("Stored In Cabin".toLowerCase()))
             state = FileModelStates.CHECKED_IN;
         else if (readableState.toLowerCase().equals("Checked Out".toLowerCase()))
             state = FileModelStates.CHECKED_OUT;
@@ -39,17 +39,15 @@ public class FileStateUtils implements Serializable {
             state = FileModelStates.COORDINATOR_IN;
         else if (readableState.toLowerCase().equals("Sent out by Coordinator".toLowerCase()))
             state = FileModelStates.COORDINATOR_OUT;
-        else if (readableState.toLowerCase().equals("Received by Clinic".toLowerCase()))
+        else if (readableState.toLowerCase().equals("Distributed To Clinic".toLowerCase()))
             state = FileModelStates.DISTRIBUTED;
-        else if (readableState.toLowerCase().equals("Received by Keeper".toLowerCase()))
-            state = FileModelStates.KEEPER_IN;
         else if (readableState.toLowerCase().equals("New File".toLowerCase()))
             state = FileModelStates.NEW;
         else if (readableState.toLowerCase().equals("Received by Receptionist".toLowerCase()))
             state = FileModelStates.RECEPTIONIST_IN;
         else if (readableState.toLowerCase().equals("Sent out by Receptionist".toLowerCase()))
             state = FileModelStates.RECEPTIONIST_OUT;
-        else if (readableState.toLowerCase().equals("Prepared by Keeper".toLowerCase()))
+        else if (readableState.toLowerCase().equals("Prepared by Clerk".toLowerCase()))
             state = FileModelStates.OUT_OF_CABIN;
         else if (readableState.toLowerCase().equals("Transferred by coordinator".toLowerCase()))
             state = FileModelStates.TRANSFERRED;
@@ -87,7 +85,7 @@ public class FileStateUtils implements Serializable {
         switch (getState())
         {
             case CHECKED_IN:
-                return "Archived";
+                return "Stored In Cabin";
             case CHECKED_OUT:
                 return "Checked Out";
             case COORDINATOR_IN:
@@ -95,9 +93,7 @@ public class FileStateUtils implements Serializable {
             case COORDINATOR_OUT:
                 return "Sent out by Coordinator";
             case DISTRIBUTED:
-                return "Received by Clinic";
-            case KEEPER_IN:
-                return "Received by Keeper";
+                return "Distributed To Clinic";
             case NEW:
                 return "New File";
             case RECEPTIONIST_IN:
@@ -105,7 +101,7 @@ public class FileStateUtils implements Serializable {
             case RECEPTIONIST_OUT:
                 return "Sent out by Receptionist";
             case OUT_OF_CABIN:
-                return "Prepared by Keeper";
+                return "Prepared by Clerk";
             case TRANSFERRED:
                 return "Transferred by coordinator";
             case ANALYSIS_COORDINATOR:

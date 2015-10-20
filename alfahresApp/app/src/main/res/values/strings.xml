@@ -66,7 +66,7 @@
     <string name="last_seen_by">Emp. Name</string>
     <string name="file_status_lbl">File Status</string>
     <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
-    <string name="APP_VERSION">V2.7</string>
+    <string name="APP_VERSION">V3.0</string>
     <string name="INPATIENT_SCREEN_TITLE">In-Patient Files</string>
     <string name="INPATIENT_RECEIVE_TITLE">Receive Files</string>
     <string name="INPATIENT_CHECKOUT_TITLE">CheckOut Files</string>

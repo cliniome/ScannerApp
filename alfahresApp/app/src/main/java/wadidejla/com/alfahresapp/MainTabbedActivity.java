@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Layout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,10 +54,25 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
         this.initView();
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            moveTaskToBack(true);
+            return true;
+        }
+        else
+            return super.onKeyDown(keyCode, event);
+    }
+
     private void initView() {
 
         try
         {
+
+
             //access the view
             setViewPager((ViewPager)this.findViewById(R.id.pager));
 
@@ -111,6 +127,8 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
         }
 
     }
+
+
 
 
     /////////////////////////////////////////Barcode Scanning Section//////////////////////////////
@@ -250,9 +268,9 @@ public class MainTabbedActivity extends ActionBarActivity implements ActionBar.T
             SystemSettingsManager.createInstance(this).logOut();
             //then go to the login screen
             Intent logoutIntent = new Intent(this,LoginScreen.class);
-            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.finish();
+            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(logoutIntent);
+            this.finish();
 
         }
 

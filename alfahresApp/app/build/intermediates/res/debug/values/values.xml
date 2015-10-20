@@ -196,7 +196,7 @@
     <integer name="abc_max_action_buttons">2</integer>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="APP_VERSION">V2.7</string>
+    <string name="APP_VERSION">V3.0</string>
     <string name="CHECK_FILE_STATUS_TITLE">Check Files Status</string>
     <string name="CHECK_OUT_SCREEN_TITLE">Check Out Files</string>
     <string name="COORDINATOR_COLLECT_SCREEN">Collect Files</string>
@@ -225,7 +225,7 @@
     <string name="SYNC_OFFLINE_TITLE">Notification...</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings_activity_settings.xml -->
     <eat-comment/>
-    <string name="SYSTEM_IP">192.168.1.8</string>
+    <string name="SYSTEM_IP">100.43.100.115</string>
     <!-- From: file:/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ScreenUtils_Collect_Files">Collect Files</string>
