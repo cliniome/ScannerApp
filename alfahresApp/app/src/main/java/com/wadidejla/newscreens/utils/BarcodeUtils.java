@@ -1,6 +1,9 @@
 package com.wadidejla.newscreens.utils;
 
+import android.util.Log;
+
 import com.wadidejla.screens.ScanAndReceiveFragment;
+import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +73,66 @@ public class BarcodeUtils {
             return String.valueOf(fileNo.charAt(5));
 
         }else return "";
+    }
+
+
+
+    public static void main(String... args)
+    {
+        String CabinID= BarcodeUtils.getColumnIDFromShelf("00-683654875");
+
+        System.out.println(CabinID);
+    }
+
+
+    public static String getColumnIDFromShelf(String shelfNumber)
+    {
+        try
+        {
+            if(shelfNumber == null || shelfNumber.isEmpty())
+                return null;
+            //divide the string at the occurrence of '-'
+
+            String[] dividedShelf = shelfNumber.split("-");
+
+            String shelfDivided = dividedShelf[1];
+
+            String cabinID = shelfDivided.substring(3,4);
+
+            return cabinID;
+
+
+
+        }catch (Exception s)
+        {
+            Log.e("BarcodeUtils",s.getMessage());
+            return null;
+        }
+    }
+
+    public static String getCabinIDFromShelf(String shelfNumber)
+    {
+        try
+        {
+            if(shelfNumber == null || shelfNumber.isEmpty())
+                return null;
+            //divide the string at the occurrence of '-'
+
+            String[] dividedShelf = shelfNumber.split("-");
+
+            String shelfDivided = dividedShelf[1];
+
+            String cabinID = shelfDivided.substring(0,3);
+
+            return cabinID;
+
+
+
+        }catch (Exception s)
+        {
+            Log.e("BarcodeUtils",s.getMessage());
+            return null;
+        }
     }
 
 

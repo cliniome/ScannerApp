@@ -1,143 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/fileNoLbl"
-        android:text="@string/file_view_fileNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        />
+        <TextView
+            android:id="@+id/fileNoLbl"
+            android:text="@string/file_view_fileNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            />
 
-    <TextView
-        android:id="@+id/new_file_FileNumber"
-        android:layout_width="wrap_content"
-        android:text="File Number"
-        android:layout_height="wrap_content"
-        style="@style/fileDetailInfo"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/Txt_file_patientNumber"
-         />
-
-
-    <TextView
-        android:id="@+id/Txt_file_patientNumber"
-        android:layout_width="wrap_content"
-        android:textStyle="bold"
-        android:text="@string/file_patientNumber"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fileNoLbl"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="3dp"
-        android:layout_alignParentStart="true" />
-
-    <!-- New Addition -->
+        <TextView
+            android:id="@+id/new_file_FileNumber"
+            android:layout_width="wrap_content"
+            android:text="File Number"
+            android:layout_height="wrap_content"
+            style="@style/fileDetailInfo"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/Txt_file_patientNumber"
+            />
 
 
+        <TextView
+            android:id="@+id/Txt_file_patientNumber"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/file_patientNumber"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fileNoLbl"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentStart="true" />
 
-    <!-- -->
-
-    <TextView
-        android:id="@+id/new_file_PatientNumber"
-        android:layout_width="wrap_content"
-        style="@style/fileDetailInfo"
-        android:text="Patient Number"
-        android:layout_marginTop="3dp"
-        android:layout_toRightOf="@id/Txt_file_patientNumber"
-        android:layout_below="@id/new_file_FileNumber"
-        android:layout_height="wrap_content" />
+        <!-- New Addition -->
 
 
 
-    <TextView
-        android:id="@+id/file_status_lbl"
-        android:text="@string/file_status_lbl"
-        android:layout_width="wrap_content"
-        android:textStyle="bold"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/new_file_PatientNumber"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <!-- -->
 
-    <TextView
-        android:id="@+id/file_status_Txt"
-        android:text="@string/file_status_lbl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/fileDetailInfo"
-        android:layout_gravity="left"
-        android:layout_below="@+id/new_file_PatientNumber"
-        android:layout_toRightOf="@+id/Txt_file_patientNumber"
-        android:layout_toEndOf="@+id/Txt_file_patientNumber" />
+        <TextView
+            android:id="@+id/new_file_PatientNumber"
+            android:layout_width="wrap_content"
+            style="@style/fileDetailInfo"
+            android:text="Patient Number"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/Txt_file_patientNumber"
+            android:layout_below="@id/new_file_FileNumber"
+            android:layout_height="wrap_content" />
 
 
-    <TextView
-        android:id="@+id/file_emp_lbl"
-        android:text="Emp. Name"
-        android:textStyle="bold"
-        android:layout_below="@id/file_status_lbl"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/file_emp_seen_txt"
-        android:text="hello World"
-        style="@style/fileDetailInfo"
-        android:layout_gravity="left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/file_status_Txt"
-        android:layout_toRightOf="@+id/file_emp_lbl"
-        android:layout_toEndOf="@+id/file_emp_lbl" />
+        <TextView
+            android:id="@+id/file_status_lbl"
+            android:text="@string/file_status_lbl"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/new_file_PatientNumber"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/fxClinicName"
-        android:text="Clinic Name"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/file_emp_seen_txt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txtClinicNameText"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clinic Name Here"
-        android:layout_below="@+id/file_emp_seen_txt"
-        android:layout_alignLeft="@+id/file_status_Txt"
-        android:layout_alignStart="@+id/file_status_Txt"
-        android:textSize="16dp"
-        android:textColor="@android:color/holo_red_dark" />
-
-    <TextView
-        android:id="@+id/fxclinicCodeText"
-        android:text="Clinic Code"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtClinicNameText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txtClinicCode"
-        android:text="Clinic Code here"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtClinicNameText"
-        android:layout_alignLeft="@+id/file_emp_seen_txt"
-        android:layout_alignStart="@+id/file_emp_seen_txt"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="16dp" />
+        <TextView
+            android:id="@+id/file_status_Txt"
+            android:text="@string/file_status_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/fileDetailInfo"
+            android:layout_gravity="left"
+            android:layout_below="@+id/new_file_PatientNumber"
+            android:layout_toRightOf="@+id/Txt_file_patientNumber"
+            android:layout_toEndOf="@+id/Txt_file_patientNumber" />
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/file_emp_lbl"
+            android:text="Emp. Name"
+            android:textStyle="bold"
+            android:layout_below="@id/file_status_lbl"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/file_emp_seen_txt"
+            android:text="hello World"
+            style="@style/fileDetailInfo"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/file_status_Txt"
+            android:layout_toRightOf="@+id/file_emp_lbl"
+            android:layout_toEndOf="@+id/file_emp_lbl" />
+
+        <TextView
+            android:id="@+id/fxClinicName"
+            android:text="Clinic Name"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/file_emp_seen_txt"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txtClinicNameText"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clinic Name Here"
+            android:layout_below="@+id/file_emp_seen_txt"
+            android:layout_alignLeft="@+id/file_status_Txt"
+            android:layout_alignStart="@+id/file_status_Txt"
+            android:textSize="16dp"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/fxclinicCodeText"
+            android:text="Clinic Code"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtClinicNameText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txtClinicCode"
+            android:text="Clinic Code here"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtClinicNameText"
+            android:layout_alignLeft="@+id/file_emp_seen_txt"
+            android:layout_alignStart="@+id/file_emp_seen_txt"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:id="@+id/ImgFileType"
+
+            android:contentDescription="FileType"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/file_emp_seen_txt" />
+
+
+    </RelativeLayout>
+
+
+

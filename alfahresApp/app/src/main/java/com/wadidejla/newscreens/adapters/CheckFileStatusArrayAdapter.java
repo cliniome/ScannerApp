@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
@@ -70,6 +71,19 @@ public class CheckFileStatusArrayAdapter extends ArrayAdapter<RestfulFile> {
             //Get the clinic Code
             TextView txtClinicCode = (TextView)convertView.findViewById(R.id.txtClinicCode);
             txtClinicCode.setText(file.getClinicCode());
+
+
+            //is it outpatient
+            //0541003629
+
+            if(file.isInpatient())
+            {
+                ImageView outputPatient = (ImageView)convertView.findViewById(R.id.ImgFileType);
+
+                outputPatient.setImageResource(R.drawable.inpatient32);
+            }
+
+
 
 
 

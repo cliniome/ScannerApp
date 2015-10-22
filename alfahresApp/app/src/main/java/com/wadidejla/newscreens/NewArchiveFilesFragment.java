@@ -366,6 +366,9 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
 
                 }else if (barcodeUtils.isShelf())
                 {
+
+
+
                     //Get the selected file only from the received files and update its shelf
                     List<RestfulFile> receivedFiles = new DBStorageUtils(getActivity()).getReceivedFiles();
 
@@ -379,6 +382,64 @@ public class NewArchiveFilesFragment extends Fragment implements Archiver , IAda
                             {
                                 targetFile = foundFile;
                                 break;
+                            }
+                        }
+
+
+                        //This is the solution for preventing Invalid Storage of Physical files in cabinets
+                        if(targetFile != null)
+                        {
+                            String cabinID = BarcodeUtils.getCabinIDFromShelf(barcode);
+                            String colID = BarcodeUtils.getColumnIDFromShelf(barcode);
+
+                            if(colID == null || cabinID == null)
+                            {
+                                //Show Error
+                                AlertDialog invalidStorage = NewViewUtils.getAlertDialog(getActivity(),"Invalid Operation","Invalid Shelf Number");
+
+                                SoundUtils.PlayError(getActivity());
+                                SoundUtils.vibrateDevice(getActivity());
+
+                                invalidStorage.show();
+
+                                return;
+                            }
+
+                            int shelf_cabinID= Integer.parseInt(cabinID);
+                            int shelf_colID = Integer.parseInt(colID);
+
+
+
+                            BarcodeUtils barUtils = new BarcodeUtils(targetFile.getFileNumber());
+
+                            cabinID = barUtils.getCabinID();
+
+                            colID = barUtils.getColumnNo();
+
+                            if(cabinID == null || colID == null)
+                            {
+                                AlertDialog invalidStorage = NewViewUtils.getAlertDialog(getActivity(),"Invalid Operation","Invalid Cabin Number or Column Number from Physical File Number");
+
+                                SoundUtils.PlayError(getActivity());
+                                SoundUtils.vibrateDevice(getActivity());
+
+                                invalidStorage.show();
+
+                                return;
+                            }
+
+                            int file_cabinID = Integer.parseInt(cabinID);
+                            int file_colID = Integer.parseInt(colID);
+
+                            if((file_cabinID != shelf_cabinID) || (file_colID != shelf_colID))
+                            {
+                                AlertDialog invalidStorage = NewViewUtils.getAlertDialog(getActivity(),"Invalid Operation","Invalid Storage Location");
+
+                                SoundUtils.PlayError(getActivity());
+                                SoundUtils.vibrateDevice(getActivity());
+
+                                invalidStorage.show();
+                                return; // NO Operation , Just Return
                             }
                         }
 

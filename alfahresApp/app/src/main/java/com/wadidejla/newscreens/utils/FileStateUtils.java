@@ -11,7 +11,7 @@ public class FileStateUtils implements Serializable {
 
     private FileModelStates state;
 
-    private String[] states = {"Stored in Cabin","Checked Out","Received by Coordinator","Sent out by Coordinator",
+    private String[] states = {"Stored In Cabin","Checked Out","Received by Coordinator","Sent out by Coordinator",
             "Received by Clinic","Received by Receptionist","Prepared by Clerk",
             "Transferred by coordinator","Missing","Processing Coordinator","Analysis Coordinator","Incomplete Coordinator","Coding Coordinator",
     "Temporary Stored","InPatient Completed"};
