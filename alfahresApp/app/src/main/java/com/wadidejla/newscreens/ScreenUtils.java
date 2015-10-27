@@ -232,7 +232,10 @@ public class ScreenUtils {
                 fragments.add(new NewOutgoingCoordinatorFragment());
                 fragments.add(new NewReceiveFilesFragment());
                 fragments.add(new NewCoordinatorDistributeFragment());
-                fragments.add(new NewCollectFilesFragment());
+               // fragments.add(new NewCollectFilesFragment());
+                LatestCollectScreen collectFragment = new LatestCollectScreen();
+                collectFragment.setShowMultipleAppointments(false);
+                fragments.add(collectFragment);
                 fragments.add(new CheckFileStatusFragment());
 
 

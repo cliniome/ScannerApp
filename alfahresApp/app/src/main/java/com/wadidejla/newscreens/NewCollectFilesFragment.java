@@ -57,7 +57,7 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.coordinator_main_list_view,container,false);
+        View rootView = inflater.inflate(R.layout.latest_collect_screen,container,false);
 
         this.initView(rootView);
 
@@ -291,10 +291,14 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                         foundFile.toggleSelection();
 
-                                        this.getFilesReadyToBeCollected(foundFile);
-
-
+                                        //No need for the below commented Method Call
+                                        //this.getFilesReadyToBeCollected(foundFile);
                                         storageUtils.operateOnFile(foundFile, foundFile.getState(), RestfulFile.NOT_READY_FILE);
+
+
+
+                                        //Play the sound
+                                        SoundUtils.playSound(getActivity());
 
 
                                     }

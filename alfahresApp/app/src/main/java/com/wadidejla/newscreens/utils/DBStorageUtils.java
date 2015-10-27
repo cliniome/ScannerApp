@@ -399,6 +399,41 @@ public class DBStorageUtils {
         }
     }
 
+    public List<RestfulFile> getCollectableFilesWithTransfer(boolean multiple)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
+                    .append(multiple? 1 : 0);
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
+        }
+    }
+
 
 
     public List<RestfulFile> getFilesReadyForCollection()
