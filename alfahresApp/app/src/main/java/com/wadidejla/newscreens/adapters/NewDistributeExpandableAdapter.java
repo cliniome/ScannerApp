@@ -620,8 +620,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                   {
                       final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                               .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
-                              .setItems(new String[]{"Mark File as Missing...","Distribute That File...",
-                                              "View Transfer Info..."},
+                              .setItems(new String[]{"Mark File as Missing...","Distribute That File..."},
                                       new DialogInterface.OnClickListener() {
                                           @Override
                                           public void onClick(DialogInterface dialogInterface, int i) {
@@ -679,7 +678,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                                           dialogInterface.dismiss();
                                                       }
 
-                                                  }else
+                                                  }/*else
                                                   {
                                                       //dismiss the dialog
                                                       dialogInterface.dismiss();
@@ -771,7 +770,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
 
 
 
-                                                  }
+                                                  }*/
 
                                               }catch (Exception s)
                                               {

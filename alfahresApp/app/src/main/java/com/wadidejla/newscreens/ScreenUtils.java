@@ -92,6 +92,10 @@ public class ScreenUtils {
 
                     availableTabs.add(collectFiles);
 
+                    TabDetails collectTransferrable = new TabDetails("Collect Transfers",R.drawable.collects,TabTypes.COLLECT);
+
+                    availableTabs.add(collectTransferrable);
+
                     TabDetails checkFileStatus = new TabDetails(con.getResources().getString(R.string.CHECK_FILE_STATUS_TITLE),
                             R.drawable.eye,TabTypes.CHECKSTATUS);
 
@@ -236,6 +240,12 @@ public class ScreenUtils {
                 LatestCollectScreen collectFragment = new LatestCollectScreen();
                 collectFragment.setShowMultipleAppointments(false);
                 fragments.add(collectFragment);
+
+                LatestCollectScreen collectTransfers = new LatestCollectScreen();
+                collectTransfers.setShowMultipleAppointments(true);
+                fragments.add(collectTransfers);
+
+
                 fragments.add(new CheckFileStatusFragment());
 
 

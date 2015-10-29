@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
+import com.wadidejla.newscreens.FragmentListener;
+import com.wadidejla.newscreens.IAdapterListener;
+import com.wadidejla.newscreens.IFragment;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
@@ -35,11 +39,25 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
 
     private int defaultBackColor = Color.WHITE;
 
+    private Fragment parent;
+
 
     public ShippingRequestsAdapter(Context context, int resource, List<RestfulFile> files) {
         super(context, resource);
         this.availableFiles = files;
         this.resourceId = resource;
+    }
+
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+        if(this.getParent() != null)
+        {
+            ((IAdapterListener)this.getParent()).doUpdateFragment();
+        }
+
     }
 
     @Override
@@ -203,5 +221,13 @@ public class ShippingRequestsAdapter extends ArrayAdapter<RestfulFile> {
     public int getCount() {
 
         return availableFiles.size();
+    }
+
+    public Fragment getParent() {
+        return parent;
+    }
+
+    public void setParent(Fragment parent) {
+        this.parent = parent;
     }
 }

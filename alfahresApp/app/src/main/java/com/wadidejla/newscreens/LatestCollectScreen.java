@@ -52,7 +52,7 @@ public class LatestCollectScreen extends Fragment implements IFragment , IAdapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.coordinator_main_list_view,container,false);
+        View rootView = inflater.inflate(R.layout.coordinator_new_collect_fragment,container,false);
 
         this.initView(rootView);
 
@@ -65,6 +65,7 @@ public class LatestCollectScreen extends Fragment implements IFragment , IAdapte
         this.adapter = new LatestCollectScreenAdapter(getActivity(),R.layout.new_single_file_view);
         this.adapter.setShowMultipleAppointments(isShowMultipleAppointments());
         this.adapter.setFragment(this);
+        this.listview.setAdapter(adapter);
         final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
 
         DoActionsBtn.setOnClickListener(new View.OnClickListener() {
@@ -264,6 +265,10 @@ public class LatestCollectScreen extends Fragment implements IFragment , IAdapte
     @Override
     public String getTitle() {
         String title = "Collect Files";
+
+        if(isShowMultipleAppointments())
+            title = "Collect Transfers";
+
         title = String.format("%s(%s)",title,this.getTotalFiles());
 
         return title;

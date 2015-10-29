@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:divider="#A4c739"
+        android:dividerHeight="0.5dp"
+        android:id="@+id/coordinator_list_view"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout">
+
+    </ListView>
+
+    <!--Here are the options for the current page  -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#80000000"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout">
+
+
+
+        <!--   <Button
+               android:layout_width="wrap_content"
+               android:drawableLeft="@drawable/scan"
+               android:textAlignment="center"
+               android:id="@+id/new_files_layout_scan_btn"
+               android:text="Scan Now"
+               android:layout_height="wrap_content" />
+   -->
+        <Button
+            android:layout_width="wrap_content"
+            android:text="Options"
+            android:drawableLeft="@drawable/action"
+            android:id="@+id/new_receive_actions_btn"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>

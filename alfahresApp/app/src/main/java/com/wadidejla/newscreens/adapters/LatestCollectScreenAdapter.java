@@ -379,6 +379,28 @@ public class LatestCollectScreenAdapter  extends ArrayAdapter<RestfulFile>{
                                                                         }
                                                                     }
 
+                                                                }else
+                                                                {
+                                                                    trWaitingDialog.dismiss();
+
+                                                                    final Activity currentActivity = (Activity)getContext();
+
+                                                                    if(currentActivity != null)
+                                                                    {
+                                                                        currentActivity.runOnUiThread(new Runnable() {
+                                                                            @Override
+                                                                            public void run() {
+
+                                                                                AlertDialog dialogs = NewViewUtils.getAlertDialog(currentActivity,"No Transfers Found",
+                                                                                        "There are no Transfers for selected Files.");
+
+                                                                                dialogs.show();
+
+
+                                                                            }
+                                                                        });
+                                                                    }
+
                                                                 }
 
 

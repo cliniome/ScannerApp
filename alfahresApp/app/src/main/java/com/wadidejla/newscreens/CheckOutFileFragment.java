@@ -66,6 +66,8 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
             this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,
                     settingsManager.getShippingFiles());
 
+            this.adapter.setParent(this);
+
             this.listView.setAdapter(this.adapter);
 
             //bind the buttons
@@ -145,6 +147,7 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
             }
 
             this.adapter = new ShippingRequestsAdapter(getActivity(),R.layout.new_single_file_view,settingsManager.getShippingFiles());
+            this.adapter.setParent(this);
             this.listView.setAdapter(this.adapter);
             this.adapter.notifyDataSetChanged();
 
