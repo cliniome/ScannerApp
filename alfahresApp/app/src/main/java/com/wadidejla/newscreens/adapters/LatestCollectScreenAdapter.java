@@ -25,10 +25,12 @@ import com.wadidejla.newscreens.LatestCollectScreen;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.FilesUtils;
 import com.wadidejla.utils.RestfulTransferInfo;
 import com.wadidejla.utils.SoundUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -59,6 +61,12 @@ public class LatestCollectScreenAdapter  extends ArrayAdapter<RestfulFile>{
         DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
         this.availableFiles = storageUtils.getCollectableFilesWithTransfer(isShowMultipleAppointments());
+
+        //Sort them
+       if(this.availableFiles != null && this.availableFiles.size() > 0)
+       {
+           FilesUtils.prepareFiles(this.availableFiles);
+       }
 
         if(getFragment() != null)
         {
@@ -391,8 +399,8 @@ public class LatestCollectScreenAdapter  extends ArrayAdapter<RestfulFile>{
                                                                             @Override
                                                                             public void run() {
 
-                                                                                AlertDialog dialogs = NewViewUtils.getAlertDialog(currentActivity,"No Transfers Found",
-                                                                                        "There are no Transfers for selected Files.");
+                                                                                AlertDialog dialogs = NewViewUtils.getAlertDialog(currentActivity,"Attention !",
+                                                                                        "Can't view transfer information for this moment , Please Check your Network");
 
                                                                                 dialogs.show();
 

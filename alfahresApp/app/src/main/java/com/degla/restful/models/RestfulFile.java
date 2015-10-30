@@ -395,4 +395,5 @@ public class RestfulFile implements Serializable {
     public void setProcessed(boolean processed) {
         this.processed = processed;
     }
+
 }

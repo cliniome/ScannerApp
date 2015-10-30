@@ -327,7 +327,7 @@ public class DBStorageUtils {
     }
 
 
-    public RestfulFile getCollectableFile(String fileNumber)
+    public RestfulFile getCollectableFile(String fileNumber,boolean multiple)
     {
         try
         {
@@ -348,7 +348,9 @@ public class DBStorageUtils {
                     .append(AlfahresDBHelper.KEY_ID).append("=")
                     .append("'")
                     .append(fileNumber)
-                    .append("'");
+                    .append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
+                    .append((multiple == true) ? 1 : 0);
 
             List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
 
@@ -396,6 +398,89 @@ public class DBStorageUtils {
         {
             s.printStackTrace();
             return new ArrayList<RestfulFile>();
+        }
+    }
+
+    public List<RestfulFile> getSelectedCollectFiles(boolean multiple)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_SELECTED_FILE)
+                    .append("=")
+                    .append(1)
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
+                    .append(multiple? 1 : 0);
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
+        }
+    }
+
+
+    public RestfulFile getCollectFile(boolean multiple , String fileNumber)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.KEY_ID)
+                    .append("=")
+                    .append("'")
+                    .append(fileNumber)
+                    .append("'")
+                    .append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
+                    .append(multiple? 1 : 0);
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            if(newFiles.size() > 0 ) return newFiles.get(0);
+            else return null;
+
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return null;
         }
     }
 

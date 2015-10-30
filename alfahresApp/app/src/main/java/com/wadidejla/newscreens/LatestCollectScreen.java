@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.degla.restful.models.FileModelStates;
 import com.degla.restful.models.RestfulFile;
@@ -20,6 +21,7 @@ import com.degla.restful.models.SyncBatch;
 import com.degla.restful.models.http.HttpResponse;
 import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.adapters.LatestCollectScreenAdapter;
+import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.ConnectivityUtils;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
 import com.wadidejla.newscreens.utils.NetworkUtils;
@@ -27,6 +29,7 @@ import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.SoundUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import wadidejla.com.alfahresapp.R;
@@ -286,6 +289,83 @@ public class LatestCollectScreen extends Fragment implements IFragment , IAdapte
 
     @Override
     public void handleScanResults(String barcode) {
+
+        try {
+
+            SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getActivity());
+
+            BarcodeUtils utils = new BarcodeUtils(barcode);
+
+            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+
+            if(utils.isMedicalFile())
+            {
+                //Select that file from the database
+                RestfulFile foundFile = storageUtils.getCollectableFile(barcode,isShowMultipleAppointments());
+
+                if(foundFile == null)
+                {
+                    SoundUtils.PlayError(getActivity());
+                    SoundUtils.vibrateDevice(getActivity());
+                }else
+                {
+                    foundFile.setEmp(settingsManager.getAccount());
+
+                    foundFile.setDeviceOperationDate(new Date().getTime());
+
+                    if(!isShowMultipleAppointments())
+                    {
+                        //That means this file is out patient , so toggle that file selection
+                        foundFile.toggleSelection();
+                        //play the sound
+                        SoundUtils.playSound(getActivity());
+                        SoundUtils.vibrateDevice(getActivity());
+                        storageUtils.operateOnFile(foundFile,foundFile.getState(),RestfulFile.NOT_READY_FILE);
+                        //now notify the adapter of any changes
+                        this.adapter.notifyDataSetChanged();
+                    }else
+                    {
+                        boolean operationResult = storageUtils.operateOnFile(foundFile,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+
+                        if(operationResult)
+                        {
+                            SoundUtils.playSound(getActivity());
+                            SoundUtils.vibrateDevice(getActivity());
+                        }
+                    }
+                }
+
+            }else if (utils.isTrolley())
+            {
+                //that means we should collect all selectable files based on either they are outpatient or transfers
+                List<RestfulFile> files = storageUtils.getSelectedCollectFiles(isShowMultipleAppointments());
+
+                if(files == null ||files.size() <= 0) return;
+
+                for(RestfulFile file :files)
+                {
+                    file.setEmp(settingsManager.getAccount());
+                    file.setDeviceOperationDate(new Date().getTime());
+                    if(!isShowMultipleAppointments()) // that means transfers view
+                        file.setTemporaryCabinetId(barcode);
+
+
+                    storageUtils.operateOnFile(file,FileModelStates.COORDINATOR_OUT.toString(),RestfulFile.READY_FILE);
+                }
+                //now notify the adapter
+                this.adapter.notifyDataSetChanged();
+                SoundUtils.vibrateDevice(getActivity());
+                SoundUtils.playSound(getActivity());
+            }
+
+        }catch (Exception s)
+        {
+            Log.e("LatestCollectScreen",s.getMessage());
+        }
+
+
+        //Do Automatic Background Syncing process
+        NetworkUtils.ScheduleSynchronization(getActivity());
 
     }
 

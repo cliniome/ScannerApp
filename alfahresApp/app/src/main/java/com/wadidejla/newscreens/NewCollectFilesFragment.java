@@ -247,7 +247,8 @@ public class NewCollectFilesFragment extends Fragment implements IFragment , IAd
 
                                     Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
 
-                                    RestfulFile foundFile = storageUtils.getCollectableFile(barcode);
+                                    //RestfulFile foundFile = storageUtils.getCollectableFile(barcode);
+                                    RestfulFile foundFile = null;
 
                                     if(foundFile != null)
                                     {

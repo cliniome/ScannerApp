@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -24,6 +25,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toolbar;
 
+
+import com.wadidejla.settings.SystemSettingsManager;
 
 import java.util.List;
 
@@ -242,7 +245,19 @@ public class SettingsActivity extends PreferenceActivity {
                     }
                 }
 
-            } else {
+            }else if (preference instanceof EditTextPreference){
+
+
+                if(preference.getKey().toLowerCase().equals("system_ip")){
+
+                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(preference.getContext());
+
+                    settingsManager.setServerAddress(stringValue);
+                }
+
+
+            }
+            else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
