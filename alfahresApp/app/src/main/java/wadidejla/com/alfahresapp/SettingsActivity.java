@@ -2,6 +2,7 @@ package wadidejla.com.alfahresapp;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -136,6 +137,36 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
+
+        final Preference editTextPreference = getPreferenceScreen().findPreference("SYSTEM_IP");
+
+        if(editTextPreference != null)
+        {
+            SharedPreferences prefs = editTextPreference.getSharedPreferences();
+
+            String ipAddress = prefs.getString("SYSTEM_IP","");
+
+            editTextPreference.setSummary(ipAddress);
+            editTextPreference.setDefaultValue(ipAddress);
+
+            editTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+
+                    String ipAddress = (String)o;
+                    SharedPreferences.Editor editor = editTextPreference.getEditor();
+
+                    editor.putString("SYSTEM_IP", ipAddress);
+                    SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(preference.getContext());
+                    settingsManager.setServerAddress(ipAddress);
+                    editTextPreference.setSummary(settingsManager.getServerAddress());
+                    editTextPreference.setDefaultValue(settingsManager.getServerAddress());
+                    editor.commit();
+                    return true;
+
+                }
+            });
+        }
         // Add 'notifications' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_notifications);
@@ -246,6 +277,7 @@ public class SettingsActivity extends PreferenceActivity {
                 }
 
             }else if (preference instanceof EditTextPreference){
+
 
 
                 if(preference.getKey().toLowerCase().equals("system_ip")){

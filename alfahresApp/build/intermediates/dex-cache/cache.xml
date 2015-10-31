@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/home/snouto/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jar="/home/snouto/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-f2c3fcc2aabf0fb469ce394370a0dc23b3cf81e0.jar" />
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/gson-2.3.1-f5bcbe68a690cfe7ce4b72b0397317dc0ff660b0.jar" />
     </item>
     <item
         jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/classes-f1455cfd05a2adb431553e1661ff00e9ff1f9ac2.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/classes-f1455cfd05a2adb431553e1661ff00e9ff1f9ac2.jar" />
+    </item>
+    <item
+        jar="/home/snouto/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/support-annotations-22.1.1-f2c3fcc2aabf0fb469ce394370a0dc23b3cf81e0.jar" />
     </item>
     <item
         jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/classes-2f6756d956e50f35a879611539a6770d2f2c82d8.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/classes-2f6756d956e50f35a879611539a6770d2f2c82d8.jar" />
     </item>
     <item
         jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-ec2356d70ad3ed24ee36272a7b66c333baa49cec.jar" />
-    </item>
-    <item
-        jar="/home/snouto/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/gson-2.3.1-f5bcbe68a690cfe7ce4b72b0397317dc0ff660b0.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/internal_impl-22.1.1-ec2356d70ad3ed24ee36272a7b66c333baa49cec.jar" />
     </item>
     <item
         jar="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/src/main/libs/android-viewbadger.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="f1303b50d535716ca7601c5014357b8435658313">
-        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/debug/android-viewbadger-d8ccfc5a342716d9d1ae9ef7e4b7c6f2fbee0802.jar" />
+        <dex dex="/home/snouto/projects/mobile/ScannerApp/alfahresApp/app/build/intermediates/pre-dexed/release/android-viewbadger-d8ccfc5a342716d9d1ae9ef7e4b7c6f2fbee0802.jar" />
     </item>
 
 </items>

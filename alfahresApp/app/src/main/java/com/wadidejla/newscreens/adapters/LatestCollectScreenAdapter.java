@@ -23,6 +23,7 @@ import com.wadidejla.network.AlfahresConnection;
 import com.wadidejla.newscreens.IAdapterListener;
 import com.wadidejla.newscreens.LatestCollectScreen;
 import com.wadidejla.newscreens.utils.DBStorageUtils;
+import com.wadidejla.newscreens.utils.NetworkUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
 import com.wadidejla.utils.FilesUtils;
@@ -75,7 +76,14 @@ public class LatestCollectScreenAdapter  extends ArrayAdapter<RestfulFile>{
         }
 
         super.notifyDataSetChanged();
+
+
+        NetworkUtils.ScheduleSynchronization(getContext());
     }
+
+
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

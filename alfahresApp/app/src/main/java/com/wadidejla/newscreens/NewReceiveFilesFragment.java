@@ -79,6 +79,8 @@ public class NewReceiveFilesFragment extends Fragment implements IFragment , IAd
 
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
+            this.adapter.notifyDataSetChanged();
+
             //Do action
             final Button DoActionsBtn = (Button)rootView.findViewById(R.id.new_receive_actions_btn);
 

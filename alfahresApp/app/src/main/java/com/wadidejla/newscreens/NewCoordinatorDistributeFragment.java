@@ -125,7 +125,7 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                                                     DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
 
                                                     List<RestfulFile> availableFiles = storageUtils.
-                                                            getFilesReadyForCollection();
+                                                            getFilesReadyForDistribution();
 
                                                     if (availableFiles != null) {
                                                         for (RestfulFile file : availableFiles) {
@@ -260,9 +260,6 @@ public class NewCoordinatorDistributeFragment extends Fragment implements IFragm
                     if(adapter != null)
                     {
                         DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-
-                        Map<String,List<RestfulFile>> categorizedData = adapter.getCategorizedData();
-
                         RestfulFile foundFile = storageUtils.getDistributableFile(barcode);
 
 

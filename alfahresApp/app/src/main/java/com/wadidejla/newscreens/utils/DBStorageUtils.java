@@ -423,7 +423,7 @@ public class DBStorageUtils {
                     .append(FileModelStates.DISTRIBUTED.toString())
                     .append("'").append(" AND ")
                     .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
-                    .append(multiple? 1 : 0);
+                    .append(multiple ? 1 : 0);
 
             List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
 
@@ -481,6 +481,44 @@ public class DBStorageUtils {
         {
             s.printStackTrace();
             return null;
+        }
+    }
+
+
+    public List<RestfulFile> getCollectableWithSelection(boolean multiple)
+    {
+        try
+        {
+
+            //get all NEW requests from the database
+            FilesDBManager filesDBManager = settingsManager.getFilesManager().getFilesDBManager();
+
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(AlfahresDBHelper.EMP_ID).append("=").append("'")
+                    .append(settingsManager.getAccount().getUserName())
+                    .append("'")
+                    .append(" AND ").append(AlfahresDBHelper.COL_SELECTED_FILE)
+                    .append("=")
+                    .append(1).append(" AND ")
+                    .append(AlfahresDBHelper.COL_STATE).append("=")
+                    .append("'")
+                    .append(FileModelStates.DISTRIBUTED.toString())
+                    .append("'").append(" AND ")
+                    .append(AlfahresDBHelper.COL_TRANSFERRABLE_FIELD).append("=")
+                    .append(multiple? 1 : 0);
+
+            List<RestfulFile> newFiles = filesDBManager.getFilesWhere(whereClause.toString());
+
+
+            if(newFiles == null) newFiles = new ArrayList<RestfulFile>();
+
+            return newFiles;
+
+
+        }catch (Exception s)
+        {
+            s.printStackTrace();
+            return new ArrayList<RestfulFile>();
         }
     }
 

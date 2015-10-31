@@ -105,7 +105,7 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
             }
         }
 
-       // NetworkUtils.ScheduleSynchronization(getContext());
+       //NetworkUtils.ScheduleSynchronization(getContext());
 
 
     }
@@ -592,6 +592,8 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                                           //Now refresh the adapter
                                                           NewDistributeExpandableAdapter
                                                                   .this.notifyDataSetChanged();
+
+
                                                       } catch (Exception s) {
                                                           Log.w("FilesArrayAdapter", s.getMessage());
 
@@ -610,6 +612,8 @@ public class NewDistributeExpandableAdapter extends BaseExpandableListAdapter im
                                               finally
                                               {
                                                   NewDistributeExpandableAdapter.this.doRefresh();
+
+                                                  NetworkUtils.ScheduleSynchronization(getContext());
                                               }
                                           }
                                       }).create();

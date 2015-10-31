@@ -272,9 +272,24 @@ public class LatestCollectScreen extends Fragment implements IFragment , IAdapte
         if(isShowMultipleAppointments())
             title = "Collect Transfers";
 
-        title = String.format("%s(%s)",title,this.getTotalFiles());
+        title = String.format("%s(%s)(%s)",title,this.getTotalSelected(),this.getTotalFiles());
 
         return title;
+    }
+
+
+    private int getTotalSelected(){
+
+        int counter = 0;
+
+        if(this.adapter != null)
+        {
+            DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+            List<RestfulFile> availableFiles = storageUtils.getCollectableWithSelection(isShowMultipleAppointments());
+            if(availableFiles != null) counter = availableFiles.size();
+        }
+
+        return counter;
     }
 
     @Override

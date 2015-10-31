@@ -73,6 +73,8 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
             this.getReceiveFilesList().setAdapter(this.getAdapter());
 
+            this.getAdapter().notifyDataSetChanged();
+
 
 
 
@@ -266,34 +268,11 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
 
                 if(foundFile != null) //that means the file already found
                 {
-                    //check to see if the file currently selected
-                    if(foundFile.getSelected() > 0)
-                    {
-                        //that means it is already selected
-                        //so begin the receiving process
-                        DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
-                        storageUtils.operateOnFile(foundFile, FileModelStates.RECEPTIONIST_IN.toString(), RestfulFile.READY_FILE);
-
-
-                    }else
-                    {
-                        //toggle the selection state
-                        foundFile.toggleSelection();
-
-                        for(RestfulFile current : settingsManager.getReceivedFiles())
-                        {
-                            if(current.getFileNumber().equals(foundFile.getFileNumber()))
-                                continue;
-                            else {
-                                current.setSelected(0);
-
-                            }
-                        }
-                        //then remove it from the received files
-                        settingsManager.getReceivedFiles().remove(foundFile);
-                        //then add it back again
-                        settingsManager.addToReceivedFiles(foundFile);
-                    }
+                    //that means it is already selected
+                    //so begin the receiving process
+                    DBStorageUtils storageUtils = new DBStorageUtils(getActivity());
+                    storageUtils.operateOnFile(foundFile, FileModelStates.RECEPTIONIST_IN.toString(), RestfulFile.READY_FILE);
+                    SoundUtils.playSound(getActivity());
                     //then notify the application to refresh in any case
                     this.refresh();
                 }else
@@ -330,7 +309,6 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                         individualFile.toggleSelection();
                                         settingsManager.getReceivedFiles().remove(individualFile);
                                         settingsManager.addToReceivedFiles(individualFile);
-
                                         //then notify the application to refresh
                                         NewReceptionistReceiveFragment.this.refresh();
 
@@ -385,7 +363,7 @@ public class NewReceptionistReceiveFragment extends Fragment implements IFragmen
                                     @Override
                                     public void run() {
                                         NewReceptionistReceiveFragment.this.refresh();
-                                        SoundUtils.playSound(getActivity());
+
                                         try
                                         {
                                             waitingDialog.dismiss();

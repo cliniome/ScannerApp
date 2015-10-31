@@ -21,6 +21,7 @@ import com.wadidejla.newscreens.adapters.CheckOutFileArrayAdapter;
 import com.wadidejla.newscreens.utils.BarcodeUtils;
 import com.wadidejla.newscreens.utils.NewViewUtils;
 import com.wadidejla.settings.SystemSettingsManager;
+import com.wadidejla.utils.SoundUtils;
 import com.wadidejla.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -206,6 +207,8 @@ public class SortingFacilityScreen extends Fragment implements IFragment {
                                         public void run() {
 
                                             SortingFacilityScreen.this.clearFiles();
+
+                                            SoundUtils.PlayError(getActivity());
 
                                             AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning",
                                                     String.format("File : %s , Is not found or might be not prepared by " +

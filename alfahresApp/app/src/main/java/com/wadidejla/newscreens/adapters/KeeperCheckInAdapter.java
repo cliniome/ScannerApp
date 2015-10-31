@@ -232,7 +232,7 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile>{
                 final AlertDialog choiceDlg = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.SINGLE_CHOICE_DLG_TITLE)
 
-                        .setItems(new String[]{"Mark File as Missing..."}, new DialogInterface.OnClickListener() {
+                        .setItems(new String[]{"Clear That File..."}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -244,8 +244,12 @@ public class KeeperCheckInAdapter extends ArrayAdapter<RestfulFile>{
                                        try {
                                            DBStorageUtils storageUtils = new DBStorageUtils(getContext());
 
-                                           storageUtils.operateOnFile(file, FileModelStates.MISSING.toString(),
-                                                   RestfulFile.READY_FILE);
+                                           SystemSettingsManager settingsManager = SystemSettingsManager.createInstance(getContext());
+
+                                           if(settingsManager.getReceivedFiles() != null)
+                                           {
+                                               settingsManager.getReceivedFiles().remove(file);
+                                           }
 
                                            //Play the sound
                                            SoundUtils.playSound(getContext());

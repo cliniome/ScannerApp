@@ -70,6 +70,8 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
 
             this.listView.setAdapter(this.adapter);
 
+            this.adapter.notifyDataSetChanged();
+
             //bind the buttons
 
             //Bind the refresh button
@@ -157,10 +159,6 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                     CheckOutFileFragment.this.listView.setSelection(CheckOutFileFragment.this.adapter.getCount() - 1);
                 }
             });*/
-
-
-
-
         NetworkUtils.ScheduleSynchronization(getActivity());
 
         this.doUpdateFragment();
@@ -185,6 +183,7 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                 {
                     final AlertDialog waitingDialog = NewViewUtils.getWaitingDialog(getActivity());
                     waitingDialog.show();
+
                     Runnable networkThread = new Runnable() {
                         @Override
                         public void run() {
@@ -231,6 +230,10 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                            }
                                        });
 
+
+                                       SoundUtils.PlayError(getActivity());
+                                       SoundUtils.vibrateDevice(getActivity());
+
                                    }else
                                    {
                                        SyncBatch batch = (SyncBatch)response.getPayload();
@@ -262,7 +265,17 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                                        CheckOutFileFragment.this.refresh();
                                                    }
                                                });
+                                           }else
+                                           {
+                                               SoundUtils.PlayError(getActivity());
+                                               SoundUtils.vibrateDevice(getActivity());
                                            }
+                                       }else
+                                       {
+                                           AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"No Result","Empty Result , There are no Files Found.");
+                                           SoundUtils.PlayError(getActivity());
+                                           SoundUtils.vibrateDevice(getActivity());
+                                           dialog.show();
                                        }
                                    }
                                }else
@@ -272,6 +285,7 @@ public class CheckOutFileFragment extends Fragment implements IFragment , IAdapt
                                        public void run() {
 
                                            SoundUtils.PlayError(getActivity());
+                                           SoundUtils.vibrateDevice(getActivity());
 
                                            AlertDialog dialog = NewViewUtils.getAlertDialog(getActivity(),"Warning"
                                                    ,"The Patient File does not exist or you are not authorized to scan " +
